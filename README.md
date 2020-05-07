@@ -68,7 +68,7 @@ If Arrear Results are Present then:
 Data-2016-2015-6-Arrear.csv
 ```
 
-Any File not in this format will be **_ignored_**.
+Any File not in this format will be ***ignored***.
 
 ## Calculations Taken within Data:
 
@@ -80,9 +80,10 @@ Scheme = Given. This must always be specified since the scheme can vary Even in 
 
 Semester = Given. While the Application can determine Which Semester for Storage, this is enforced due to Naming Constraints.
 
+Batch = Given. Specified Within the filename.
+
 ### Calculations Done To Be Placed into the Database.
 
-- Batch Year = Parsed from the USN(1CR**17**CS001).
 - Year = Batch Year + Floor(Semester/2)
 - OddEven = Semester%2 (If Even, then 0, if Odd, then 1)
 - DepartmentCode = Taken From Subject (17CS12)
@@ -107,4 +108,22 @@ FCD, Etc.
 
 Config Parser.
 
-### FrontEnd ? In React.
+# API
+
+The API Specifications are As Follows
+
+## Routes
+
+To Be Decided.
+
+# React Front End 
+
+Hosting at https://semdata.rxav.pw
+
+??
+
+### Performance
+
+Currently, 3 full 200 Lists of Students Take up ~10seconds on a fully cold Start.
+
+Further Performance is to be tested.

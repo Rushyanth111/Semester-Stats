@@ -8,6 +8,7 @@ from peewee import (
     ForeignKeyField,
     CompositeKey,
     SqliteDatabase,
+    AutoField,
 )
 
 
@@ -19,16 +20,28 @@ class BaseModel(Model):
         database = db
 
 
+class DepartmentDetails(BaseModel):
+    DepartmentNumber = AutoField()
+    DepartmentCode = CharField(2)
+    DepartmentCode = TextField()
+
+
 class StudentDetails(BaseModel):
     SerialNumber = CharField(11, primary_key=True)
     Name = TextField()
     Scheme = CharField(2)
+    Department = ForeignKeyField(
+        DepartmentDetails, field=DepartmentDetails.DepartmentCode
+    )
 
 
 class SubjectDetails(BaseModel):
     SubjectCode = CharField(7, primary_key=True)
     SubjectName = TextField()
     SubjectSemester = IntegerField()
+    SubjectDepartment = ForeignKeyField(
+        DepartmentDetails, field=DepartmentDetails.DepartmentCode
+    )
 
 
 class SubjectScore(BaseModel):
@@ -56,4 +69,12 @@ class BacklogSubjectScore(BaseModel):
 
 
 db.connect()
-db.create_tables([StudentDetails, SubjectDetails, SubjectScore, BacklogSubjectScore])
+db.create_tables(
+    [
+        StudentDetails,
+        SubjectDetails,
+        SubjectScore,
+        BacklogSubjectScore,
+        DepartmentDetails,
+    ]
+)
