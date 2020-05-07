@@ -1,7 +1,10 @@
 import csv
-from peewee import SqliteDatabase, IntegrityError as Iex
-from models.BasicModels import db, StudentDetails, SubjectDetails, SubjectScore
 import re
+
+from peewee import IntegrityError as Iex
+
+from models.BasicModels import StudentDetails, SubjectDetails, SubjectScore, db
+
 
 # CSV Format
 """
