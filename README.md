@@ -9,6 +9,7 @@ A project meant to keep an updated record of all scores achieved.
 SerialNumber <->
 Name
 Scheme
+Department
 
 ---Subject Details
 Subject Code <->
@@ -17,9 +18,9 @@ Subject Semester
 Subject Department
 
 ---Departement Details
-Department Number
+Department Number <->
+Department Code <->
 Department Name
-Department Code
 
 
 ---Subject Score
@@ -42,15 +43,16 @@ Externals
 
 
 ```
+
 ## File Naming:
 
 The Files Should be Named in this Order:
 
 ```
-Data-(Batch)-(Scheme)-(Semester).csv
+Data-(Batch)-(Scheme)-(Semester)-[Arrear].csv
 ```
 
-An Example: 
+An Example:
 
 For the Batch That has the SerialNumber 1CR16XX001 (Some Number), Attempting their 6th Semester, The filename Must be:
 
@@ -60,7 +62,13 @@ Ensure that this is followed or the application will fail to parse properly.
 Data-2016-2015-6.csv
 ```
 
-Any File not in this format will be ***ignored***.
+If Arrear Results are Present then:
+
+```
+Data-2016-2015-6-Arrear.csv
+```
+
+Any File not in this format will be **_ignored_**.
 
 ## Calculations Taken within Data:
 
@@ -72,13 +80,31 @@ Scheme = Given. This must always be specified since the scheme can vary Even in 
 
 Semester = Given. While the Application can determine Which Semester for Storage, this is enforced due to Naming Constraints.
 
-### Calculations Done
+### Calculations Done To Be Placed into the Database.
 
+- Batch Year = Parsed from the USN(1CR**17**CS001).
 - Year = Batch Year + Floor(Semester/2)
+- OddEven = Semester%2 (If Even, then 0, if Odd, then 1)
+- DepartmentCode = Taken From Subject (17CS12)
+- DepartmentName = Hard Coded
+
+
+## External Caclulations 
+
+Add Something Here later.
+FCD, Etc.
+ 
+
+
+## Responses
+
+- Send .docx File <-- Important, After the data done.
+- Asking, X Sem, X Scheme something.
+- Updating, 401 - If Updating.
 - 
-
-
 
 ## Additional Notes:
 
 Config Parser.
+
+### FrontEnd ? In React.
