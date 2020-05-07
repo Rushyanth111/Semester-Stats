@@ -10,6 +10,10 @@ USN <->
 Name
 Scheme
 
+---Subject Details
+Subject Code <->
+Subject Name
+Subject Semester
 
 ---Subject Score
 USN <->
@@ -28,10 +32,7 @@ Internals
 Externals
 
 
----Subject Details
-Subject Code
-Subject Name
-Subject Semester
+
 
 ```
 
