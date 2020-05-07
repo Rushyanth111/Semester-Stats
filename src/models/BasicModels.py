@@ -30,9 +30,6 @@ class SubjectDetails(BaseModel):
     SubjectName = TextField()
     SubjectSemester = IntegerField()
 
-    def __hash__(self):
-        return super().__hash__()
-
 
 class SubjectScore(BaseModel):
     SerialNumber = ForeignKeyField(StudentDetails, field=StudentDetails.SerialNumber)
