@@ -1,6 +1,6 @@
 import csv
 from peewee import SqliteDatabase, IntegrityError as Iex
-from models.BasicModels import StudentDetails, SubjectDetails, SubjectScore
+from models.BasicModels import db, StudentDetails, SubjectDetails, SubjectScore
 import re
 
 # CSV Format
@@ -19,6 +19,7 @@ filename = "imported/6th_sem_cse.csv"
 year = 2018
 even = True
 
+"""
 with open(filename) as file:
     reader = csv.reader(file, delimiter=",", skipinitialspace=True)
     XXitr = 0
@@ -38,7 +39,7 @@ with open(filename) as file:
                 )
             except Iex:
                 pass
-            score_details = SubjectScore.create(
+            score_details = SubjectScore(
                 SerialNumber=row[0],
                 SubjectCode=row[itr],
                 Year=year,
@@ -46,10 +47,47 @@ with open(filename) as file:
                 Internals=row[itr + 2],
                 Externals=row[itr + 3],
             )
-
-for person in StudentDetails.select():
-    print(person.Name)
-
 """
 
-"""
+with open(filename) as file:
+    reader = csv.reader(file, delimiter=",", skipinitialspace=True)
+
+    StudentDetailsArray = set()
+    SubjectDetailsArray = set()
+    ScoreDetailsArray = set()
+
+    for row in reader:
+        StudentDetailsArray.add((row[0], row[1], 6))
+
+        for itr in range(3, len(row[3:]), 6):
+            SubjectDetailsArray.add((row[itr], row[itr + 1], getSemester(row[itr])))
+            ScoreDetailsArray.add(
+                (row[0], row[itr], year, even, row[itr + 2], row[itr + 3],)
+            )
+
+    with db.atomic():
+        StudentDetails.insert_many(
+            StudentDetailsArray,
+            [StudentDetails.SerialNumber, StudentDetails.Name, StudentDetails.Scheme],
+        ).execute()
+
+        SubjectDetails.insert_many(
+            SubjectDetailsArray,
+            [
+                SubjectDetails.SubjectCode,
+                SubjectDetails.SubjectName,
+                SubjectDetails.SubjectSemester,
+            ],
+        ).execute()
+
+        SubjectScore.insert_many(
+            ScoreDetailsArray,
+            [
+                SubjectScore.SerialNumber,
+                SubjectScore.SubjectCode,
+                SubjectScore.Year,
+                SubjectScore.YearIndicator,
+                SubjectScore.Internals,
+                SubjectScore.Externals,
+            ],
+        ).execute()
