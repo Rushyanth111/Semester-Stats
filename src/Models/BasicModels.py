@@ -11,7 +11,7 @@ from peewee import (
     AutoField,
     FixedCharField
 )
-from models.DepartmentConstants import DepartmentCodeDictionary
+from Models.DepartmentConstants import DepartmentCodeDictionary
 
 db = SqliteDatabase("imported/data.db")
 

@@ -1,5 +1,5 @@
 import re
-from models.DepartmentConstants import DepartmentCodeDictionary
+from Models.DepartmentConstants import DepartmentCodeDictionary
 
 # Gets The Semester Based on the Given Subject Code.
 def getSubjectSemester(string: str):

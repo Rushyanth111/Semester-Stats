@@ -2,16 +2,18 @@ import csv
 import re
 from timeit import default_timer as timer
 
-from peewee import IntegrityError as Iex, chunked
+from peewee import IntegrityError as Iex
+from peewee import chunked
 
-from models.BasicModels import (
+from Models.BasicModels import (
+    BacklogSubjectScore,
     StudentDetails,
     SubjectDetails,
     SubjectScore,
     db,
-    BacklogSubjectScore,
 )
-from .Utils import getSubjectSemester, getSerialNumberDepartment, getSubjectDepartment
+
+from .Utils import getSerialNumberDepartment, getSubjectDepartment, getSubjectSemester
 
 
 # CSV Format
