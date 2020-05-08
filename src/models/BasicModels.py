@@ -9,8 +9,9 @@ from peewee import (
     CompositeKey,
     SqliteDatabase,
     AutoField,
+    FixedCharField
 )
-
+from models.DepartmentConstants import DepartmentCodeDictionary
 
 db = SqliteDatabase("imported/data.db")
 
@@ -21,13 +22,12 @@ class BaseModel(Model):
 
 
 class DepartmentDetails(BaseModel):
-    DepartmentNumber = AutoField()
-    DepartmentCode = CharField(2)
-    DepartmentCode = TextField()
+    DepartmentCode = FixedCharField(2, primary_key=True)
+    DepartmentName = TextField()
 
 
 class StudentDetails(BaseModel):
-    SerialNumber = CharField(11, primary_key=True)
+    SerialNumber = FixedCharField(10, primary_key=True)
     Name = TextField()
     Scheme = CharField(2)
     Department = ForeignKeyField(
@@ -77,4 +77,8 @@ db.create_tables(
         BacklogSubjectScore,
         DepartmentDetails,
     ]
+)
+DepartmentDetails.insert_many(
+    zip(DepartmentCodeDictionary.keys(), DepartmentCodeDictionary.values()),
+    fields=[DepartmentDetails.DepartmentCode, DepartmentDetails.DepartmentName],
 )

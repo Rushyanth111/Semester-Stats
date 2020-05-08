@@ -1,4 +1,5 @@
 import re
+from models.DepartmentConstants import DepartmentCodeDictionary
 
 # Gets The Semester Based on the Given Subject Code.
 def getSubjectSemester(string: str):
@@ -14,4 +15,28 @@ def getSerialNumberDepartment(string: str):
 
 def getSubjectDepartment(string: str) -> str:
     matches = re.search("[0-9]{2}([A-Z]{2,3})[0-9]{2,3}", string)
-    return matches.group(1)
+    Department: str = matches.group(1)
+    # Special Processing for Labs in Particular.
+    # Labs always End with L and are three characters Long.
+    if (
+        Department[-1] == "L"
+        and Department[0 : len(Department)] in DepartmentCodeDictionary
+    ):
+        return Department[0:2].upper()
+    elif Department in DepartmentCodeDictionary:
+        return Department
+    else:
+        return "XTR"
+
+
+"""
+Logical Parsing for Departments: 
+Let X = Department 
+
+if Semester 1 or 2 -> Send to Basic_Science.
+elif Semester 3 to 8 ->
+    if SerialNumberDepartment for Department Exists ->
+        Return Department
+    else
+        Return Basic
+"""

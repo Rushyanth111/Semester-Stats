@@ -36,6 +36,22 @@ def ParseIntoDatabase(filename: str) -> None:
     with open(filename) as file:
         reader = csv.reader(file, delimiter=",", skipinitialspace=True)
 
+        # Set of Keys that Exists
+
+        # Set The existing ones
+
+        StudentDetailsArrayExists = StudentDetails.select(
+            StudentDetails.SerialNumber
+        ).tuples()
+        SubjectDetailsArrayExists = SubjectDetails.select(
+            SubjectDetails.SubjectCode
+        ).tuples()
+        ScoreDetailsArrayExists = (
+            SubjectScore.select(SubjectScore.SerialNumber, SubjectScore.SubjectCode)
+            .distinct()
+            .tuples()
+        )
+
         StudentDetailsArray = set()
         SubjectDetailsArray = set()
         ScoreDetailsArray = set()
@@ -46,10 +62,7 @@ def ParseIntoDatabase(filename: str) -> None:
             Department = getSerialNumberDepartment(SerialNumber)
             # Scheme Defined Above.
 
-            query = StudentDetails.select().where(
-                StudentDetails.SerialNumber == SerialNumber
-            )
-            if not query.exists():
+            if (SerialNumber,) not in StudentDetailsArrayExists:
                 StudentDetailsArray.add((SerialNumber, Name, Scheme, Department))
 
             for itr in range(3, len(row[3:]), 6):
@@ -61,24 +74,18 @@ def ParseIntoDatabase(filename: str) -> None:
                 Internal = row[itr + 2]
                 External = row[itr + 3]
 
-                query = SubjectDetails.select().where(
-                    SubjectDetails.SubjectCode == SubjectCode
-                )
-                if not query.exists():
+                if (SubjectCode,) not in SubjectDetailsArrayExists:
                     SubjectDetailsArray.add(
                         (SubjectCode, SubjectName, SubjectSemester, SubjectDepartment)
                     )
 
-                query = SubjectScore.select().where(
-                    (SubjectScore.SerialNumber == SerialNumber)
-                    & (SubjectScore.SubjectCode == SubjectCode)
-                )
-                if query.exists():
+                if (SerialNumber, SubjectCode,) in ScoreDetailsArrayExists:
+                    query = SubjectScore.get(
+                        (SubjectScore.SerialNumber == SerialNumber)
+                        & (SubjectScore.SubjectCode == SubjectCode)
+                    )
                     BacklogSubjectScore.insert_from(
-                        SubjectScore.select().where(
-                            (SubjectScore.SerialNumber == SerialNumber)
-                            & (SubjectScore.SubjectCode == SubjectCode)
-                        ),
+                        query,
                         fields=[
                             BacklogSubjectScore.SerialNumber,
                             BacklogSubjectScore.SubjectCode,
@@ -88,10 +95,7 @@ def ParseIntoDatabase(filename: str) -> None:
                             BacklogSubjectScore.Externals,
                         ],
                     )
-                    SubjectScore.delete().where(
-                        (SubjectScore.SerialNumber == SerialNumber)
-                        & (SubjectScore.SubjectCode == SubjectCode)
-                    ).execute()
+                    query.delete_instance()
 
                 ScoreDetailsArray.add(
                     (SerialNumber, SubjectCode, Year, YearIndicator, Internal, External)
