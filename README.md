@@ -63,12 +63,17 @@ Please note that there will be many Changes That can happen Before
 | Internals    | Internal Marks                       | INTEGER     | -                     |
 | Externals    | External Marks                       | INTEGER     | -                     |
 
-## File Naming:
+# CSV Format
+```
+USN, Name, Attempted Subjects, [SubCode, Subname,Internals,Externals,Total,Fail/Pass]xAttemptedSubjects
+```
+
+# File Naming:
 
 The Files Should be Named in this Order:
 
 ```
-Data-(Batch)-(Scheme)-(Semester)-[Arrear].csv
+Data-(Branch)-(Batch)-(Scheme)-(Semester)-[Arrear].csv
 ```
 
 An Example:
@@ -78,13 +83,13 @@ For the Batch That has the SerialNumber 1CR16XX001 (Some Number), Attempting the
 Ensure that this is followed or the application will fail to parse properly.
 
 ```
-Data-2016-2015-6.csv
+Data-CSE-2016-2015-6.csv
 ```
 
 If Arrear Results are Present then:
 
 ```
-Data-2016-2015-6-Arrear.csv
+Data-CSE-2016-2015-6-Arrear.csv
 ```
 
 Any File not in this format will be **_ignored_**.
@@ -209,3 +214,16 @@ Additional Things Needed to be implemented.
 - Flexible API Syntax.
 - Proper Structure.
 - Documentation. <- Mostly for future Maintence.
+
+# Problems:
+
+USNs that change.
+Diploma? 
+Arrears -- Designed, Data? Inconsistent.
+Missing Data? 
+
+-> Data: 
+If USN + Code In new? 
+    OldTable <= Previous
+
+Else Insert.
