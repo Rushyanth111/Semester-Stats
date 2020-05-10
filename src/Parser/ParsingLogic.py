@@ -99,7 +99,13 @@ def ParseIntoDatabase(filename: str) -> None:
 
                 if (SubjectCode,) not in SubjectDetailsArrayExists:
                     SubjectDetailsArray.add(
-                        (SubjectCode, SubjectName, SubjectSemester, SubjectDepartment)
+                        (
+                            SubjectCode,
+                            SubjectName,
+                            SubjectSemester,
+                            Scheme,
+                            SubjectDepartment,
+                        )
                     )
 
                 if (SerialNumber, SubjectCode,) in ScoreDetailsArrayExists:
@@ -146,6 +152,7 @@ def ParseIntoDatabase(filename: str) -> None:
                         SubjectDetails.SubjectCode,
                         SubjectDetails.SubjectName,
                         SubjectDetails.SubjectSemester,
+                        SubjectDetails.SubjectScheme,
                         SubjectDetails.SubjectDepartment,
                     ],
                 ).execute()

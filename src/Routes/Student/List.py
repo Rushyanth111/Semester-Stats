@@ -1,19 +1,41 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
+from pydantic import BaseModel, parse_obj_as
+from typing import List
+from databaseFunctions.getList import getList
 
 StudentList = APIRouter()
 
 
+class ListRequest(BaseModel):
+    Batch: int
+    Semester: int
+    Department: str
 
 
-class Response(BaseModel):
+class Mark(BaseModel):
+    Code: str
+    Internal: int
+    External: int
+    Total: int
+    Result: str
+    Class: str
+
+
+class Overall(BaseModel):
+    Total: int
+    Result: str
+
+
+class Student(BaseModel):
     Name: str
-    Some: str
+    USN: str
+    Section: str
+    Marks: List[Mark]
+    Overall: Overall
 
 
-@StudentList.get("/list", response_model=Response)
-def getStudentList():
-    return {
-        "Name":"Something",
-        "Some":"SomethingElseI"
-    }
+
+@StudentList.post("/list", response_model=List[Student])
+def getStudentList(req: ListRequest):
+    result = getList(req.Batch, req.Semester, req.Department)
+    return result

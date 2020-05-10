@@ -3,7 +3,6 @@ import csv
 import logging
 import re
 from timeit import default_timer as timer
-
 import uvicorn
 
 from Parser.ParsingLogic import ParseIntoDatabase
@@ -22,4 +21,4 @@ filenames = [
 for f in filenames:
     ParseIntoDatabase(f)
 
-#uvicorn.run(App, host="127.0.0.1", port=5000, log_level="debug")
+uvicorn.run(App, host="127.0.0.1", port=5000, log_level="debug")

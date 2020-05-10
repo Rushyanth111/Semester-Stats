@@ -54,6 +54,7 @@ class SubjectDetails(BaseModel):
     SubjectCode = CharField(7, primary_key=True)
     SubjectName = TextField()
     SubjectSemester = IntegerField()
+    SubjectScheme = IntegerField()
     SubjectDepartment = ForeignKeyField(
         DepartmentDetails, field=DepartmentDetails.DepartmentCode
     )
