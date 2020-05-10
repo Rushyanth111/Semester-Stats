@@ -4,7 +4,7 @@ import logging
 import re
 from timeit import default_timer as timer
 import uvicorn
-
+import sys
 from Parser.ParsingLogic import ParseIntoDatabase
 from Routes.MainRouter import App
 
@@ -21,4 +21,4 @@ filenames = [
 for f in filenames:
     ParseIntoDatabase(f)
 
-uvicorn.run(App, host="127.0.0.1", port=5000, log_level="debug")
+uvicorn.run(App, host="127.0.0.1", port=int(sys.argv[1]), log_level="debug")
