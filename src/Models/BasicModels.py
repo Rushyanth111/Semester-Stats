@@ -9,11 +9,21 @@ from peewee import (
     CompositeKey,
     SqliteDatabase,
     AutoField,
-    FixedCharField
+    FixedCharField,
 )
 from Models.DepartmentConstants import DepartmentCodeDictionary
+from Logging import AppLog
 
-db = SqliteDatabase("imported/data.db")
+
+db = SqliteDatabase(
+    "imported/data.db",
+    pragmas={
+        "journal_mode": "wal",
+        "cache_size": "-1",
+        "foreign_keys": "1",
+        "ignore_check_constraints": "0",
+    },
+)
 
 
 class BaseModel(Model):
@@ -22,14 +32,19 @@ class BaseModel(Model):
 
 
 class DepartmentDetails(BaseModel):
-    DepartmentCode = FixedCharField(2, primary_key=True)
+    DepartmentCode = FixedCharField(3, primary_key=True)
     DepartmentName = TextField()
+
+
+class BatchSchemeInfo(BaseModel):
+    Batch = IntegerField(primary_key=True)
+    Scheme = IntegerField()
 
 
 class StudentDetails(BaseModel):
     SerialNumber = FixedCharField(10, primary_key=True)
     Name = TextField()
-    Scheme = CharField(2)
+    Batch = IntegerField()
     Department = ForeignKeyField(
         DepartmentDetails, field=DepartmentDetails.DepartmentCode
     )
@@ -42,6 +57,16 @@ class SubjectDetails(BaseModel):
     SubjectDepartment = ForeignKeyField(
         DepartmentDetails, field=DepartmentDetails.DepartmentCode
     )
+
+
+class TeacherDetails(BaseModel):
+    TeacherUSN = AutoField()
+    TeacherName = TextField()
+
+
+class TeacherTaughtDetails(BaseModel):
+    TeacherUsn = ForeignKeyField(TeacherDetails, field=TeacherDetails.TeacherUSN)
+    Batch = IntegerField()
 
 
 class SubjectScore(BaseModel):
@@ -68,17 +93,38 @@ class BacklogSubjectScore(BaseModel):
         primary_key = CompositeKey("Year", "YearIndicator")
 
 
+class ParsedTable(BaseModel):
+    Department = ForeignKeyField(
+        DepartmentDetails, field=DepartmentDetails.DepartmentCode
+    )
+    Batch = ForeignKeyField(BatchSchemeInfo, field=BatchSchemeInfo.Batch)
+    Semester = IntegerField()
+    Arrear = BooleanField()
+
+    class Meta:
+        primary_key = CompositeKey("Department", "Batch", "Semester", "Arrear")
+
+
 db.connect()
 db.create_tables(
     [
         StudentDetails,
+        BatchSchemeInfo,
         SubjectDetails,
         SubjectScore,
         BacklogSubjectScore,
         DepartmentDetails,
+        ParsedTable,
     ]
 )
-DepartmentDetails.insert_many(
-    zip(DepartmentCodeDictionary.keys(), DepartmentCodeDictionary.values()),
-    fields=[DepartmentDetails.DepartmentCode, DepartmentDetails.DepartmentName],
-)
+if len(list(DepartmentDetails.select())) == 0:
+    AppLog.info("Inserting Department Details!")
+    with db.atomic():
+        DepartmentDetails.insert_many(
+            set(
+                zip(DepartmentCodeDictionary.keys(), DepartmentCodeDictionary.values())
+            ),
+            fields=[DepartmentDetails.DepartmentCode, DepartmentDetails.DepartmentName],
+        ).execute()
+else:
+    AppLog.info("Skipping the Insertion of Department Details")
