@@ -192,7 +192,7 @@ Retrieves the student list from the database given the following POST request sc
 An Example Post Request:
 ```jsonc
 {
-    "Scheme":2015, //Integer
+    "Department":"CS", //string
     "Batch":2016, //Integer
     "Semester":6, //Integer
 }
