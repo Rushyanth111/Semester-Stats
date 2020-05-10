@@ -1,17 +1,22 @@
 import csv
 import re
 from timeit import default_timer as timer
+from logging import INFO
+from peewee import IntegrityError as Iex
+from peewee import chunked
 
-from peewee import IntegrityError as Iex, chunked
-
-from models.BasicModels import (
+from Logging import AppLog
+from Models.BasicModels import (
+    BacklogSubjectScore,
+    BatchSchemeInfo,
+    ParsedTable,
     StudentDetails,
     SubjectDetails,
     SubjectScore,
     db,
-    BacklogSubjectScore,
 )
-from .Utils import getSubjectSemester, getSerialNumberDepartment, getSubjectDepartment
+
+from .Utils import getSerialNumberDepartment, getSubjectDepartment, getSubjectSemester
 
 
 # CSV Format
@@ -23,12 +28,30 @@ USN, Name, Attempted Subjects, [SubCode, Subname,Internals,Externals,Total,Fail/
 def ParseIntoDatabase(filename: str) -> None:
 
     ParsedFilename = re.search(
-        "Data-([0-9]*)-([0-9]*)-([0-9]*)(-[Aa]rrear)?.csv", filename
+        "Data-([A-Za-z]*)-([0-9]*)-([0-9]*)-([0-9]*)(-[Aa]rrear)?.csv", filename
+    )
+    Department = ParsedFilename.group(1)
+    Batch = int(ParsedFilename.group(2))
+    Scheme = int(ParsedFilename.group(3))
+    Semester = int(ParsedFilename.group(4))
+    Arrear = False if ParsedFilename.group(5) is None else True
+
+    # Check if the particular Batch exists?
+    record, created = BatchSchemeInfo.get_or_create(Batch=Batch, Scheme=Scheme)
+
+    if created is True:
+        AppLog.info(f"{Batch}-{Scheme} Added to BatchSchemeInfo")
+
+    # Check if the particular File has been Parsed:
+    record, created = ParsedTable.get_or_create(
+        Batch=Batch, Department=Department, Semester=Semester, Arrear=Arrear
     )
 
-    Batch = int(ParsedFilename.group(1))
-    Scheme = int(ParsedFilename.group(2))
-    Semester = int(ParsedFilename.group(3))
+    if created is False:
+        AppLog.info(f"{filename} has already been Parsed, Skipping...")
+        return
+    else:
+        AppLog.info(f"{filename} is being Parsed...")
 
     Year = Batch + (Semester // 2)
     YearIndicator = (bool(Semester % 2 == 0),)
@@ -63,7 +86,7 @@ def ParseIntoDatabase(filename: str) -> None:
             # Scheme Defined Above.
 
             if (SerialNumber,) not in StudentDetailsArrayExists:
-                StudentDetailsArray.add((SerialNumber, Name, Scheme, Department))
+                StudentDetailsArray.add((SerialNumber, Name, Batch, Department))
 
             for itr in range(3, len(row[3:]), 6):
                 # Looping Within the Array
@@ -76,10 +99,19 @@ def ParseIntoDatabase(filename: str) -> None:
 
                 if (SubjectCode,) not in SubjectDetailsArrayExists:
                     SubjectDetailsArray.add(
-                        (SubjectCode, SubjectName, SubjectSemester, SubjectDepartment)
+                        (
+                            SubjectCode,
+                            SubjectName,
+                            SubjectSemester,
+                            Scheme,
+                            SubjectDepartment,
+                        )
                     )
 
                 if (SerialNumber, SubjectCode,) in ScoreDetailsArrayExists:
+                    AppLog.info(
+                        f"Moving Backlog {SerialNumber}-{SubjectCode} Score to Backlog Table...",
+                    )
                     query = SubjectScore.get(
                         (SubjectScore.SerialNumber == SerialNumber)
                         & (SubjectScore.SubjectCode == SubjectCode)
@@ -108,7 +140,7 @@ def ParseIntoDatabase(filename: str) -> None:
                     [
                         StudentDetails.SerialNumber,
                         StudentDetails.Name,
-                        StudentDetails.Scheme,
+                        StudentDetails.Batch,
                         StudentDetails.Department,
                     ],
                 ).execute()
@@ -120,6 +152,7 @@ def ParseIntoDatabase(filename: str) -> None:
                         SubjectDetails.SubjectCode,
                         SubjectDetails.SubjectName,
                         SubjectDetails.SubjectSemester,
+                        SubjectDetails.SubjectScheme,
                         SubjectDetails.SubjectDepartment,
                     ],
                 ).execute()
