@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from pydantic import BaseModel, parse_obj_as
+from pydantic import BaseModel
 from typing import List
 from ...databaseFunctions import getList
 
@@ -35,6 +35,6 @@ class Student(BaseModel):
 
 
 @StudentList.post("/list", response_model=List[Student])
-def getStudentList(req: ListRequest):
-    result = getList(req.Batch, req.Semester, req.Department)
+def getStudentList(Req: ListRequest):
+    result = getList(Req.Batch, Req.Semester, Req.Department)
     return result

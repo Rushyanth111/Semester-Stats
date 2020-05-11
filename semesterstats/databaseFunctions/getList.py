@@ -1,10 +1,4 @@
-from ..Models import (
-    SubjectScore,
-    BatchSchemeInfo,
-    SubjectDetails,
-    StudentDetails,
-    SubjectScore,
-)
+from ..Models import SubjectScore, BatchSchemeInfo, SubjectDetails, StudentDetails
 
 from ..Plugins import ProcessMarks
 
@@ -36,6 +30,7 @@ def getList(Batch: int, Semester: int, Deparment: str):
         StudentTotalScore = 0
         StudentIsPass = True
 
+        # Get all Scores for the USN.
         Scores = SubjectScore.select(
             SubjectScore.SubjectCode, SubjectScore.Internals, SubjectScore.Externals
         ).where(
@@ -46,6 +41,7 @@ def getList(Batch: int, Semester: int, Deparment: str):
         if not Scores.exists():
             continue
 
+        # Process the scores.
         for S in Scores:
             IsPass, TotalScore, PassClass = ProcessMarks(
                 Scheme, S.Internals, S.Externals
