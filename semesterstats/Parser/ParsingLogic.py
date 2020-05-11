@@ -5,8 +5,8 @@ from logging import INFO
 from peewee import IntegrityError as Iex
 from peewee import chunked
 
-from Logging import AppLog
-from Models.BasicModels import (
+from ..Logging import AppLog
+from ..Models import (
     BacklogSubjectScore,
     BatchSchemeInfo,
     ParsedTable,

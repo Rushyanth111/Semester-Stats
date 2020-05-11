@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .Student.Central import StudentCentral
+from .Student import StudentCentral
 
 App = FastAPI()
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel, parse_obj_as
 from typing import List
-from databaseFunctions.getList import getList
+from ...databaseFunctions import getList
 
 StudentList = APIRouter()
 
@@ -32,7 +32,6 @@ class Student(BaseModel):
     Section: str
     Marks: List[Mark]
     Overall: Overall
-
 
 
 @StudentList.post("/list", response_model=List[Student])

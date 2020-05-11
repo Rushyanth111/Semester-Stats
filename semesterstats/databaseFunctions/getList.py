@@ -1,4 +1,4 @@
-from Models.BasicModels import (
+from ..Models import (
     SubjectScore,
     BatchSchemeInfo,
     SubjectDetails,
@@ -6,7 +6,7 @@ from Models.BasicModels import (
     SubjectScore,
 )
 
-from Plugins.SchemeCentral import ProcessMarks
+from ..Plugins import ProcessMarks
 
 
 def getList(Batch: int, Semester: int, Deparment: str):
@@ -44,7 +44,7 @@ def getList(Batch: int, Semester: int, Deparment: str):
         )
 
         if not Scores.exists():
-            continue;
+            continue
 
         for S in Scores:
             IsPass, TotalScore, PassClass = ProcessMarks(
@@ -77,4 +77,3 @@ def getList(Batch: int, Semester: int, Deparment: str):
         ResultArray.append(StudentResult)
 
     return ResultArray
-
