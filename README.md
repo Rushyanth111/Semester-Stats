@@ -104,7 +104,7 @@ USN, Name, Attempted Subjects, [SubCode, Subname,Internals,Externals,Total,Fail/
 The Files Should be Named in this Order:
 
 ```
-Data-(Branch)-(Batch)-(Scheme)-(Semester)-[Arrear].csv
+Data-(Branch)-(Batch)-(Scheme)-(Semester)[-Reval].csv
 ```
 
 An Example:
