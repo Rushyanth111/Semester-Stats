@@ -2,3 +2,7 @@ imported/
 raw_data/
 .vscode/
 __pycache__
+.tox/
+*.egg-info
+*.tox
+*.pex
