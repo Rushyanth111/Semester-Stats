@@ -1,8 +1,5 @@
 import configparser
-import csv
 import os
-import re
-import sys
 import glob
 from .Logging import AppLog
 from .Parser import ParseIntoDatabase
@@ -13,15 +10,17 @@ config.read("config.ini")
 
 try:
     os.mkdir("imported")
-except:
+except FileExistsError:
     AppLog.info("imported Folder is present, Skipping...")
 
 try:
     os.mkdir("FormattedData")
-except:
+except FileExistsError:
     AppLog.info("FormattedData Folder is present, Skipping...")
 
 filenames = glob.glob("FormattedData/*.csv")
 
 for f in filenames:
     ParseIntoDatabase(f)
+
+__all__ = ["App"]
