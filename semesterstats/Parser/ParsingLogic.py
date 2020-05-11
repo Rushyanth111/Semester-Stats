@@ -1,8 +1,6 @@
 import csv
 import re
-from timeit import default_timer as timer
-from logging import INFO
-from peewee import IntegrityError as Iex
+
 from peewee import chunked
 
 from ..Logging import AppLog
@@ -15,18 +13,10 @@ from ..Models import (
     SubjectScore,
     db,
 )
-
 from .Utils import getSerialNumberDepartment, getSubjectDepartment, getSubjectSemester
 
 
-# CSV Format
-"""
-USN, Name, Attempted Subjects, [SubCode, Subname,Internals,Externals,Total,Fail/Pass]xAttemptedSubjects
-"""
-
-
 def ParseIntoDatabase(filename: str) -> None:
-
     ParsedFilename = re.search(
         "Data-([A-Za-z]*)-([0-9]*)-([0-9]*)-([0-9]*)(-[Aa]rrear)?.csv", filename
     )
