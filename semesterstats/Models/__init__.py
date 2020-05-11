@@ -12,3 +12,17 @@ from .BasicModels import (
 )
 
 from .DepartmentConstants import DepartmentCodeDictionary
+
+__all__ = [
+    "db",
+    "DepartmentDetails",
+    "BatchSchemeInfo",
+    "StudentDetails",
+    "SubjectDetails",
+    "SubjectScore",
+    "BacklogSubjectScore",
+    "ParsedTable",
+    "TeacherDetails",
+    "TeacherTaughtDetails",
+    "DepartmentCodeDictionary",
+]
