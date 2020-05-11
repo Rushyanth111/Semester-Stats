@@ -3,6 +3,7 @@ raw_data/
 .vscode/
 __pycache__
 .tox/
+dist/
 *.egg-info
 *.tox
 *.pex
