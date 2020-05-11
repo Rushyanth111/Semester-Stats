@@ -1,22 +1,27 @@
 import configparser
 import csv
-import logging
+import os
 import re
-from timeit import default_timer as timer
-import uvicorn
 import sys
+import glob
+from .Logging import AppLog
 from .Parser import ParseIntoDatabase
 from .Routes import App
-
 
 config = configparser.ConfigParser()
 config.read("config.ini")
 
-filenames = [
-    "FormattedData/Data-CS-2016-2015-6.csv",
-    "FormattedData/Data-CS-2016-2015-7.csv",
-    "FormattedData/Data-CS-2017-2017-5.csv",
-]
+try:
+    os.mkdir("imported")
+except:
+    AppLog.info("imported Folder is present, Skipping...")
+
+try:
+    os.mkdir("FormattedData")
+except:
+    AppLog.info("FormattedData Folder is present, Skipping...")
+
+filenames = glob.glob("FormattedData/*.csv")
 
 for f in filenames:
     ParseIntoDatabase(f)
