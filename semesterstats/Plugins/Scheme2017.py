@@ -15,4 +15,3 @@ def Scheme2017(Internals: int, Externals: int) -> tuple:
 
     if 70 <= SubjectTotal <= 100:
         return (True, SubjectTotal, "FCD")
-
