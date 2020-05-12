@@ -12,11 +12,17 @@ def SortSubject(SubjectScoreObject):
         "[0-9]{2}([A-Za-z]{2,3})([0-9]{2,3})", SubjectScoreObject["SubjectCode"]
     )
     if Matches.group(1)[-1] == "L" and len(Matches.group(1)) == 3:
+        print(
+            SubjectScoreObject["SubjectCode"],
+            Matches.group(1),
+            1000 + int(Matches.group(2)),
+        )
         return 1000 + int(Matches.group(2))
+    print(SubjectScoreObject["SubjectCode"], Matches.group(2))
     return int(Matches.group(2))
 
 
-def getSummary(Batch: int, Semester: int, Department: str) -> tuple:
+def getSummary(Batch: int, Semester: int, Department: str):
     # Obtain the Summary of the given Batch In JSON format.
 
     # Fetch the Scheme of the Batch
@@ -90,7 +96,6 @@ def getSummary(Batch: int, Semester: int, Department: str) -> tuple:
 
     # Sort the Each Detail
     EachDetail.sort(key=SortSubject)
-
     # Compute Total Section Via getList <- Not Efficient
 
     ResTotalList = getList(Batch, Semester, Department)
