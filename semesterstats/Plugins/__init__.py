@@ -1,3 +1,3 @@
-from .SchemeCentral import ProcessMarks
+from .SchemeCentral import ProcessMarks, TotalProcessMarks
 
-__all__ = ["ProcessMarks"]
+__all__ = ["ProcessMarks", "TotalProcessMarks"]
