@@ -7,3 +7,7 @@ dist/
 *.egg-info
 *.tox
 *.pex
+Resources
+csvData/*
+FormattedData/*
+.python-version
