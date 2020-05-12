@@ -265,3 +265,7 @@ If USN + Code In new?
     OldTable <= Previous
 
 Else Insert.
+
+# Alternative Solutions to python docx
+
+-- Using Mail Merge.
