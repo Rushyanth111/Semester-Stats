@@ -1,3 +1,6 @@
+layout: page
+title: "API"
+permalink: /API/
 
 # API
 
