@@ -1,7 +1,7 @@
 
 # Calculations
 
-Note that Per-Scheme-Wise-Plguin (Is detailed in [External Calculations](#external-caclulations)) is used to allow for differences in changes over the Years By VTU for final Output.
+Note that Per-Scheme-Wise-Plguin (Is detailed in [External Calculations](#external-caclulations) is used to allow for differences in changes over the Years By VTU for final Output.
 
 ## Must be Specified On the filename.
 
@@ -32,9 +32,12 @@ To be added
 
 ## Scheme - 17
 
-```
-To be added
-```
+FCD = 70% or Greater.
+FC = 60% to 70%
+SC = 45% to 60%
+
+Pass Criteria => Total Must be 45+ AND External must be 21
+
 
 ---
 
@@ -43,11 +46,3 @@ To be added
 ```
 To be added
 ```
-
----
-
-## Scheme - 10
-
-Note that Scheme 10 is currently ignored because of the lack of data.
-
----

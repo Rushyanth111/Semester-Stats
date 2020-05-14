@@ -22,10 +22,10 @@ Ensure that this is followed or the application will fail to parse properly.
 Data-CSE-2016-2015-6.csv
 ```
 
-If Arrear Results are Present then:
+If Reval Results then:
 
 ```
-Data-CSE-2016-2015-6-Arrear.csv
+Data-CSE-2016-2015-6-Reval.csv
 ```
 
 Any File not in this format will be **_ignored_**.

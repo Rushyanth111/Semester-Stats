@@ -1,7 +1,3 @@
-layout: page
-title: "API"
-permalink: /API/
-
 # API
 
 ## Routes
@@ -13,8 +9,10 @@ permalink: /API/
 # [POST] /student/list/
 
 Retrieves the student list from the database given the following POST request scheme
-An Example Post Request:
-```jsonc
+
+
+An Example POST Request:
+```javascript
 {
     "Department":"CS", //string
     "Batch":2016, //Integer
@@ -24,7 +22,7 @@ An Example Post Request:
 
 An Example Response (If given to the above.) Will be:
 
-```jsonc
+```javascript
 [{
     "Name":"SomeName",
     "USN":"1CX16CS017",

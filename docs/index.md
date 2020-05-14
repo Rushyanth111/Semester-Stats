@@ -1,17 +1,19 @@
 # Semester Statistics
 
-Current Version - 0.1-beta.
-
 A project meant to keep an updated record of all scores achieved.
 
 This was started off as a Project to maintain all existing Scores recieved from VTU.
 
 This is a Flexible Data Project that does not require Special Functions as dictated by any college.
 
-Please note that there will be many Changes That can happen Before 
+Please note that there will be many Changes That can happen Before. 
 
 # Table of Contents
-[API REFERENCE](api.md)
+
+- [Api](api.md)
+- [Caclulations](Calculations.md)
+- [Database](Database.md)
+- [CsvFormat](CsvFormat.md)
 
 # React Front End
 
