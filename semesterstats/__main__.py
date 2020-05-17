@@ -1,5 +1,4 @@
 from semesterstats import App
-from .DocxGenerator import docsGeneratorAlternate
 import uvicorn
 
 
