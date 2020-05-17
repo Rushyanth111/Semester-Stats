@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "semester-stats"
+version = "0.1.0"
+description = "A tool to calculate the semester statistics"
+authors = ["Rushyanth111 <42034084+Rushyanth111@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+[tool.poetry.dev-dependencies]
+pep8-naming = "^0.10.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
