@@ -3,7 +3,7 @@ import os
 import glob
 from .Logging import AppLog
 from .Parser import ParseIntoDatabase
-from .Routes import App
+from .api import App
 
 config = configparser.ConfigParser()
 config.read("config.ini")
