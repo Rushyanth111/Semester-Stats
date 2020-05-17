@@ -2,7 +2,6 @@ from peewee import (
     Model,
     CharField,
     TextField,
-    DateField,
     BooleanField,
     IntegerField,
     ForeignKeyField,

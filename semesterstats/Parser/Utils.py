@@ -4,7 +4,7 @@ from ..Models import DepartmentCodeDictionary
 
 # Gets The Semester Based on the Given Subject Code.
 def getSubjectSemester(string: str):
-    Matches = re.search("[0-9]{2}[A-Z]{2,3}([0-9]{2,3})", string)
+    Matches = re.search("[0-9]{2}[A-Z]{2,4}([0-9]{2,3})", string)
     return int(Matches.group(1)[0])
 
 
@@ -15,7 +15,7 @@ def getSerialNumberDepartment(string: str):
 
 
 def getSubjectDepartment(string: str) -> str:
-    Matches = re.search("[0-9]{2}([A-Z]{2,3})[0-9]{2,3}", string)
+    Matches = re.search("[0-9]{2}([A-Z]{2,4})[0-9]{2,3}", string)
     Department: str = Matches.group(1)
     # Special Processing for Labs in Particular.
     # Labs always End with L and are three characters Long.

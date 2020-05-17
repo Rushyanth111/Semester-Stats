@@ -20,12 +20,16 @@ def ParseIntoDatabase(filename: str) -> None:
     ParsedFilename = re.search(
         "Data-([A-Za-z]*)-([0-9]*)-([0-9]*)-([0-9]*)(-[Aa]rrear)?.csv", filename
     )
-    Department = ParsedFilename.group(1)
+    Department = ParsedFilename.group(1).upper()
     Batch = int(ParsedFilename.group(2))
     Scheme = int(ParsedFilename.group(3))
     Semester = int(ParsedFilename.group(4))
     Arrear = False if ParsedFilename.group(5) is None else True
 
+    # Weird Check LOL
+    if not Scheme <= Batch:
+        AppLog.info(f"{filename} contains Invalid Details")
+        return
     # Check if the particular Batch exists?
     record, created = BatchSchemeInfo.get_or_create(Batch=Batch, Scheme=Scheme)
 
@@ -145,7 +149,7 @@ def ParseIntoDatabase(filename: str) -> None:
                         SubjectDetails.SubjectScheme,
                         SubjectDetails.SubjectDepartment,
                     ],
-                ).execute()
+                ).on_conflict_ignore().execute()
 
             for batch in chunked(ScoreDetailsArray, 100):
                 SubjectScore.insert_many(
