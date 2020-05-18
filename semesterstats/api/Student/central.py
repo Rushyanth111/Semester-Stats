@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from ...response_builder import getList
+from ...response_builder import get_list
 
 
 student_central = APIRouter()
@@ -39,5 +39,5 @@ class Student(BaseModel):
 
 @student_central.post("/list", response_model=List[Student])
 def get_student_list(Req: ListRequest):
-    result = getList(Req.Batch, Req.Semester, Req.Department)
+    result = get_list(Req.Batch, Req.Semester, Req.Department)
     return result

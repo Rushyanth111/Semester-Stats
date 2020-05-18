@@ -2,12 +2,12 @@ from ..models import BatchSchemeInfo, SubjectDetails, SubjectScore, StudentDetai
 
 from ..scheme import process_marks, total_process_marks
 
-from .getList import getList
+from .get_list import get_list
 
 import re
 
 
-def SortSubject(SubjectScoreObject):
+def sort_subject(SubjectScoreObject):
     Matches = re.search(
         "[0-9]{2}([A-Za-z]{2,3})([0-9]{2,3})", SubjectScoreObject["SubjectCode"]
     )
@@ -22,7 +22,7 @@ def SortSubject(SubjectScoreObject):
     return int(Matches.group(2))
 
 
-def getSummary(Batch: int, Semester: int, Department: str):
+def get_summary(Batch: int, Semester: int, Department: str):
     # Obtain the Summary of the given Batch In JSON format.
 
     # Fetch the Scheme of the Batch
@@ -95,7 +95,7 @@ def getSummary(Batch: int, Semester: int, Department: str):
         EachDetail.append(SubjectSummary)
 
     # Sort the Each Detail
-    EachDetail.sort(key=SortSubject)
+    EachDetail.sort(key=sort_subject)
     # Compute Total Section Via getList <- Not Efficient
 
     ResTotalList = getList(Batch, Semester, Department)

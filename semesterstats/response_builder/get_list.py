@@ -3,7 +3,7 @@ from ..models import SubjectScore, BatchSchemeInfo, SubjectDetails, StudentDetai
 from ..scheme import process_marks
 
 
-def getList(Batch: int, Semester: int, Deparment: str):
+def get_list(Batch: int, Semester: int, Deparment: str):
     # Get the Scheme of said batch
     Scheme = BatchSchemeInfo.get(BatchSchemeInfo.Batch == Batch).Scheme
 
