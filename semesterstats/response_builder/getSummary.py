@@ -1,6 +1,6 @@
-from ..Models import BatchSchemeInfo, SubjectDetails, SubjectScore, StudentDetails
+from ..models import BatchSchemeInfo, SubjectDetails, SubjectScore, StudentDetails
 
-from ..Plugins import ProcessMarks, TotalProcessMarks
+from ..scheme import process_marks, total_process_marks
 
 from .getList import getList
 
@@ -65,7 +65,7 @@ def getSummary(Batch: int, Semester: int, Department: str):
         SubjectSC = 0
         SubjectFC = 0
         for Score in CurrentCodeScores:
-            IsPass, TotalScore, PassClass = ProcessMarks(
+            IsPass, TotalScore, PassClass = process_marks(
                 Scheme, Score.Internals, Score.Externals
             )
 
@@ -105,7 +105,7 @@ def getSummary(Batch: int, Semester: int, Department: str):
     TotalSC = 0
     TotalFC = 0
     for x in ResTotalList:
-        IsPass, PassClass = TotalProcessMarks(Scheme, x["Overall"]["Total"])
+        IsPass, PassClass = total_process_marks(Scheme, x["Overall"]["Total"])
 
         if IsPass is True:
             TotalPass += 1

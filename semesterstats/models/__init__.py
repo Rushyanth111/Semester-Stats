@@ -11,7 +11,6 @@ from .BasicModels import (
     TeacherTaughtDetails,
 )
 
-from .DepartmentConstants import DepartmentCodeDictionary
 
 __all__ = [
     "db",

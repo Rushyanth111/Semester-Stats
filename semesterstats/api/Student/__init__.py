@@ -1,1 +1,1 @@
-from .Central import StudentCentral
+from .central import student_central

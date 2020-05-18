@@ -10,9 +10,8 @@ from peewee import (
     AutoField,
     FixedCharField,
 )
-from .DepartmentConstants import DepartmentCodeDictionary
-from ..Logging import AppLog
-
+from ..logging import AppLog
+import json
 
 db = SqliteDatabase(
     "imported/data.db",
@@ -117,14 +116,23 @@ db.create_tables(
         ParsedTable,
     ]
 )
+
 if len(list(DepartmentDetails.select())) == 0:
     AppLog.info("Inserting Department Details!")
     with db.atomic():
-        DepartmentDetails.insert_many(
-            set(
-                zip(DepartmentCodeDictionary.keys(), DepartmentCodeDictionary.values())
-            ),
-            fields=[DepartmentDetails.DepartmentCode, DepartmentDetails.DepartmentName],
-        ).execute()
+        with open("FormattedData/Departments.json") as f:
+            DepartmentCodeDictionary = json.loads(f.read())
+            DepartmentDetails.insert_many(
+                set(
+                    zip(
+                        DepartmentCodeDictionary.keys(),
+                        DepartmentCodeDictionary.values(),
+                    )
+                ),
+                fields=[
+                    DepartmentDetails.DepartmentCode,
+                    DepartmentDetails.DepartmentName,
+                ],
+            ).execute()
 else:
     AppLog.info("Skipping the Insertion of Department Details")

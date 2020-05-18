@@ -3,8 +3,8 @@ import re
 
 from peewee import chunked
 
-from ..Logging import AppLog
-from ..Models import (
+from ..logging import AppLog
+from ..models import (
     BacklogSubjectScore,
     BatchSchemeInfo,
     ParsedTable,
@@ -13,10 +13,14 @@ from ..Models import (
     SubjectScore,
     db,
 )
-from .Utils import getSerialNumberDepartment, getSubjectDepartment, getSubjectSemester
+from .Utils import (
+    get_serial_number_department,
+    get_subject_department,
+    get_subject_semester,
+)
 
 
-def ParseIntoDatabase(filename: str) -> None:
+def parse_into_database(filename: str) -> None:
     ParsedFilename = re.search(
         "Data-([A-Za-z]*)-([0-9]*)-([0-9]*)-([0-9]*)(-[Aa]rrear)?.csv", filename
     )
@@ -76,7 +80,7 @@ def ParseIntoDatabase(filename: str) -> None:
         for row in reader:
             SerialNumber = str(row[0]).upper()
             Name = row[1]
-            Department = getSerialNumberDepartment(SerialNumber)
+            Department = get_serial_number_department(SerialNumber)
             # Scheme Defined Above.
 
             if (SerialNumber,) not in StudentDetailsArrayExists:
@@ -86,8 +90,8 @@ def ParseIntoDatabase(filename: str) -> None:
                 # Looping Within the Array
                 SubjectCode = row[itr]
                 SubjectName = row[itr + 1]
-                SubjectSemester = getSubjectSemester(SubjectCode)
-                SubjectDepartment = getSubjectDepartment(SubjectCode)
+                SubjectSemester = get_subject_semester(SubjectCode)
+                SubjectDepartment = get_subject_department(SubjectCode)
                 Internal = row[itr + 2]
                 External = row[itr + 3]
 

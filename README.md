@@ -21,12 +21,6 @@ Additional Things Needed to be implemented.
 - Proper Structure.
 - Documentation. <- Mostly for future Maintence.
 
-# Naming Conventions Followed:
-
-- CapitalCase for `variables`
-- camelCase for `functions`
-- CapitalCase for `class`
-
 
 # Problems:
 

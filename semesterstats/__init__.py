@@ -1,8 +1,8 @@
 import configparser
 import os
 import glob
-from .Logging import AppLog
-from .Parser import ParseIntoDatabase
+from .logging import AppLog
+from .parser import parse_into_database
 from .api import App
 
 config = configparser.ConfigParser()
@@ -21,6 +21,6 @@ except FileExistsError:
 filenames = glob.glob("FormattedData/*.csv")
 
 for f in filenames:
-    ParseIntoDatabase(f)
+    parse_into_database(f)
 
 __all__ = ["App"]

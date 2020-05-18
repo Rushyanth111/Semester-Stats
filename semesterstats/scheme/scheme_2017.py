@@ -1,4 +1,4 @@
-def Scheme2015(Internals: int, Externals: int) -> tuple:
+def scheme_2017(Internals: int, Externals: int) -> tuple:
     # Tuple Returns like (isPass, Total, PassClass)
     SubjectTotal = Internals + Externals
     if Externals is None or Internals is None:
@@ -7,17 +7,17 @@ def Scheme2015(Internals: int, Externals: int) -> tuple:
     if SubjectTotal < 40:
         return (False, SubjectTotal, "Failed")
 
-    if 40 <= SubjectTotal < 60:
+    if 40 <= SubjectTotal <= 60:
         return (True, SubjectTotal, "SC")
 
-    if 60 <= SubjectTotal < 70:
+    if 60 <= SubjectTotal <= 70:
         return (True, SubjectTotal, "FC")
 
     if 70 <= SubjectTotal <= 100:
         return (True, SubjectTotal, "FCD")
 
 
-def TotalScheme2015(Total: int) -> tuple:
+def total_scheme_2017(Total: int) -> tuple:
     # Tuple returns like (isPass, Total)
     if Total < 360:
         return (False, "Failed")

@@ -1,6 +1,6 @@
-from ..Models import SubjectScore, BatchSchemeInfo, SubjectDetails, StudentDetails
+from ..models import SubjectScore, BatchSchemeInfo, SubjectDetails, StudentDetails
 
-from ..Plugins import ProcessMarks
+from ..scheme import process_marks
 
 
 def getList(Batch: int, Semester: int, Deparment: str):
@@ -43,7 +43,7 @@ def getList(Batch: int, Semester: int, Deparment: str):
 
         # Process the scores.
         for S in Scores:
-            IsPass, TotalScore, PassClass = ProcessMarks(
+            IsPass, TotalScore, PassClass = process_marks(
                 Scheme, S.Internals, S.Externals
             )
             StudentTotalScore += TotalScore

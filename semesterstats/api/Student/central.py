@@ -1,9 +1,12 @@
+from typing import List
+
 from fastapi import APIRouter
 from pydantic import BaseModel
-from typing import List
-from ...databaseFunctions import getList
 
-StudentList = APIRouter()
+from ...response_builder import getList
+
+
+student_central = APIRouter()
 
 
 class ListRequest(BaseModel):
@@ -34,7 +37,7 @@ class Student(BaseModel):
     Overall: Overall
 
 
-@StudentList.post("/list", response_model=List[Student])
-def getStudentList(Req: ListRequest):
+@student_central.post("/list", response_model=List[Student])
+def get_student_list(Req: ListRequest):
     result = getList(Req.Batch, Req.Semester, Req.Department)
     return result
