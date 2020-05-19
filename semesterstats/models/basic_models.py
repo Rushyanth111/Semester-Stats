@@ -19,7 +19,7 @@ class BaseModel(Model):
         database = proxy
 
 
-class DepartmentDetails(BaseModel):
+class Department(BaseModel):
     DepartmentCode = FixedCharField(3, primary_key=True)
     DepartmentName = TextField()
 
@@ -29,40 +29,34 @@ class BatchSchemeInfo(BaseModel):
     Scheme = IntegerField()
 
 
-class StudentDetails(BaseModel):
+class Student(BaseModel):
     StudentUSN = FixedCharField(10, primary_key=True)
     StudentName = TextField()
     StudentBatch = IntegerField()
-    StudentDepartment = ForeignKeyField(
-        DepartmentDetails, field=DepartmentDetails.DepartmentCode
-    )
+    StudentDepartment = ForeignKeyField(Department, field=Department.DepartmentCode)
 
 
-class SubjectDetails(BaseModel):
+class Subject(BaseModel):
     SubjectCode = CharField(7, primary_key=True)
     SubjectName = TextField()
     SubjectSemester = IntegerField()
     SubjectScheme = IntegerField()
-    SubjectDepartment = ForeignKeyField(
-        DepartmentDetails, field=DepartmentDetails.DepartmentCode
-    )
+    SubjectDepartment = ForeignKeyField(Department, field=Department.DepartmentCode)
 
 
-class TeacherDetails(BaseModel):
+class Teacher(BaseModel):
     TeacherUSN = AutoField()
     TeacherName = TextField()
 
 
-class TeacherTaughtDetails(BaseModel):
-    TeacherUSN = ForeignKeyField(TeacherDetails, field=TeacherDetails.TeacherUSN)
+class TeacherTaught(BaseModel):
+    TeacherUSN = ForeignKeyField(Teacher, field=Teacher.TeacherUSN)
     TeacherBatch = IntegerField()
 
 
-class SubjectScore(BaseModel):
-    ScoreSerialNumber = ForeignKeyField(
-        StudentDetails, field=StudentDetails.SerialNumber
-    )
-    ScoreSubjectCode = ForeignKeyField(SubjectDetails, field=SubjectDetails.SubjectCode)
+class Score(BaseModel):
+    ScoreSerialNumber = ForeignKeyField(Student, field=Student.SerialNumber)
+    ScoreSubjectCode = ForeignKeyField(Subject, field=Subject.SubjectCode)
     ScoreYear = IntegerField()
     ScoreYearIndicator = BooleanField()
     ScoreInternals = IntegerField()
@@ -72,15 +66,13 @@ class SubjectScore(BaseModel):
         primary_key = CompositeKey("SerialNumber", "SubjectCode")
 
 
-class BacklogSubjectScore(BaseModel):
-    ScoreSerialNumber = ForeignKeyField(
-        StudentDetails, field=StudentDetails.SerialNumber
-    )
-    ScoreSubjectCode = ForeignKeyField(SubjectDetails, field=SubjectDetails.SubjectCode)
-    ScoreYear = IntegerField()
-    ScoreYearIndicator = BooleanField()
-    ScoreInternals = IntegerField()
-    ScoreExternals = IntegerField()
+class Backlog(BaseModel):
+    BacklogSerialNumber = ForeignKeyField(Student, field=Student.SerialNumber)
+    BacklogSubjectCode = ForeignKeyField(Subject, field=Subject.SubjectCode)
+    BacklogYear = IntegerField()
+    BacklogYearIndicator = BooleanField()
+    BacklogInternals = IntegerField()
+    BacklogExternals = IntegerField()
 
     class Meta:
         primary_key = CompositeKey("Year", "YearIndicator")
