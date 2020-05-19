@@ -1,27 +1,5 @@
-from .BasicModels import (
-    db,
-    DepartmentDetails,
-    BatchSchemeInfo,
-    StudentDetails,
-    SubjectDetails,
-    SubjectScore,
-    BacklogSubjectScore,
-    ParsedTable,
-    TeacherDetails,
-    TeacherTaughtDetails,
-)
+from .model_interface import ModelInterface
+from .insert_interface_models import *
 
 
-__all__ = [
-    "db",
-    "DepartmentDetails",
-    "BatchSchemeInfo",
-    "StudentDetails",
-    "SubjectDetails",
-    "SubjectScore",
-    "BacklogSubjectScore",
-    "ParsedTable",
-    "TeacherDetails",
-    "TeacherTaughtDetails",
-    "DepartmentCodeDictionary",
-]
+__all__ = ["ModelInterface"]

@@ -1,10 +1,11 @@
 from mailmerge import MailMerge
-from ..databaseFunctions import getSummary
-from ..Models import DepartmentCodeDictionary
+from ..response_builder import get_summary
+
+DepartmentCodeDictionary = {}
 
 
 def docsGeneratorAlternate(Batch: int, Semester: int, Department: str):
-    Data = getSummary(Batch, Semester, Department)
+    Data = get_summary(Batch, Semester, Department)
     with MailMerge("TemplateDocument.docx") as document:
         print(document.get_merge_fields())
         MainInformation = {
@@ -18,7 +19,7 @@ def docsGeneratorAlternate(Batch: int, Semester: int, Department: str):
             "Batch": str(Batch),
             "ODEV": "Odd",
             "BYear": "2019",
-            "Department": DepartmentCodeDictionary[Department],
+            "Department": DepartmentCodeDictionary.get(Department),
             "Semester": str(Semester),
             "DPS": str(Department),
         }

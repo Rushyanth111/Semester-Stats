@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "semesterstats"
-version = "0.1.0"
+version = "0.2.0"
 description = "A tool to calculate the semester statistics"
 authors = ["Rushyanth111 <42034084+Rushyanth111@users.noreply.github.com>"]
 
