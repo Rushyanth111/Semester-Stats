@@ -1,37 +1,40 @@
 from pydantic import BaseModel
-from typing import List
 
 
-class DepartmentStructure(BaseModel):
-    Code: str
-    Name: str
+class DepartmentModel(BaseModel):
+    DepartmentCode: str
+    DepartmentName: str
 
 
-class StudentStructure(BaseModel):
-    SerialNumber: str
-    Name: str
-    Department: str
+class StudentModel(BaseModel):
+    StudentUSN: str
+    StudentName: str
+    StudentBatch: int
+    StudentDepartment: str
 
 
-class ScoreStructure(BaseModel):
-    SerialNumber: str
+class ScoreModel(BaseModel):
+    ScoreSerialNumber: str
+    ScoreSubjectCode: str
+    ScoreSubjectSemester: str
+    ScoreArrear: bool
+    ScoreInternals: int
+    ScoreExternals: int
+
+
+class SubjectModel(BaseModel):
     SubjectCode: str
-    SubjectSemester: str
-    Arrear: bool
-    Internals: int
-    Externals: int
+    SubjectName: str
+    SubjectSemester: int
+    SubjectScheme: str
+    SubjectDepartment: str
 
 
-class SubjectStructure(BaseModel):
-    Code: str
-    Name: str
+class TeacherModel(BaseModel):
+    TeacherUSN: str
+    TeacherName: str
 
 
-class TeacherStructure(BaseModel):
-    USN: str
-    Name: str
-
-
-class TeacherDetailsStructure(BaseModel):
-    USN: str
-    Batch: List[int]
+class TeacherTaughtModel(BaseModel):
+    TeacherUSN: str
+    TeacherBatch: int
