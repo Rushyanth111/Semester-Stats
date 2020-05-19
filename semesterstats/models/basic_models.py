@@ -30,10 +30,10 @@ class BatchSchemeInfo(BaseModel):
 
 
 class StudentDetails(BaseModel):
-    SerialNumber = FixedCharField(10, primary_key=True)
-    Name = TextField()
-    Batch = IntegerField()
-    Department = ForeignKeyField(
+    StudentUSN = FixedCharField(10, primary_key=True)
+    StudentName = TextField()
+    StudentBatch = IntegerField()
+    StudentDepartment = ForeignKeyField(
         DepartmentDetails, field=DepartmentDetails.DepartmentCode
     )
 
@@ -54,41 +54,33 @@ class TeacherDetails(BaseModel):
 
 
 class TeacherTaughtDetails(BaseModel):
-    TeacherUsn = ForeignKeyField(TeacherDetails, field=TeacherDetails.TeacherUSN)
-    Batch = IntegerField()
+    TeacherUSN = ForeignKeyField(TeacherDetails, field=TeacherDetails.TeacherUSN)
+    TeacherBatch = IntegerField()
 
 
 class SubjectScore(BaseModel):
-    SerialNumber = ForeignKeyField(StudentDetails, field=StudentDetails.SerialNumber)
-    SubjectCode = ForeignKeyField(SubjectDetails, field=SubjectDetails.SubjectCode)
-    Year = IntegerField()
-    YearIndicator = BooleanField()
-    Internals = IntegerField()
-    Externals = IntegerField()
+    ScoreSerialNumber = ForeignKeyField(
+        StudentDetails, field=StudentDetails.SerialNumber
+    )
+    ScoreSubjectCode = ForeignKeyField(SubjectDetails, field=SubjectDetails.SubjectCode)
+    ScoreYear = IntegerField()
+    ScoreYearIndicator = BooleanField()
+    ScoreInternals = IntegerField()
+    ScoreExternals = IntegerField()
 
     class Meta:
         primary_key = CompositeKey("SerialNumber", "SubjectCode")
 
 
 class BacklogSubjectScore(BaseModel):
-    Year = IntegerField()
-    YearIndicator = BooleanField()
-    SerialNumber = ForeignKeyField(StudentDetails, field=StudentDetails.SerialNumber)
-    SubjectCode = ForeignKeyField(SubjectDetails, field=SubjectDetails.SubjectCode)
-    Internals = IntegerField()
-    Externals = IntegerField()
+    ScoreSerialNumber = ForeignKeyField(
+        StudentDetails, field=StudentDetails.SerialNumber
+    )
+    ScoreSubjectCode = ForeignKeyField(SubjectDetails, field=SubjectDetails.SubjectCode)
+    ScoreYear = IntegerField()
+    ScoreYearIndicator = BooleanField()
+    ScoreInternals = IntegerField()
+    ScoreExternals = IntegerField()
 
     class Meta:
         primary_key = CompositeKey("Year", "YearIndicator")
-
-
-class ParsedTable(BaseModel):
-    Department = ForeignKeyField(
-        DepartmentDetails, field=DepartmentDetails.DepartmentCode
-    )
-    Batch = ForeignKeyField(BatchSchemeInfo, field=BatchSchemeInfo.Batch)
-    Semester = IntegerField()
-    Arrear = BooleanField()
-
-    class Meta:
-        primary_key = CompositeKey("Department", "Batch", "Semester", "Arrear")
