@@ -3,8 +3,8 @@
 # The rationale behind these interfaces is that any single parser later
 # on can be used.
 from typing import List
-from .basic_models import DepartmentDetails
-from .insert_interface_models import DepartmentStructure
+from .basic_models import Department
+from .insert_interface_models import DepartmentModel
 from peewee import SqliteDatabase
 
 
@@ -14,22 +14,20 @@ class InsertInterface:
     def __init__(self):
         pass
 
-    def insert_department(self, department: DepartmentStructure) -> bool:
-        record, created = DepartmentDetails.get_or_create(
-            DepartmentCode=department.Code, DepartmentName=department.Name
+    def insert_department(self, department: DepartmentModel) -> bool:
+        record, created = Department.get_or_create(
+            DepartmentCode=department.DepartmentCode,
+            DepartmentName=department.DepartmentName,
         )
         return created
 
-    def insert_department_bulk(self, department_list: List[DepartmentStructure]) -> int:
+    def insert_department_bulk(self, department_list: List[DepartmentModel]) -> int:
         department_tuples = []
         for x in department_list:
-            department_tuples.append((x.Code, x.Name))
+            department_tuples.append(x.__dict__)
 
         with self.db.atomic():
-            lines_changed = DepartmentDetails.insert_many(
-                department_tuples,
-                [DepartmentDetails.DepartmentCode, DepartmentDetails.DepartmentName],
-            )
+            lines_changed = Department.insert_many(department_tuples)
         return lines_changed
 
     def insert_student(self, student_record):

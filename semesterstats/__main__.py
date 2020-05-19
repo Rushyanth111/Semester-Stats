@@ -1,4 +1,4 @@
-from semesterstats import App
+from .api import App
 import uvicorn
 import os
 import glob
@@ -21,6 +21,7 @@ def main():
 
     for f in filenames:
         parse_into_database(f)
+
     uvicorn.run(App, port=9000)
 
 

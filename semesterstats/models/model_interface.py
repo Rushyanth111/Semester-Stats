@@ -6,15 +6,14 @@ from peewee import SqliteDatabase
 from ..logging import AppLog
 from .basic_models import (
     proxy,
-    BacklogSubjectScore,
+    Backlog,
     BatchSchemeInfo,
-    DepartmentDetails,
-    ParsedTable,
-    StudentDetails,
-    SubjectDetails,
-    SubjectScore,
-    TeacherDetails,
-    TeacherTaughtDetails,
+    Department,
+    Student,
+    Subject,
+    Score,
+    Teacher,
+    TeacherTaught,
 )
 from .get_interface import GetInterface
 from .insert_interface import InsertInterface
@@ -45,37 +44,33 @@ class ModelInterface(GetInterface, InsertInterface):
 
         self.db.create_tables(
             [
-                BacklogSubjectScore,
+                Department,
                 BatchSchemeInfo,
-                DepartmentDetails,
-                ParsedTable,
-                StudentDetails,
-                SubjectDetails,
-                SubjectScore,
-                TeacherDetails,
-                TeacherTaughtDetails,
+                Subject,
+                Student,
+                Score,
+                Backlog,
+                Teacher,
+                TeacherTaught,
             ]
         )
 
         self.__init_department_details()
 
     def __init_department_details(self):
-        if len(list(DepartmentDetails.select())) == 0:
+        if len(list(Department.select())) == 0:
             AppLog.info("Inserting Department Details!")
             with self.db.atomic():
                 with open("FormattedData/Departments.json") as f:
                     DepartmentCodeDictionary = json.loads(f.read())
-                    DepartmentDetails.insert_many(
+                    Department.insert_many(
                         set(
                             zip(
                                 DepartmentCodeDictionary.keys(),
                                 DepartmentCodeDictionary.values(),
                             )
                         ),
-                        fields=[
-                            DepartmentDetails.DepartmentCode,
-                            DepartmentDetails.DepartmentName,
-                        ],
+                        fields=[Department.DepartmentCode, Department.DepartmentName],
                     ).execute()
         else:
             AppLog.info("Skipping the Insertion of Department Details")

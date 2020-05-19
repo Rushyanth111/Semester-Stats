@@ -53,9 +53,12 @@ class TeacherTaught(BaseModel):
     TeacherUSN = ForeignKeyField(Teacher, field=Teacher.TeacherUSN)
     TeacherBatch = IntegerField()
 
+    class Meta:
+        primary_key = CompositeKey("TeacherUSN", "TeacherBatch")
+
 
 class Score(BaseModel):
-    ScoreSerialNumber = ForeignKeyField(Student, field=Student.SerialNumber)
+    ScoreSerialNumber = ForeignKeyField(Student, field=Student.StudentUSN)
     ScoreSubjectCode = ForeignKeyField(Subject, field=Subject.SubjectCode)
     ScoreYear = IntegerField()
     ScoreYearIndicator = BooleanField()
@@ -63,16 +66,13 @@ class Score(BaseModel):
     ScoreExternals = IntegerField()
 
     class Meta:
-        primary_key = CompositeKey("SerialNumber", "SubjectCode")
+        primary_key = CompositeKey("ScoreSerialNumber", "ScoreSubjectCode")
 
 
 class Backlog(BaseModel):
-    BacklogSerialNumber = ForeignKeyField(Student, field=Student.SerialNumber)
+    BacklogSerialNumber = ForeignKeyField(Student, field=Student.StudentUSN)
     BacklogSubjectCode = ForeignKeyField(Subject, field=Subject.SubjectCode)
     BacklogYear = IntegerField()
     BacklogYearIndicator = BooleanField()
     BacklogInternals = IntegerField()
     BacklogExternals = IntegerField()
-
-    class Meta:
-        primary_key = CompositeKey("Year", "YearIndicator")
