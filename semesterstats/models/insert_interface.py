@@ -3,14 +3,12 @@
 # The rationale behind these interfaces is that any single parser later
 # on can be used.
 from typing import List
-from .basic_models import Department, Student, Subject, Score, Teacher, TeacherTaught
+from .basic_models import Department, Student, Subject, Score
 from .insert_interface_models import (
     DepartmentModel,
     StudentModel,
     SubjectModel,
-    TeacherModel,
     ScoreModel,
-    TeacherTaughtModel,
 )
 from peewee import SqliteDatabase
 
@@ -58,7 +56,7 @@ class InsertInterface:
     def insert_subject(self, subject_record: SubjectModel):
         return Subject.insert(subject_record.__dict__).on_conflict_ignore().execute()
 
-    def insert_subjects(self, subject_records: List[SubjectModel]):
+    def insert_subject_bulk(self, subject_records: List[SubjectModel]):
         subject_dicts = [x.__dict__ for x in subject_records]
 
         with self.db.atomic():
@@ -66,9 +64,3 @@ class InsertInterface:
                 Subject.insert_many(subject_dicts).on_conflict_ignore().execute()
             )
         return lines_changed
-
-    def insert_teacher(self, teacher_record: TeacherModel):
-        return Teacher.insert(teacher_record.__dict__).on_conflict_ignore().execute()
-
-    def insert_teacher_bulk(self, teacher_records: List[TeacherModel]):
-        pass

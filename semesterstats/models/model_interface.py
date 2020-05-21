@@ -58,7 +58,7 @@ class ModelInterface(GetInterface, InsertInterface):
         self.__init_department_details()
 
     def __init_department_details(self):
-        if len(list(Department.select())) == 0:
+        if Department.select().count() == 0:
             AppLog.info("Inserting Department Details!")
             with self.db.atomic():
                 with open("FormattedData/Departments.json") as f:
