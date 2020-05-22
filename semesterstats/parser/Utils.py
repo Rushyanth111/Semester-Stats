@@ -1,5 +1,5 @@
 import re
-
+from ..config import db
 
 # Gets The Semester Based on the Given Subject Code.
 def get_subject_semester(string: str):
@@ -14,9 +14,11 @@ def get_serial_number_department(string: str):
 
 
 def get_subject_department(string: str) -> str:
-    pass
-    # Matches = re.search("[0-9]{2}([A-Z]{2,4})[0-9]{2,3}", string)
-    # Department: str = Matches.group(1)
+    matches = re.search("[0-9]{2}([A-Z].*)[0-9]{2,3}", string)
+    department: str = matches.group(1)
+    if db.get_departement(department) is None:
+        return "XTR"
+    return department
     # # Special Processing for Labs in Particular.
     # # Labs always End with L and are three characters Long.
     # if (
