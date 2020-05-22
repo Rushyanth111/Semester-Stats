@@ -62,14 +62,9 @@ class ModelInterface(GetInterface, InsertInterface):
             AppLog.info("Inserting Department Details!")
             with self.db.atomic():
                 with open("FormattedData/Departments.json") as f:
-                    DepartmentCodeDictionary = json.loads(f.read())
+                    dep_codes = json.loads(f.read())
                     Department.insert_many(
-                        set(
-                            zip(
-                                DepartmentCodeDictionary.keys(),
-                                DepartmentCodeDictionary.values(),
-                            )
-                        ),
+                        set(zip(dep_codes.keys(), dep_codes.values(),)),
                         fields=[Department.DepartmentCode, Department.DepartmentName],
                     ).execute()
         else:

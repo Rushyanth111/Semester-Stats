@@ -1,6 +1,6 @@
 # This interface was designed as a single stop solution to retrieve everything from
 from peewee import SqliteDatabase
-from .basic_models import Department, Backlog, BatchSchemeInfo, Student, Subject, Score
+from .basic_models import Department, BatchSchemeInfo, Student, Subject, Score
 from playhouse.shortcuts import model_to_dict
 
 
@@ -84,6 +84,3 @@ class GetInterface:
                 & (Score.ScoreSubjectCode.in_(subject_codes))
             )
         ]
-
-    def get_batch_results(self):
-        pass
