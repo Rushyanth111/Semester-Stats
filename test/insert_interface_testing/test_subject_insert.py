@@ -1,5 +1,6 @@
 from test.BaseClassUtils import BaseClassUnitTestCase
 import semesterstats.models as model
+import random
 
 
 class SubjectInsertTest(BaseClassUnitTestCase):

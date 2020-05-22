@@ -155,15 +155,15 @@ def parse_into_database(filename: str) -> None:
                     ],
                 ).on_conflict_ignore().execute()
 
-            # for batch in chunked(ScoreDetailsArray, 100):
-            #     SubjectScore.insert_many(
-            #         batch,
-            #         [
-            #             SubjectScore.SerialNumber,
-            #             SubjectScore.SubjectCode,
-            #             SubjectScore.Year,
-            #             SubjectScore.YearIndicator,
-            #             SubjectScore.Internals,
-            #             SubjectScore.Externals,
-            #         ],
-            #     ).execute()
+            for batch in chunked(ScoreDetailsArray, 100):
+                SubjectScore.insert_many(
+                    batch,
+                    [
+                        SubjectScore.SerialNumber,
+                        SubjectScore.SubjectCode,
+                        SubjectScore.Year,
+                        SubjectScore.YearIndicator,
+                        SubjectScore.Internals,
+                        SubjectScore.Externals,
+                    ],
+                ).on_conflict_ignore().execute()
