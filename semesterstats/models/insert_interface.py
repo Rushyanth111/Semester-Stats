@@ -3,14 +3,14 @@
 # The rationale behind these interfaces is that any single parser later
 # on can be used.
 from typing import List
-from .basic_models import Department, Student, Subject, Score
+from .basic_models import Department, Student, Subject, Score, BatchSchemeInfo
 from .insert_interface_models import (
     DepartmentModel,
     StudentModel,
     SubjectModel,
     ScoreModel,
 )
-from peewee import SqliteDatabase
+from peewee import SqliteDatabase, IntegrityError
 
 
 class InsertInterface:
@@ -18,6 +18,12 @@ class InsertInterface:
 
     def __init__(self):
         pass
+
+    def insert_batch_scheme(self, scheme: int, batch: int):
+        try:
+            return BatchSchemeInfo.create(Scheme=scheme, Batch=batch)
+        except IntegrityError:
+            return None
 
     def insert_department(self, department: DepartmentModel) -> bool:
         return Department.insert(department.__dict__).on_conflict_ignore().execute()
@@ -64,3 +70,35 @@ class InsertInterface:
                 Subject.insert_many(subject_dicts).on_conflict_ignore().execute()
             )
         return lines_changed
+
+    def process_bulk(self):
+        class StorageContainer:
+            def __init__(self, model_interface_instance: InsertInterface):
+                self.db = model_interface_instance
+                self.dept_holder = []
+                self.student_holder = []
+                self.score_holder = []
+                self.subject_holder = []
+
+            def insert(self, obj):
+                if isinstance(obj, DepartmentModel):
+                    self.dept_holder.append(obj)
+                elif isinstance(obj, StudentModel):
+                    self.student_holder.append(obj)
+                elif isinstance(obj, ScoreModel):
+                    self.score_holder.append(obj)
+                elif isinstance(obj, SubjectModel):
+                    self.subject_holder.append(obj)
+                else:
+                    pass
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, type, value, traceback):
+                self.db.insert_department_bulk(self.dept_holder)
+                self.db.insert_student_bulk(self.student_holder)
+                self.db.insert_subject_bulk(self.subject_holder)
+                self.db.insert_score_bulk(self.score_holder)
+
+        return StorageContainer(self)
