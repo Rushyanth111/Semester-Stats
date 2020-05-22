@@ -1,13 +1,11 @@
-import unittest
 import semesterstats.models as model
-from faker import Faker
+from test.BaseClassUtils import BaseClassUnitTestCase
 
 
-class StudentInsert(unittest.TestCase):
+class StudentInsert(BaseClassUnitTestCase):
     def setUp(self):
         self.db = model.ModelInterface()
-        Faker.seed(0)
-        self.fake = Faker()
+        self.bnc_init()
 
     def test_single_insert(self):
         d = model.DepartmentModel(DepartmentCode="XTX", DepartmentName="Tester")
