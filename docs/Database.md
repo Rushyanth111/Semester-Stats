@@ -38,24 +38,26 @@
 
 ## Subject Score
 
-| Property        | Description                         | Type        | PK/FK?                    | Indexed |
-| --------------- | ----------------------------------- | ----------- | ------------------------- | ------- |
-| SerialNumber    | USN of the Student                  | VARCHAR(10) | PK, FK -> Student Details | Yes     |
-| SubjectCode     | Subject Code.                       | VARCHAR(7)  | Pk, FK -> Subject Details | Yes     |
-| SemesterWritten | Semester the Subject was Written In | INTEGER     | -                         | No      |
-| Internals       | Internal Marks                      | INTEGER     | -                         | No      |
-| Externals       | External Marks                      | INTEGER     | -                         | No      |
+| Property     | Description                     | Type        | PK/FK?                    | Indexed |
+| ------------ | ------------------------------- | ----------- | ------------------------- | ------- |
+| SerialNumber | USN of the Student              | VARCHAR(10) | PK, FK -> Student Details | Yes     |
+| SubjectCode  | Subject Code.                   | VARCHAR(7)  | Pk, FK -> Subject Details | Yes     |
+| Year         | Year the Subject was Written In | INTEGER     | -                         | No      |
+| Year         | Odd/Even                        | BOOL        | -                         | No      |
+| Internals    | Internal Marks                  | INTEGER     | -                         | No      |
+| Externals    | External Marks                  | INTEGER     | -                         | No      |
 
 ## HistoricalSubject Score
 
 
-| Property        | Description                         | Type        | PK/FK?                | Indexed |
-| --------------- | ----------------------------------- | ----------- | --------------------- | ------- |
-| SerialNumber    | USN of the Student                  | VARCHAR(10) | FK -> Student Details | No      |
-| SubjectCode     | Subject Code                        | VARCHAR(7)  | FK -> Subject Details | No      |
-| SemesterWritten | Semester the Subject was Written In | INTEGER     | -                     | No      |
-| Internals       | Internal Marks                      | INTEGER     | -                     | No      |
-| Externals       | External Marks                      | INTEGER     | -                     | No      |
+| Property     | Description                     | Type        | PK/FK?                | Indexed |
+| ------------ | ------------------------------- | ----------- | --------------------- | ------- |
+| SerialNumber | USN of the Student              | VARCHAR(10) | FK -> Student Details | No      |
+| SubjectCode  | Subject Code                    | VARCHAR(7)  | FK -> Subject Details | No      |
+| Year         | Year the Subject was Written In | INTEGER     | -                     | No      |
+| Year         | Odd/Even                        | BOOL        | -                     | No      |
+| Internals    | Internal Marks                  | INTEGER     | -                     | No      |
+| Externals    | External Marks                  | INTEGER     | -                     | No      |
 
 ## TeacherDetails
 
