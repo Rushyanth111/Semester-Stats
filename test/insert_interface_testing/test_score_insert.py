@@ -36,8 +36,7 @@ class TestScoreInsert(BaseClassUnitTestCase):
         d = model.ScoreModel(
             ScoreSerialNumber=fake_serial_number,
             ScoreSubjectCode=fake_subject_code,
-            ScoreYear=random.randint(1, 8),
-            ScoreYearIndicator=random.randint(0, 1),
+            ScoreSemester=random.randint(1, 8),
             ScoreExternals=random.randint(0, 40),
             ScoreInternals=random.randint(0, 60),
         )
