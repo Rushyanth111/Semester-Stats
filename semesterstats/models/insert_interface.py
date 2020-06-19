@@ -4,7 +4,7 @@
 # on can be used.
 from typing import List
 from .basic_models import Department, Student, Subject, Score, BatchSchemeInfo
-from .insert_interface_models import (
+from .interface_models import (
     DepartmentModel,
     StudentModel,
     SubjectModel,
