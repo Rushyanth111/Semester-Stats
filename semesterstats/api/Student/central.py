@@ -4,16 +4,17 @@ from ...config import db
 student_central = APIRouter()
 
 
-@student_central.post("/list")
-def get_batch_results(batch: int, semester: int, department: str):
-    return db.get_scores(batch, semester, department)
+@student_central.get("/{student}/summary")
+def get_summary(batch: int, semester: int, department: str):
+    return {"error": "method not available"}
 
 
-@student_central.get("/students")
-def get_students(batch: int, department: str):
-    return db.get_students_usn(batch, department)
+@student_central.get("/{student}/backlogs")
+def get_student_backlogs(student: str):
+    return db.get_backlogs(usn=student)
 
 
-@student_central.get("/subjects")
-def get_subject_codes(batch: int, semester: int, department: str):
-    return db.get_subject_codes(batch, semester, department)
+@student_central.get("/{student}/{semester}")
+def get_student_semester(student: str, semester: int):
+    print(student, semester)
+    return db.get_student_semester_scores(student, semester)
