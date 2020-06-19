@@ -2,7 +2,6 @@ from peewee import (
     Model,
     CharField,
     TextField,
-    BooleanField,
     IntegerField,
     ForeignKeyField,
     CompositeKey,
@@ -60,8 +59,7 @@ class TeacherTaught(BaseModel):
 class Score(BaseModel):
     ScoreSerialNumber = ForeignKeyField(Student, field=Student.StudentUSN)
     ScoreSubjectCode = ForeignKeyField(Subject, field=Subject.SubjectCode)
-    ScoreYear = IntegerField()
-    ScoreYearIndicator = BooleanField()
+    ScoreSemester = IntegerField()
     ScoreInternals = IntegerField()
     ScoreExternals = IntegerField()
 
@@ -72,7 +70,6 @@ class Score(BaseModel):
 class Backlog(BaseModel):
     BacklogSerialNumber = ForeignKeyField(Student, field=Student.StudentUSN)
     BacklogSubjectCode = ForeignKeyField(Subject, field=Subject.SubjectCode)
-    BacklogYear = IntegerField()
-    BacklogYearIndicator = BooleanField()
+    BacklogSemester = IntegerField()
     BacklogInternals = IntegerField()
     BacklogExternals = IntegerField()
