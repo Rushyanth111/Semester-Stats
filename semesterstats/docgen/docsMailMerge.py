@@ -7,7 +7,6 @@ DepartmentCodeDictionary = {}
 def docsGeneratorAlternate(Batch: int, Semester: int, Department: str):
     Data = get_summary(Batch, Semester, Department)
     with MailMerge("TemplateDocument.docx") as document:
-        print(document.get_merge_fields())
         MainInformation = {
             "Total": str(Data["TotalAttendees"]),
             "FCD": str(Data["FCD"]),
