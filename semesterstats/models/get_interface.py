@@ -33,7 +33,6 @@ class GetInterface:
             .where(
                 (Subject.SubjectSemester == semester)
                 & (Subject.SubjectScheme == scheme)
-                & (Subject.SubjectDepartment._in([department, "XTR"]))
             )
             .execute()
         ]
