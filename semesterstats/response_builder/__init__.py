@@ -1,4 +1,3 @@
-from .get_list import get_list
-from .get_summary import get_summary
+from .get_batch_results import get_batch_results
 
-__all__ = ["getList", "getSummary"]
+__all__ = ["get_batch_results"]
