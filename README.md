@@ -38,3 +38,20 @@ Else Insert.
 # Alternative Solutions to python docx
 
 -- Using Mail Merge.
+
+# RoadMap:
+
+
+## For Modularize
+- Fix response builders
+- Fix the API functionality
+
+
+## For Further
+- Integrate documentation
+- Generate Fake data with parameters to trip parsing.
+- Fake Data Generator
+- Front End for Testing and Ease of Use
+- Extend API for Single Record Insertion.
+- Extend API for Teacher Update.
+- Extend API for all functionalities.
