@@ -1,5 +1,5 @@
 from .model_interface import ModelInterface
-from .insert_interface_models import (
+from .interface_models import (
     DepartmentModel,
     ScoreModel,
     StudentModel,

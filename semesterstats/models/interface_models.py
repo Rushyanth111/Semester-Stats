@@ -22,6 +22,15 @@ class ScoreModel(BaseModel):
     ScoreExternals: int
 
 
+class BacklogScoreModel(BaseModel):
+    ScoreSerialNumber: str
+    ScoreSubjectCode: str
+    ScoreYear: int
+    ScoreYearIndicator: bool
+    ScoreInternals: int
+    ScoreExternals: int
+
+
 class SubjectModel(BaseModel):
     SubjectCode: str
     SubjectName: str

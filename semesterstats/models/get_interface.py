@@ -1,7 +1,17 @@
 # This interface was designed as a single stop solution to retrieve everything from
 from peewee import SqliteDatabase
-from .basic_models import Department, BatchSchemeInfo, Student, Subject, Score
+from .basic_models import Department, BatchSchemeInfo, Backlog, Student, Subject, Score
 from playhouse.shortcuts import model_to_dict
+
+from .interface_models import (
+    DepartmentModel,
+    ScoreModel,
+    BacklogScoreModel,
+    SubjectModel,
+    TeacherModel,
+    TeacherTaughtModel,
+    StudentModel,
+)
 
 
 class GetInterface:
@@ -10,14 +20,25 @@ class GetInterface:
     def __init__(self):
         pass
 
-    def get_departement(self, department_code: str):
-        return Department.get_or_none(DepartmentCode=department_code)
+    def get_departement(self, department_code: str) -> DepartmentModel:
+        dept = list(
+            Department.select()
+            .where((Department.DepartmentCode == department_code))
+            .objects()
+        )
+        if len(dept) == 0:
+            return None
+
+        return DepartmentModel.construct(**model_to_dict(dept[0]))
 
     def get_backlog(self):
         pass
 
-    def get_backlogs(self):
-        pass
+    def get_backlogs(self, usn: str):
+        return [
+            BacklogScoreModel.construct(**model_to_dict(x))
+            for x in Backlog.select().where((Backlog.BacklogSerialNumber == usn))
+        ]
 
     def get_scheme(self, batch: int):
         try:
@@ -80,6 +101,26 @@ class GetInterface:
                 (Score.ScoreYear == year)
                 & (Score.ScoreYearIndicator == year_ind)
                 & (Score.ScoreSerialNumber.in_(usns))
+                & (Score.ScoreSubjectCode.in_(subject_codes))
+            )
+        ]
+
+    def get_student_semester_scores(self, usn: str, semester: int):
+        student = self.get_student(usn)
+        if student is None:
+            return None
+        subject_codes = self.get_subject_codes(
+            student.StudentBatch, semester, student.StudentDepartment
+        )
+
+        year = student.StudentBatch + semester // 2
+        year_ind = bool(semester % 2 == 0)
+        return [
+            model_to_dict(x)
+            for x in Score.select().where(
+                (Score.ScoreYear == year)
+                & (Score.ScoreYearIndicator == year_ind)
+                & (Score.ScoreSerialNumber == usn)
                 & (Score.ScoreSubjectCode.in_(subject_codes))
             )
         ]

@@ -16,5 +16,4 @@ def get_student_backlogs(student: str):
 
 @student_central.get("/{student}/{semester}")
 def get_student_semester(student: str, semester: int):
-    print(student, semester)
     return db.get_student_semester_scores(student, semester)
