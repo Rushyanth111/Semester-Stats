@@ -3,7 +3,7 @@ import uvicorn
 import os
 import glob
 from .logging import AppLog
-from .parser import parse_into_database
+from .parser import csv_parser
 
 
 def main():
@@ -20,9 +20,9 @@ def main():
     filenames = glob.glob("FormattedData/*.csv")
 
     for f in filenames:
-        parse_into_database(f)
+        csv_parser(f)
 
-    uvicorn.run(App, port=9000)
+    uvicorn.run(App, host="0.0.0.0", port=9000)
 
 
 if __name__ == "__main__":
