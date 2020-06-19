@@ -16,8 +16,7 @@ class StudentModel(BaseModel):
 class ScoreModel(BaseModel):
     ScoreSerialNumber: str
     ScoreSubjectCode: str
-    ScoreYear: int
-    ScoreYearIndicator: bool
+    ScoreSemester: int
     ScoreInternals: int
     ScoreExternals: int
 
@@ -25,8 +24,7 @@ class ScoreModel(BaseModel):
 class BacklogScoreModel(BaseModel):
     ScoreSerialNumber: str
     ScoreSubjectCode: str
-    ScoreYear: int
-    ScoreYearIndicator: bool
+    ScoreSemester: int
     ScoreInternals: int
     ScoreExternals: int
 

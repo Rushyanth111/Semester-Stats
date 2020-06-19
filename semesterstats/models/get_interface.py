@@ -98,8 +98,7 @@ class GetInterface:
         return [
             model_to_dict(x)
             for x in Score.select().where(
-                (Score.ScoreYear == year)
-                & (Score.ScoreYearIndicator == year_ind)
+                (Score.ScoreSemester == semester)
                 & (Score.ScoreSerialNumber.in_(usns))
                 & (Score.ScoreSubjectCode.in_(subject_codes))
             )
@@ -118,8 +117,7 @@ class GetInterface:
         return [
             model_to_dict(x)
             for x in Score.select().where(
-                (Score.ScoreYear == year)
-                & (Score.ScoreYearIndicator == year_ind)
+                (Score.ScoreSemester == semester)
                 & (Score.ScoreSerialNumber == usn)
                 & (Score.ScoreSubjectCode.in_(subject_codes))
             )
