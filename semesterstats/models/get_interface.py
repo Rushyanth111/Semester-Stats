@@ -29,7 +29,7 @@ class GetInterface:
         scheme = self.get_scheme(batch)
         return [
             x.SubjectCode
-            for x in Subject.select(SubjectCode=semester)
+            for x in Subject.select()
             .where(
                 (Subject.SubjectSemester == semester)
                 & (Subject.SubjectScheme == scheme)
@@ -72,8 +72,8 @@ class GetInterface:
 
     def get_scores(self, batch: int, semester: int, department: str):
         year = batch + semester // 2
-        year_ind = False if semester % 2 == 0 else True
-        subject_codes = self.get_subject_codes(batch, semester)
+        year_ind = bool(semester % 2 == 0)
+        subject_codes = self.get_subject_codes(batch, semester, department)
         usns = self.get_students_usn(batch, department)
         return [
             model_to_dict(x)
