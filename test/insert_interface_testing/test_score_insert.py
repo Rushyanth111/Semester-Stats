@@ -8,7 +8,7 @@ class TestScoreInsert(BaseClassUnitTestCase):
         self.db = model.ModelInterface()
         self.bnc_init()
 
-    def test_insert_score(self):
+    def test_insert_single_score(self):
 
         fake_subject_code = self.fake.bothify("##??##")
         fake_serial_number = self.fake.bothify("#??##??###")
@@ -43,3 +43,18 @@ class TestScoreInsert(BaseClassUnitTestCase):
         )
 
         self.assertEqual(self.db.insert_score(d), 1)
+
+    def test_score_multiple(self):
+        pass
+
+    def test_score_conflict(self):
+        pass
+
+    def test_score_update(self):
+        pass
+
+    def test_backlog_retained(self):
+        pass
+
+    def test_backlog_added(self):
+        pass

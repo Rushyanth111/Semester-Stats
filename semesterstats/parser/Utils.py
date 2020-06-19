@@ -1,6 +1,7 @@
 import re
 from ..config import db
 
+
 # Gets The Semester Based on the Given Subject Code.
 def get_subject_semester(string: str):
     Matches = re.search("[0-9]{2}[A-Z]{2,4}([0-9]{2,3})", string)
