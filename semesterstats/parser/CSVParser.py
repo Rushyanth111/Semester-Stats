@@ -28,7 +28,7 @@ def csv_parser(filename: str) -> None:
     year_indicator = bool(semester % 2 == 0)
 
     if db.get_scheme(batch) is None and not arrear:
-        db.insert_batch_scheme(batch, scheme)
+        db.insert_batch_scheme(scheme, batch)
         AppLog.info(f"Added {batch} - {scheme} to existing List.")
 
     AppLog.info(f"Parsing: {deparment} - {batch} - {semester}")
