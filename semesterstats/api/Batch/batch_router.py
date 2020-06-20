@@ -12,7 +12,7 @@ def get_batch_detail(department: str, semester: int, batch: int):
 
 @batch.get("/{department}/{batch}/{semester}/summary")
 def get_batch_summary(department: str, semester: int, batch: int):
-    return None
+    return db.external_get_batch_semester_summary(batch, department, semester)
 
 
 @batch.get("/{department}/{batch}/list")
