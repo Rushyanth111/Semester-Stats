@@ -4,6 +4,6 @@ from ...config import db
 department = APIRouter()
 
 
-@department.get("/detail")
+@department.get("/{department}/detail")
 def department_details(department: str):
-    return db.get_departement(department)
+    return db.external_get_department(department)

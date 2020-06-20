@@ -24,14 +24,20 @@ def csv_parser(filename: str) -> None:
     scheme = int(parsed_filename.group(3))
     semester = int(parsed_filename.group(4))
     arrear = False if parsed_filename.group(5) is None else True
-    year = batch + (semester // 2)
-    year_indicator = bool(semester % 2 == 0)
+
+    if db.get_parsed(deparment, scheme, batch, semester, arrear) is True:
+        AppLog.info(
+            f"Previously Parsed:{deparment} - {batch} {semester} {arrear}, Skipping..."
+        )
+        return
+
+    else:
+        db.insert_parsed(deparment, scheme, batch, semester, arrear)
+        AppLog.info(f"Parsing: {deparment} - {batch} {semester} {arrear}")
 
     if db.get_scheme(batch) is None and not arrear:
         db.insert_batch_scheme(scheme, batch)
         AppLog.info(f"Added {batch} - {scheme} to existing List.")
-
-    AppLog.info(f"Parsing: {deparment} - {batch} - {semester}")
 
     reader = csv.reader(open(filename), delimiter=",", skipinitialspace=True)
 
@@ -72,8 +78,7 @@ def csv_parser(filename: str) -> None:
                     ScoreModel(
                         ScoreSerialNumber=student_usn,
                         ScoreSubjectCode=sub_code,
-                        ScoreYear=year,
-                        ScoreYearIndicator=year_indicator,
+                        ScoreSemester=semester,
                         ScoreInternals=internal,
                         ScoreExternals=external,
                     )

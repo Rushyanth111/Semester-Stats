@@ -1,17 +1,14 @@
 # This interface was designed as a single stop solution to retrieve everything from
-from peewee import SqliteDatabase
-from .basic_models import Department, BatchSchemeInfo, Backlog, Student, Subject, Score
-from playhouse.shortcuts import model_to_dict
-
-from .interface_models import (
-    DepartmentModel,
-    ScoreModel,
-    BacklogScoreModel,
-    SubjectModel,
-    TeacherModel,
-    TeacherTaughtModel,
-    StudentModel,
+from peewee import SqliteDatabase, DoesNotExist
+from .basic_models import (
+    Department,
+    BatchSchemeInfo,
+    Parsed,
+    Student,
+    Subject,
+    Score,
 )
+from playhouse.shortcuts import model_to_dict
 
 
 class GetInterface:
@@ -20,25 +17,32 @@ class GetInterface:
     def __init__(self):
         pass
 
-    def get_departement(self, department_code: str) -> DepartmentModel:
-        dept = list(
-            Department.select()
-            .where((Department.DepartmentCode == department_code))
-            .objects()
-        )
-        if len(dept) == 0:
+    def get_parsed(self, dept, scheme, batch, semester, arrear) -> bool:
+        if (
+            Parsed.select()
+            .where(
+                (Parsed.ParsedDepartment == dept)
+                & (Parsed.ParsedScheme == scheme)
+                & (Parsed.ParsedBatch == batch)
+                & (Parsed.ParsedSemester == semester)
+                & (Parsed.ParsedArrear == arrear)
+            )
+            .exists()
+        ):
+            return True
+
+        return False
+
+    def get_department(self, department_code: str) -> str:
+        try:
+            dept = (
+                Department.select()
+                .where((Department.DepartmentCode == department_code))
+                .get()
+            )
+            return dept.DepartmentCode
+        except DoesNotExist:
             return None
-
-        return DepartmentModel.construct(**model_to_dict(dept[0]))
-
-    def get_backlog(self):
-        pass
-
-    def get_backlogs(self, usn: str):
-        return [
-            BacklogScoreModel.construct(**model_to_dict(x))
-            for x in Backlog.select().where((Backlog.BacklogSerialNumber == usn))
-        ]
 
     def get_scheme(self, batch: int):
         try:
@@ -57,19 +61,6 @@ class GetInterface:
             )
             .execute()
         ]
-
-    def get_subject(self, subject_code):
-        r = Subject.get_or_none(SubjectCode=subject_code)
-        try:
-            return (
-                r.SubjectCode,
-                r.SubjectName,
-                r.SubjectSemester,
-                r.SubjectScheme,
-                r.SubjectDepartment,
-            )
-        except AttributeError:
-            return None
 
     def get_students_usn(self, batch: int, department: str):
         return [
@@ -91,15 +82,12 @@ class GetInterface:
         )
 
     def get_scores(self, batch: int, semester: int, department: str):
-        year = batch + semester // 2
-        year_ind = bool(semester % 2 == 0)
         subject_codes = self.get_subject_codes(batch, semester, department)
         usns = self.get_students_usn(batch, department)
         return [
             model_to_dict(x)
             for x in Score.select().where(
-                (Score.ScoreYear == year)
-                & (Score.ScoreYearIndicator == year_ind)
+                (Score.ScoreSemester == semester)
                 & (Score.ScoreSerialNumber.in_(usns))
                 & (Score.ScoreSubjectCode.in_(subject_codes))
             )
@@ -112,14 +100,10 @@ class GetInterface:
         subject_codes = self.get_subject_codes(
             student.StudentBatch, semester, student.StudentDepartment
         )
-
-        year = student.StudentBatch + semester // 2
-        year_ind = bool(semester % 2 == 0)
         return [
             model_to_dict(x)
             for x in Score.select().where(
-                (Score.ScoreYear == year)
-                & (Score.ScoreYearIndicator == year_ind)
+                (Score.ScoreSemester == semester)
                 & (Score.ScoreSerialNumber == usn)
                 & (Score.ScoreSubjectCode.in_(subject_codes))
             )

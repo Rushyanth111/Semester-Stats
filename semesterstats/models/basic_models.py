@@ -2,13 +2,13 @@ from peewee import (
     Model,
     CharField,
     TextField,
-    BooleanField,
     IntegerField,
     ForeignKeyField,
     CompositeKey,
     AutoField,
     FixedCharField,
     Proxy,
+    BooleanField,
 )
 
 proxy = Proxy()
@@ -60,19 +60,39 @@ class TeacherTaught(BaseModel):
 class Score(BaseModel):
     ScoreSerialNumber = ForeignKeyField(Student, field=Student.StudentUSN)
     ScoreSubjectCode = ForeignKeyField(Subject, field=Subject.SubjectCode)
-    ScoreYear = IntegerField()
-    ScoreYearIndicator = BooleanField()
+    ScoreSemester = IntegerField()
     ScoreInternals = IntegerField()
     ScoreExternals = IntegerField()
 
     class Meta:
         primary_key = CompositeKey("ScoreSerialNumber", "ScoreSubjectCode")
+        indexes = ((("ScoreSerialNumber", "ScoreSubjectCode"), True),)
 
 
 class Backlog(BaseModel):
     BacklogSerialNumber = ForeignKeyField(Student, field=Student.StudentUSN)
     BacklogSubjectCode = ForeignKeyField(Subject, field=Subject.SubjectCode)
-    BacklogYear = IntegerField()
-    BacklogYearIndicator = BooleanField()
+    BacklogSemester = IntegerField()
     BacklogInternals = IntegerField()
     BacklogExternals = IntegerField()
+
+    class Meta:
+        indexes = ((("BacklogSerialNumber", "BacklogSubjectCode"), False),)
+        primary_key = False
+
+
+class Parsed(BaseModel):
+    ParsedDepartment = FixedCharField(3)
+    ParsedScheme = IntegerField()
+    ParsedBatch = IntegerField()
+    ParsedSemester = IntegerField()
+    ParsedArrear = BooleanField()
+
+    class Meta:
+        primary_key = CompositeKey(
+            "ParsedScheme",
+            "ParsedBatch",
+            "ParsedSemester",
+            "ParsedDepartment",
+            "ParsedArrear",
+        )

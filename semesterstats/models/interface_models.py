@@ -1,6 +1,11 @@
 from pydantic import BaseModel
 
 
+class SchemeModel(BaseModel):
+    Batch: int
+    Scheme: int
+
+
 class DepartmentModel(BaseModel):
     DepartmentCode: str
     DepartmentName: str
@@ -16,8 +21,7 @@ class StudentModel(BaseModel):
 class ScoreModel(BaseModel):
     ScoreSerialNumber: str
     ScoreSubjectCode: str
-    ScoreYear: int
-    ScoreYearIndicator: bool
+    ScoreSemester: int
     ScoreInternals: int
     ScoreExternals: int
 
@@ -25,8 +29,7 @@ class ScoreModel(BaseModel):
 class BacklogScoreModel(BaseModel):
     ScoreSerialNumber: str
     ScoreSubjectCode: str
-    ScoreYear: int
-    ScoreYearIndicator: bool
+    ScoreSemester: int
     ScoreInternals: int
     ScoreExternals: int
 
@@ -47,3 +50,15 @@ class TeacherModel(BaseModel):
 class TeacherTaughtModel(BaseModel):
     TeacherUSN: str
     TeacherBatch: int
+
+
+def score_to_backlog(score_record: ScoreModel) -> BacklogScoreModel:
+    d = score_record.dict()
+
+    backlog_record = {}
+
+    for key in d.keys():
+        # Replace Score with Backlog but retain value
+        backlog_record[key.replace("Score", "Backlog")] = d[key]
+
+    return BacklogScoreModel.construct(**backlog_record)
