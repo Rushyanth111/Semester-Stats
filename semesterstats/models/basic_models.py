@@ -8,6 +8,7 @@ from peewee import (
     AutoField,
     FixedCharField,
     Proxy,
+    BooleanField,
 )
 
 proxy = Proxy()
@@ -65,6 +66,7 @@ class Score(BaseModel):
 
     class Meta:
         primary_key = CompositeKey("ScoreSerialNumber", "ScoreSubjectCode")
+        indexes = ((("ScoreSerialNumber", "ScoreSubjectCode"), True),)
 
 
 class Backlog(BaseModel):
@@ -73,3 +75,23 @@ class Backlog(BaseModel):
     BacklogSemester = IntegerField()
     BacklogInternals = IntegerField()
     BacklogExternals = IntegerField()
+
+    class Meta:
+        indexes = ((("BacklogSerialNumber", "BacklogSubjectCode"), False),)
+
+
+class Parsed(BaseModel):
+    ParsedDepartment = FixedCharField(3)
+    ParsedScheme = IntegerField()
+    ParsedBatch = IntegerField()
+    ParsedSemester = IntegerField()
+    ParsedArrear = BooleanField()
+
+    class Meta:
+        primary_key = CompositeKey(
+            "ParsedScheme",
+            "ParsedBatch",
+            "ParsedSemester",
+            "ParsedDepartment",
+            "ParsedArrear",
+        )
