@@ -1,27 +1,14 @@
 # This interface was designed as a single stop solution to retrieve everything from
-from peewee import SqliteDatabase
+from peewee import SqliteDatabase, DoesNotExist
 from .basic_models import (
     Department,
     BatchSchemeInfo,
     Parsed,
-    Backlog,
     Student,
     Subject,
     Score,
 )
 from playhouse.shortcuts import model_to_dict
-
-from .interface_models import (
-    DepartmentModel,
-    ScoreModel,
-    BacklogScoreModel,
-    SubjectModel,
-    TeacherModel,
-    TeacherTaughtModel,
-    StudentModel,
-)
-
-from typing import List
 
 
 class GetInterface:
@@ -46,22 +33,16 @@ class GetInterface:
 
         return False
 
-    def get_department(self, department_code: str) -> DepartmentModel:
-        dept = list(
-            Department.select()
-            .where((Department.DepartmentCode == department_code))
-            .objects()
-        )
-        if len(dept) == 0:
+    def get_department(self, department_code: str) -> str:
+        try:
+            dept = (
+                Department.select()
+                .where((Department.DepartmentCode == department_code))
+                .get()
+            )
+            return dept.DepartmentCode
+        except DoesNotExist:
             return None
-
-        return DepartmentModel.construct(**model_to_dict(dept[0]))
-
-    def get_backlogs(self, usn: str) -> List[BacklogScoreModel]:
-        return [
-            BacklogScoreModel.construct(**model_to_dict(x, recurse=False))
-            for x in Backlog.select().where((Backlog.BacklogSerialNumber == usn))
-        ]
 
     def get_scheme(self, batch: int):
         try:
@@ -80,16 +61,6 @@ class GetInterface:
             )
             .execute()
         ]
-
-    def get_subject(self, subject_code):
-        subject = list(
-            Subject.select().where((Subject.SubjectCode == subject_code)).objects()
-        )
-
-        if len(subject) == 0:
-            return None
-
-        return SubjectModel.construct(**model_to_dict(subject[0]))
 
     def get_students_usn(self, batch: int, department: str):
         return [
