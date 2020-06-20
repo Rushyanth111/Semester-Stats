@@ -1,6 +1,14 @@
 # This interface was designed as a single stop solution to retrieve everything from
 from peewee import SqliteDatabase
-from .basic_models import Department, BatchSchemeInfo, Backlog, Student, Subject, Score
+from .basic_models import (
+    Department,
+    BatchSchemeInfo,
+    Parsed,
+    Backlog,
+    Student,
+    Subject,
+    Score,
+)
 from playhouse.shortcuts import model_to_dict
 
 from .interface_models import (
@@ -13,12 +21,30 @@ from .interface_models import (
     StudentModel,
 )
 
+from typing import List
+
 
 class GetInterface:
     db: SqliteDatabase
 
     def __init__(self):
         pass
+
+    def get_parsed(self, dept, scheme, batch, semester, arrear):
+        if (
+            Parsed.select()
+            .where(
+                (Parsed.ParsedDepartment == dept)
+                & (Parsed.ParsedScheme == scheme)
+                & (Parsed.ParsedBatch == batch)
+                & (Parsed.ParsedSemester == semester)
+                & (Parsed.ParsedArrear == arrear)
+            )
+            .exists()
+        ):
+            return True
+
+        return False
 
     def get_departement(self, department_code: str) -> DepartmentModel:
         dept = list(
@@ -34,7 +60,7 @@ class GetInterface:
     def get_backlog(self):
         pass
 
-    def get_backlogs(self, usn: str):
+    def get_backlogs(self, usn: str) -> List[BacklogScoreModel]:
         return [
             BacklogScoreModel.construct(**model_to_dict(x))
             for x in Backlog.select().where((Backlog.BacklogSerialNumber == usn))
@@ -59,17 +85,14 @@ class GetInterface:
         ]
 
     def get_subject(self, subject_code):
-        r = Subject.get_or_none(SubjectCode=subject_code)
-        try:
-            return (
-                r.SubjectCode,
-                r.SubjectName,
-                r.SubjectSemester,
-                r.SubjectScheme,
-                r.SubjectDepartment,
-            )
-        except AttributeError:
+        subject = list(
+            Subject.select().where((Subject.SubjectCode == subject_code)).objects()
+        )
+
+        if len(subject) == 0:
             return None
+
+        return SubjectModel.construct(**model_to_dict(subject[0]))
 
     def get_students_usn(self, batch: int, department: str):
         return [
@@ -91,8 +114,6 @@ class GetInterface:
         )
 
     def get_scores(self, batch: int, semester: int, department: str):
-        year = batch + semester // 2
-        year_ind = bool(semester % 2 == 0)
         subject_codes = self.get_subject_codes(batch, semester, department)
         usns = self.get_students_usn(batch, department)
         return [
@@ -111,9 +132,6 @@ class GetInterface:
         subject_codes = self.get_subject_codes(
             student.StudentBatch, semester, student.StudentDepartment
         )
-
-        year = student.StudentBatch + semester // 2
-        year_ind = bool(semester % 2 == 0)
         return [
             model_to_dict(x)
             for x in Score.select().where(

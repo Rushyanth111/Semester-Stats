@@ -1,5 +1,13 @@
 from typing import List
-from .basic_models import Department, Student, Subject, Score, BatchSchemeInfo, Backlog
+from .basic_models import (
+    Department,
+    Student,
+    Subject,
+    Score,
+    Parsed,
+    BatchSchemeInfo,
+    Backlog,
+)
 from .interface_models import (
     DepartmentModel,
     StudentModel,
@@ -15,6 +23,17 @@ class InsertInterface:
 
     def __init__(self):
         pass
+
+    def insert_parsed(
+        self, dept: str, scheme: int, batch: int, semester: int, arrear: bool
+    ):
+        Parsed.insert(
+            ParsedDepartment=dept,
+            ParsedScheme=scheme,
+            ParsedBatch=batch,
+            ParsedSemester=semester,
+            ParsedArrear=arrear,
+        ).execute()
 
     def insert_batch_scheme(self, scheme: int, batch: int):
         try:
@@ -59,6 +78,7 @@ class InsertInterface:
                 (Score.ScoreSerialNumber == record.ScoreSerialNumber)
                 & (Score.ScoreSubjectCode == record.ScoreSubjectCode)
             )
+
             if found.count() > 0:
                 # A Backlog Score is found:
                 # 1. Check for when the semester is lower: if true, then add new_record
