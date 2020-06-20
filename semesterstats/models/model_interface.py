@@ -18,11 +18,12 @@ from .basic_models import (
 )
 from .get_interface import GetInterface
 from .insert_interface import InsertInterface
+from .external_interface import ExternalInterface
 
 DepartmentCodeDictionary = {}
 
 
-class ModelInterface(GetInterface, InsertInterface):
+class ModelInterface(GetInterface, InsertInterface, ExternalInterface):
     def __init__(
         self, database_name=":memory:", pragmas={}, datafile_path="FormattedData"
     ):
