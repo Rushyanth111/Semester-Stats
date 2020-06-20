@@ -14,6 +14,7 @@ from .basic_models import (
     Score,
     Teacher,
     TeacherTaught,
+    Parsed,
 )
 from .get_interface import GetInterface
 from .insert_interface import InsertInterface
@@ -52,6 +53,7 @@ class ModelInterface(GetInterface, InsertInterface):
                 Backlog,
                 Teacher,
                 TeacherTaught,
+                Parsed,
             ]
         )
 
