@@ -1,14 +1,11 @@
-# These Define the Inserting Interfaces used;
-
-# The rationale behind these interfaces is that any single parser later
-# on can be used.
 from typing import List
-from .basic_models import Department, Student, Subject, Score, BatchSchemeInfo
+from .basic_models import Department, Student, Subject, Score, BatchSchemeInfo, Backlog
 from .interface_models import (
     DepartmentModel,
     StudentModel,
     SubjectModel,
     ScoreModel,
+    score_to_backlog,
 )
 from peewee import SqliteDatabase, IntegrityError
 
@@ -53,11 +50,57 @@ class InsertInterface:
         return Score.insert(score_record.__dict__).on_conflict_ignore().execute()
 
     def insert_score_bulk(self, score_records: List[ScoreModel]):
-        score_dicts = [x.__dict__ for x in score_records]
+        # Here we need to check for conflicts.
+        backlog_records = []
+        new_records = []
+
+        for record in score_records:
+            found = Score.select().where(
+                (Score.ScoreSerialNumber == record.ScoreSerialNumber)
+                & (Score.ScoreSubjectCode == record.ScoreSubjectCode)
+            )
+            if found.count() > 0:
+                # A Backlog Score is found:
+                # 1. Check for when the semester is lower: if true, then add new_record into backlog
+                # 2. If same semester, check for marks, if > then add to new_record
+                # 3. If the semester is higher then shunt old_record into backlog
+                # 4. If Neither of Those things, add to Backlog
+                if found[0].ScoreSemester < record.ScoreSemester:
+                    # Existing record goes to backlog, and new record comes inplace.
+                    backlog_records.append(
+                        score_to_backlog(
+                            ScoreModel.construct(**found.dicts()[0])
+                        ).dict()
+                    )
+                    new_records.append(record.dict())
+                elif found[0].ScoreSemester > record.ScoreSemester:
+                    # If lower semester, shunt into backlog
+                    backlog_records.append(score_to_backlog(record).dict())
+
+                elif found[0].ScoreSemester == record.ScoreSemester and (
+                    found[0].ScoreInternals + found[0].ScoreExternals
+                ) > (record.ScoreInternals + record.ScoreExternals):
+                    # If the existing Record has higher marks
+                    # shunt new record into backlog
+                    backlog_records.append(score_to_backlog(record).dict())
+                else:
+                    # If all else fails, then throw the existing record into old.
+                    backlog_records.append(
+                        score_to_backlog(
+                            ScoreModel.construct(**found.dicts()[0])
+                        ).dict()
+                    )
+                    new_records.append(record.dict())
+
+            else:
+                new_records.append(record.dict())
 
         with self.db.atomic():
-            lines_changed = Score.replace_many(score_dicts).execute()
-        return lines_changed
+            print("Inserting into Score.")
+            Score.insert_many(new_records).on_conflict_replace().execute()
+            Backlog.insert_many(backlog_records).execute()
+
+        return True
 
     def insert_subject(self, subject_record: SubjectModel):
         return Subject.insert(subject_record.__dict__).on_conflict_ignore().execute()

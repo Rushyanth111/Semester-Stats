@@ -45,3 +45,15 @@ class TeacherModel(BaseModel):
 class TeacherTaughtModel(BaseModel):
     TeacherUSN: str
     TeacherBatch: int
+
+
+def score_to_backlog(score_record: ScoreModel) -> BacklogScoreModel:
+    d = score_record.dict()
+
+    backlog_record = {}
+
+    for key in d.keys():
+        # Replace Score with Backlog but retain value
+        backlog_record[key.replace("Score", "Backlog")] = d[key]
+
+    return BacklogScoreModel.construct(**backlog_record)
