@@ -23,10 +23,10 @@ class InsertInterface:
             return None
 
     def insert_department(self, department: DepartmentModel) -> bool:
-        return Department.insert(department.__dict__).on_conflict_ignore().execute()
+        Department.insert(department.dict()).on_conflict_ignore().execute()
 
     def insert_department_bulk(self, department_list: List[DepartmentModel]) -> int:
-        dept_dicts = [x.__dict__ for x in department_list]
+        dept_dicts = [x.dict() for x in department_list]
 
         with self.db.atomic():
             lines_changed = (
@@ -35,10 +35,10 @@ class InsertInterface:
         return lines_changed
 
     def insert_student(self, student_record: StudentModel):
-        return Student.insert(student_record.__dict__).on_conflict_ignore().execute()
+        return Student.insert(student_record.dict()).on_conflict_ignore().execute()
 
     def insert_student_bulk(self, student_records: List[StudentModel]):
-        student_dicts = [x.__dict__ for x in student_records]
+        student_dicts = [x.dict() for x in student_records]
 
         with self.db.atomic():
             lines_changed = (
@@ -47,7 +47,7 @@ class InsertInterface:
         return lines_changed
 
     def insert_score(self, score_record: ScoreModel):
-        return Score.insert(score_record.__dict__).on_conflict_ignore().execute()
+        return Score.insert(score_record.dict()).on_conflict_ignore().execute()
 
     def insert_score_bulk(self, score_records: List[ScoreModel]):
         # Here we need to check for conflicts.
@@ -104,10 +104,10 @@ class InsertInterface:
         return True
 
     def insert_subject(self, subject_record: SubjectModel):
-        return Subject.insert(subject_record.__dict__).on_conflict_ignore().execute()
+        return Subject.insert(subject_record.dict()).on_conflict_ignore().execute()
 
     def insert_subject_bulk(self, subject_records: List[SubjectModel]):
-        subject_dicts = [x.__dict__ for x in subject_records]
+        subject_dicts = [x.dict() for x in subject_records]
 
         with self.db.atomic():
             lines_changed = (
