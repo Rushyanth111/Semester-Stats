@@ -78,6 +78,7 @@ class Backlog(BaseModel):
 
     class Meta:
         indexes = ((("BacklogSerialNumber", "BacklogSubjectCode"), False),)
+        primary_key = False
 
 
 class Parsed(BaseModel):

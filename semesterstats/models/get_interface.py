@@ -30,7 +30,7 @@ class GetInterface:
     def __init__(self):
         pass
 
-    def get_parsed(self, dept, scheme, batch, semester, arrear):
+    def get_parsed(self, dept, scheme, batch, semester, arrear) -> bool:
         if (
             Parsed.select()
             .where(
@@ -46,7 +46,7 @@ class GetInterface:
 
         return False
 
-    def get_departement(self, department_code: str) -> DepartmentModel:
+    def get_department(self, department_code: str) -> DepartmentModel:
         dept = list(
             Department.select()
             .where((Department.DepartmentCode == department_code))
@@ -57,12 +57,9 @@ class GetInterface:
 
         return DepartmentModel.construct(**model_to_dict(dept[0]))
 
-    def get_backlog(self):
-        pass
-
     def get_backlogs(self, usn: str) -> List[BacklogScoreModel]:
         return [
-            BacklogScoreModel.construct(**model_to_dict(x))
+            BacklogScoreModel.construct(**model_to_dict(x, recurse=False))
             for x in Backlog.select().where((Backlog.BacklogSerialNumber == usn))
         ]
 
