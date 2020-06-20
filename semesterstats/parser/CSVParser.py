@@ -25,11 +25,19 @@ def csv_parser(filename: str) -> None:
     semester = int(parsed_filename.group(4))
     arrear = False if parsed_filename.group(5) is None else True
 
+    if db.get_parsed(deparment, scheme, batch, semester, arrear) is True:
+        AppLog.info(
+            f"Previously Parsed:{deparment} - {batch} {semester} {arrear}, Skipping..."
+        )
+        return
+
+    else:
+        db.insert_parsed(deparment, scheme, batch, semester, arrear)
+        AppLog.info(f"Parsing: {deparment} - {batch} {semester} {arrear}")
+
     if db.get_scheme(batch) is None and not arrear:
         db.insert_batch_scheme(scheme, batch)
         AppLog.info(f"Added {batch} - {scheme} to existing List.")
-
-    AppLog.info(f"Parsing: {deparment} - {batch} - {semester}")
 
     reader = csv.reader(open(filename), delimiter=",", skipinitialspace=True)
 
