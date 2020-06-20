@@ -1,6 +1,11 @@
 from pydantic import BaseModel
 
 
+class SchemeModel(BaseModel):
+    Batch: int
+    Scheme: int
+
+
 class DepartmentModel(BaseModel):
     DepartmentCode: str
     DepartmentName: str
