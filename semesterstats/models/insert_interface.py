@@ -61,7 +61,8 @@ class InsertInterface:
             )
             if found.count() > 0:
                 # A Backlog Score is found:
-                # 1. Check for when the semester is lower: if true, then add new_record into backlog
+                # 1. Check for when the semester is lower: if true, then add new_record
+                #    into backlog
                 # 2. If same semester, check for marks, if > then add to new_record
                 # 3. If the semester is higher then shunt old_record into backlog
                 # 4. If Neither of Those things, add to Backlog
