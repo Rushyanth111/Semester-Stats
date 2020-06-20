@@ -23,10 +23,10 @@ def get_subject_department(string: str) -> str:
     # Check if it ends with an P, which is a Project
     if department[-1] == "L" or department[-1] == "P":
         if db.get_department(department[0 : len(department) - 1]) is not None:
-            return db.get_department(department[0 : len(department) - 1]).DepartmentCode
+            return db.get_department(department[0 : len(department) - 1])
         else:
             return "XTR"
     elif db.get_department(department) is not None:
-        return db.get_department(department).DepartmentCode
+        return db.get_department(department)
     else:
         return "XTR"
