@@ -1,5 +1,7 @@
 # Semester Statistics
 
+Check the [documentation](https://rushyanth111.github.io/Semester-Stats/) for detailed Information.
+
 Current Version - 0.1-beta.
 
 A project meant to keep an updated record of all scores achieved.

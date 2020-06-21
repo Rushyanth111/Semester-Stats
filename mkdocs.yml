@@ -1,7 +1,30 @@
 theme:
   name: material
+  palette: 
+      scheme: slate
+      accent: blue
+      primary: red
 
 site_name: Semester-Stats
 repo_url: https://github.com/Rushyanth111/Semester-Stats
 repo_name: Semester-Stats
 site_author: Rushyanth S
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+
+nav:
+ - Home: 'index.md'
+ - API:
+    - Home: 'api.md'
+    - Department: 'api-docs/dept.md'
+    - Student: 'api-docs/student.md'
+    - Subject: 'api-docs/subject.md'
+    - Batch: 'api-docs/batch.md'
