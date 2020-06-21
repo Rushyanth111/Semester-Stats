@@ -23,6 +23,12 @@
     
       <link rel="stylesheet" href="assets/stylesheets/main.6e35a1a6.min.css">
       
+        <link rel="stylesheet" href="assets/stylesheets/palette.a46bcfb3.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#ef5350">
       
     
     
@@ -42,7 +48,10 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="blue">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -79,7 +88,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Semester Statistics
+              Home
             
           </span>
         </div>
@@ -187,8 +196,8 @@
       
     
     
-    <a href="." title="Semester Statistics" class="md-nav__link md-nav__link--active">
-      Semester Statistics
+    <a href="." title="Home" class="md-nav__link md-nav__link--active">
+      Home
     </a>
     
   </li>
@@ -199,58 +208,88 @@
       
 
 
-  <li class="md-nav__item">
-    <a href="Algorithm/" title="Algorithms" class="md-nav__link">
-      Algorithms
-    </a>
-  </li>
-
+  <li class="md-nav__item md-nav__item--nested">
     
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="Calculations/" title="Calculations" class="md-nav__link">
-      Calculations
-    </a>
-  </li>
-
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
     
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="CsvFormat/" title="CSV Format" class="md-nav__link">
-      CSV Format
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="Database/" title="Database structure" class="md-nav__link">
-      Database structure
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="api/" title="API" class="md-nav__link">
+    <label class="md-nav__link" for="nav-2">
       API
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="API" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        API
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="api/" title="Home" class="md-nav__link">
+      Home
     </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="api-docs/dept/" title="Department" class="md-nav__link">
+      Department
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="api-docs/student/" title="Student" class="md-nav__link">
+      Student
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="api-docs/subject/" title="Subject" class="md-nav__link">
+      Subject
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="api-docs/batch/" title="Batch" class="md-nav__link">
+      Batch
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
     
@@ -289,24 +328,24 @@
                   
                 
                 
-                <h1 id="semester-statistics">Semester Statistics</h1>
+                <h1 id="semester-statistics">Semester Statistics<a class="headerlink" href="#semester-statistics" title="Permanent link">&para;</a></h1>
 <p>A project meant to keep an updated record of all scores achieved.</p>
 <p>This was started off as a Project to maintain all existing Scores recieved from VTU.</p>
 <p>This is a Flexible Data Project that does not require Special Functions as dictated by any college.</p>
 <p>Please note that there will be many Changes That can happen Before. </p>
-<h1 id="table-of-contents">Table of Contents</h1>
+<h1 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h1>
 <ul>
 <li><a href="api/">Api</a></li>
 <li><a href="Calculations/">Caclulations</a></li>
 <li><a href="Database/">Database</a></li>
 <li><a href="CsvFormat/">CsvFormat</a></li>
 </ul>
-<h1 id="react-front-end">React Front End</h1>
+<h1 id="react-front-end">React Front End<a class="headerlink" href="#react-front-end" title="Permanent link">&para;</a></h1>
 <p>Hosting at https://semdata.rxav.pw</p>
-<h1 id="performance">Performance</h1>
+<h1 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">&para;</a></h1>
 <p>Currently, 3 full 200 Lists of Students Take up ~10seconds on a fully cold Start.</p>
 <p>Further Performance is to be tested.</p>
-<h1 id="additional-notes">Additional Notes:</h1>
+<h1 id="additional-notes">Additional Notes:<a class="headerlink" href="#additional-notes" title="Permanent link">&para;</a></h1>
 <p>Additional Things Needed to be implemented.</p>
 <ul>
 <li>Configuration File.</li>
@@ -316,13 +355,13 @@
 <li>Proper Structure.</li>
 <li>Documentation. &lt;- Mostly for future Maintence.</li>
 </ul>
-<h1 id="naming-conventions-followed">Naming Conventions Followed:</h1>
+<h1 id="naming-conventions-followed">Naming Conventions Followed:<a class="headerlink" href="#naming-conventions-followed" title="Permanent link">&para;</a></h1>
 <ul>
 <li>CapitalCase for <code>variables</code></li>
 <li>camelCase for <code>functions</code></li>
 <li>CapitalCase for <code>class</code></li>
 </ul>
-<h1 id="problems">Problems:</h1>
+<h1 id="problems">Problems:<a class="headerlink" href="#problems" title="Permanent link">&para;</a></h1>
 <p>USNs that change.
 Diploma? 
 Arrears -- Designed, Data? Inconsistent.
@@ -331,7 +370,7 @@ Missing Data? </p>
 If USN + Code In new? 
     OldTable &lt;= Previous</p>
 <p>Else Insert.</p>
-<h1 id="alternative-solutions-to-python-docx">Alternative Solutions to python docx</h1>
+<h1 id="alternative-solutions-to-python-docx">Alternative Solutions to python docx<a class="headerlink" href="#alternative-solutions-to-python-docx" title="Permanent link">&para;</a></h1>
 <p>-- Using Mail Merge.</p>
                 
               
@@ -352,13 +391,13 @@ If USN + Code In new?
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
         
-          <a href="Algorithm/" title="Algorithms" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="api/" title="Home" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Algorithms
+                Home
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
