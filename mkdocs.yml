@@ -1,9 +1,9 @@
 theme:
   name: material
-  palette: 
-      scheme: slate
-      accent: blue
-      primary: red
+  palette:
+    scheme: slate
+    accent: blue
+    primary: red
 
 site_name: Semester-Stats
 repo_url: https://github.com/Rushyanth111/Semester-Stats
@@ -21,10 +21,13 @@ markdown_extensions:
       permalink: true
 
 nav:
- - Home: 'index.md'
- - API:
-    - Home: 'api.md'
-    - Department: 'api-docs/dept.md'
-    - Student: 'api-docs/student.md'
-    - Subject: 'api-docs/subject.md'
-    - Batch: 'api-docs/batch.md'
+  - Home: "index.md"
+  - Calculation: "Calculations.md"
+  - Database Structure: "Database.md"
+  - CSV Format: "CsvFormat.md"
+  - API:
+      - Home: "api.md"
+      - Department: "api-docs/dept.md"
+      - Student: "api-docs/student.md"
+      - Subject: "api-docs/subject.md"
+      - Batch: "api-docs/batch.md"
