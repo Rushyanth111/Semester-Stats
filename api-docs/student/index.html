@@ -60,7 +60,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#student" class="md-skip">
+        <a href="#get-studentstudentsummary" class="md-skip">
           Skip to content
         </a>
       
@@ -198,21 +198,57 @@
       
       
 
+
+  <li class="md-nav__item">
+    <a href="../../Calculations/" title="Calculation" class="md-nav__link">
+      Calculation
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../Database/" title="Database Structure" class="md-nav__link">
+      Database Structure
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../CsvFormat/" title="CSV Format" class="md-nav__link">
+      CSV Format
+    </a>
+  </li>
+
+    
+      
+      
+      
+
   
 
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
     
-    <label class="md-nav__link" for="nav-2">
+    <label class="md-nav__link" for="nav-5">
       API
       <span class="md-nav__icon md-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
       </span>
     </label>
     <nav class="md-nav" aria-label="API" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
+      <label class="md-nav__title" for="nav-5">
         <span class="md-nav__icon md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
         </span>
@@ -256,8 +292,6 @@
     
     <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
     
-      
-    
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
         Student
@@ -274,8 +308,6 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon">
@@ -286,22 +318,22 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#studentstudentsummary" class="md-nav__link">
-    /student/{student}/summary
+  <a href="#get-studentstudentsummary" class="md-nav__link">
+    GET /student/{student}/summary
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#studentstudentbacklogs" class="md-nav__link">
-    /student/{student}/backlogs
+  <a href="#get-studentstudentbacklogs" class="md-nav__link">
+    GET /student/{student}/backlogs
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#studentstudentsemester" class="md-nav__link">
-    /student/{student}/{semester}
+  <a href="#get-studentstudentsemester" class="md-nav__link">
+    GET /student/{student}/{semester}
   </a>
   
 </li>
@@ -356,8 +388,6 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon">
@@ -368,22 +398,22 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#studentstudentsummary" class="md-nav__link">
-    /student/{student}/summary
+  <a href="#get-studentstudentsummary" class="md-nav__link">
+    GET /student/{student}/summary
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#studentstudentbacklogs" class="md-nav__link">
-    /student/{student}/backlogs
+  <a href="#get-studentstudentbacklogs" class="md-nav__link">
+    GET /student/{student}/backlogs
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#studentstudentsemester" class="md-nav__link">
-    /student/{student}/{semester}
+  <a href="#get-studentstudentsemester" class="md-nav__link">
+    GET /student/{student}/{semester}
   </a>
   
 </li>
@@ -408,36 +438,135 @@
                   
                 
                 
-                <h1 id="student">/student/<a class="headerlink" href="#student" title="Permanent link">&para;</a></h1>
-<p>Handles all of the <strong>Induvidual</strong> student documentation.</p>
+                  <h1>Student</h1>
+                
+                <p>Handles all of the <strong>Induvidual</strong> student documentation.</p>
 <div class="admonition warning">
 <p class="admonition-title">API Subject to changes.</p>
-<p>As a Small warning, all of the below API routes mentioned can be changed at any moment. </p>
+<p>As a Small warning, all of the below API routes mentioned can be changed at any moment.</p>
 </div>
 <div class="admonition abstract">
 <p class="admonition-title">API Parameters Glossary.</p>
 <p>{student} refers to the USN of a particular student.</p>
 <p>{semester} is an integer that referers to a particular semester from 1 to 8.</p>
 </div>
-<h2 id="studentstudentsummary">/student/{student}/summary<a class="headerlink" href="#studentstudentsummary" title="Permanent link">&para;</a></h2>
-<p>This route gets you all of the Summary data that is available </p>
+<h2 id="get-studentstudentsummary">GET /student/{student}/summary<a class="headerlink" href="#get-studentstudentsummary" title="Permanent link">&para;</a></h2>
+<p>This route gets you all of the Summary data that is available</p>
 <p>Example Request:</p>
 <div class="codehilite"><pre><span></span><code>/student/1XM17ME001/summary
 </code></pre></div>
 
 
-<h2 id="studentstudentbacklogs">/student/{student}/backlogs<a class="headerlink" href="#studentstudentbacklogs" title="Permanent link">&para;</a></h2>
+<p>An Example Response Would Be:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;StudentUSN&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;StudentName&quot;</span><span class="p">:</span> <span class="s2">&quot;ANURODH  VERMA&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;StudentBatch&quot;</span><span class="p">:</span> <span class="mi">2016</span><span class="p">,</span>
+  <span class="nt">&quot;StudentDepartment&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;DepartmentCode&quot;</span><span class="p">:</span> <span class="s2">&quot;CS&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;DepartmentName&quot;</span><span class="p">:</span> <span class="s2">&quot;Computer Science and Engineering&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<h2 id="get-studentstudentbacklogs">GET /student/{student}/backlogs<a class="headerlink" href="#get-studentstudentbacklogs" title="Permanent link">&para;</a></h2>
 <p>This route gets you all of the backlogs for that particular student</p>
+<p>Example Request:</p>
 <div class="codehilite"><pre><span></span><code>/student/1XM17ME001/backlog
+</code></pre></div>
+
+
+<p>Example Response:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;BacklogSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS61&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogInternals&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogExternals&quot;</span><span class="p">:</span> <span class="mi">22</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;BacklogSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS62&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogInternals&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogExternals&quot;</span><span class="p">:</span> <span class="mi">16</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;BacklogSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogInternals&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogExternals&quot;</span><span class="p">:</span> <span class="mi">22</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;BacklogSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS664&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogInternals&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="nt">&quot;BacklogExternals&quot;</span><span class="p">:</span> <span class="mi">22</span>
+  <span class="p">}</span>
+<span class="p">]</span>
 </code></pre></div>
 
 
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This route may return nothing. </p>
+<p>This route may return nothing.</p>
 </div>
-<h2 id="studentstudentsemester">/student/{student}/{semester}<a class="headerlink" href="#studentstudentsemester" title="Permanent link">&para;</a></h2>
+<h2 id="get-studentstudentsemester">GET /student/{student}/{semester}<a class="headerlink" href="#get-studentstudentsemester" title="Permanent link">&para;</a></h2>
+<p>Fetches the the details of the student for a given semester(Includes merged Arrear Details).</p>
+<p>Example Request:</p>
 <div class="codehilite"><pre><span></span><code>/student/1XM17ME001/6
+</code></pre></div>
+
+
+<p>Example Response:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;ScoreSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS553&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreInternals&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreExternals&quot;</span><span class="p">:</span> <span class="mi">28</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;ScoreSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS562&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreInternals&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreExternals&quot;</span><span class="p">:</span> <span class="mi">28</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;ScoreSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS63&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreInternals&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreExternals&quot;</span><span class="p">:</span> <span class="mi">29</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;ScoreSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS653&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreInternals&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreExternals&quot;</span><span class="p">:</span> <span class="mi">46</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;ScoreSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CSL67&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreInternals&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreExternals&quot;</span><span class="p">:</span> <span class="mi">46</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;ScoreSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CSL68&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreInternals&quot;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreExternals&quot;</span><span class="p">:</span> <span class="mi">55</span>
+  <span class="p">}</span>
+<span class="p">]</span>
 </code></pre></div>
 
 

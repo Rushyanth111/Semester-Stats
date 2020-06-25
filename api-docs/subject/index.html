@@ -59,6 +59,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#get-subjectsubject_codedetail" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -193,21 +198,57 @@
       
       
 
+
+  <li class="md-nav__item">
+    <a href="../../Calculations/" title="Calculation" class="md-nav__link">
+      Calculation
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../Database/" title="Database Structure" class="md-nav__link">
+      Database Structure
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../CsvFormat/" title="CSV Format" class="md-nav__link">
+      CSV Format
+    </a>
+  </li>
+
+    
+      
+      
+      
+
   
 
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
     
-    <label class="md-nav__link" for="nav-2">
+    <label class="md-nav__link" for="nav-5">
       API
       <span class="md-nav__icon md-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
       </span>
     </label>
     <nav class="md-nav" aria-label="API" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
+      <label class="md-nav__title" for="nav-5">
         <span class="md-nav__icon md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
         </span>
@@ -264,9 +305,40 @@
     <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Subject
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
     <a href="./" title="Subject" class="md-nav__link md-nav__link--active">
       Subject
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#get-subjectsubject_codedetail" class="md-nav__link">
+    GET subject/{subject_code}/detail
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -295,6 +367,36 @@
               </div>
             
             
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#get-subjectsubject_codedetail" class="md-nav__link">
+    GET subject/{subject_code}/detail
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
@@ -310,7 +412,25 @@
                 
                   <h1>Subject</h1>
                 
-                
+                <h2 id="get-subjectsubject_codedetail">GET subject/{subject_code}/detail<a class="headerlink" href="#get-subjectsubject_codedetail" title="Permanent link">&para;</a></h2>
+<p>This Route Returns the Particular Details of the given Subject.</p>
+<p>Example Request:</p>
+<div class="codehilite"><pre><span></span><code>/subject/17CS51/detail
+</code></pre></div>
+
+
+<p>Example Response:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;SubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;17CS51&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;SubjectName&quot;</span><span class="p">:</span> <span class="s2">&quot;MGMT. AND ENTREPRENEURSHIP FOR IT INDUSTRY&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;SubjectSemester&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+  <span class="nt">&quot;SubjectScheme&quot;</span><span class="p">:</span> <span class="mi">2017</span><span class="p">,</span>
+  <span class="nt">&quot;SubjectDepartment&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;DepartmentCode&quot;</span><span class="p">:</span> <span class="s2">&quot;CS&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;DepartmentName&quot;</span><span class="p">:</span> <span class="s2">&quot;Computer Science and Engineering&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
                 
               
               
