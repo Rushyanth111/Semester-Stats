@@ -559,6 +559,17 @@ version = "0.8.10"
 lxml = ">=2.3.2"
 
 [[package]]
+category = "main"
+description = "A streaming multipart parser for Python"
+name = "python-multipart"
+optional = false
+python-versions = "*"
+version = "0.0.5"
+
+[package.dependencies]
+six = ">=1.4.0"
+
+[[package]]
 category = "dev"
 description = "YAML parser and emitter for Python"
 name = "pyyaml"
@@ -586,7 +597,7 @@ version = "0.17.0"
 dev = ["pytest"]
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Python 2 and 3 compatibility utilities"
 name = "six"
 optional = false
@@ -760,7 +771,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "2e34216addbe8d159ad1a24915e4dbca7470a6e903cd1360c029a2cf308c225b"
+content-hash = "a1b233c4ddce9e720ea13046734d7fcbd580d1f7500e9688c5c041d1083b6196"
 python-versions = ">=3.6,<3.9"
 
 [metadata.files]
@@ -1021,6 +1032,9 @@ python-dateutil = [
 ]
 python-docx = [
     {file = "python-docx-0.8.10.tar.gz", hash = "sha256:bc76ecac6b2d00ce6442a69d03a6f35c71cd72293cd8405a7472dfe317920024"},
+]
+python-multipart = [
+    {file = "python-multipart-0.0.5.tar.gz", hash = "sha256:f7bb5f611fc600d15fa47b3974c8aa16e93724513b49b5f95c81e6624c83fa43"},
 ]
 pyyaml = [
     {file = "PyYAML-5.3.1-cp27-cp27m-win32.whl", hash = "sha256:74809a57b329d6cc0fdccee6318f44b9b8649961fa73144a98735b0aaf029f1f"},
