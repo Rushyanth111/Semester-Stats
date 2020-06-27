@@ -1,0 +1,16 @@
+version: "3.3"
+services:
+  semesterstats:
+    image: semester:0.1
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - type: bind
+        source: ./FormattedData
+        target: "/project/FormattedData"
+      - type: bind
+        source: ./imported
+        target: "/project/imported"
+    stop_signal: SIGINT
+    tty: true
