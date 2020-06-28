@@ -18,3 +18,8 @@ def get_batch_summary(department: str, semester: int, batch: int):
 @batch.get("/{department}/{batch}/list")
 def get_batch_students(department: str, batch: int):
     return db.external_get_batch_details(batch, department)
+
+
+@batch.get("/{department}/{batch}/backlogs")
+def get_batch_backlog(department: str, batch: int):
+    return db.external_get_batch_backlogs(batch, department)

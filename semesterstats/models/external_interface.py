@@ -56,10 +56,21 @@ class ExternalInterface:
 
         return SubjectModel.construct(**model_to_dict(subject[0]))
 
-    def external_get_student_backlogs(self, usn: str) -> List[BacklogScoreModel]:
+    def external_get_student_backlogs_history(
+        self, usn: str
+    ) -> List[BacklogScoreModel]:
         return [
             BacklogScoreModel.construct(**model_to_dict(x, recurse=False))
             for x in Backlog.select().where((Backlog.BacklogSerialNumber == usn))
+        ]
+
+    def external_get_student_backlogs(self, usn: str) -> List[ScoreModel]:
+        return [
+            ScoreModel.construct(**model_to_dict(x, recurse=False))
+            for x in Score.select().where(
+                (Score.ScoreInternals + Score.ScoreExternals < 45)
+                & (Score.ScoreSerialNumber == usn)
+            )
         ]
 
     def external_get_student(self, usn: str):
@@ -125,6 +136,39 @@ class ExternalInterface:
                     (
                         Score.ScoreSerialNumber.in_(usn_list)
                         & (Score.ScoreSubjectCode.in_(subject_code_list))
+                    )
+                )
+                .objects()
+            ]
+        )
+
+    def external_get_batch_backlogs(self, batch: int, department: str):
+        def convert_to_simple(dict_list):
+            u_list = {}
+            for score_record in dict_list:
+                if score_record.ScoreSerialNumber not in u_list:
+                    u_list[score_record.ScoreSerialNumber] = {}
+
+                u_list[score_record.ScoreSerialNumber][
+                    "USN"
+                ] = score_record.ScoreSerialNumber
+                u_list[score_record.ScoreSerialNumber][
+                    score_record.ScoreSubjectCode
+                ] = [score_record.ScoreInternals, score_record.ScoreExternals]
+            return list(u_list.values())
+
+        usn_list = Student.select(Student.StudentUSN).where(
+            (Student.StudentDepartment == department) & (Student.StudentBatch == batch)
+        )
+
+        return convert_to_simple(
+            [
+                ScoreModel.construct(**model_to_dict(x, recurse=False))
+                for x in Score.select()
+                .where(
+                    (
+                        Score.ScoreSerialNumber.in_(usn_list)
+                        & (Score.ScoreInternals + Score.ScoreExternals < 45)
                     )
                 )
                 .objects()
