@@ -1,5 +1,5 @@
 FROM python:3.6-slim
-RUN mkdir -p /project
+RUN mkdir -p /project/imported
 WORKDIR /project
 
 # COPY STATIC FILES
