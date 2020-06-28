@@ -363,6 +363,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#get-batchdepartmentbatchbacklogs" class="md-nav__link">
+    GET /batch/{department}/{batch}/backlogs
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -421,6 +428,13 @@
           <li class="md-nav__item">
   <a href="#get-batchdepartmentbatchlist" class="md-nav__link">
     GET /batch/{department}/{batch}/list
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-batchdepartmentbatchbacklogs" class="md-nav__link">
+    GET /batch/{department}/{batch}/backlogs
   </a>
   
 </li>
@@ -606,6 +620,37 @@
     <span class="nt">&quot;StudentDepartment&quot;</span><span class="p">:</span> <span class="s2">&quot;CS&quot;</span>
   <span class="p">},</span>
   <span class="err">...</span>
+<span class="p">]</span>
+</code></pre></div>
+
+
+<h3 id="get-batchdepartmentbatchbacklogs">GET /batch/{department}/{batch}/backlogs<a class="headerlink" href="#get-batchdepartmentbatchbacklogs" title="Permanent link">&para;</a></h3>
+<p>Example Request:</p>
+<div class="codehilite"><pre><span></span><code>/batch/CS/2016/backlogs
+</code></pre></div>
+
+
+<div class="codehilite"><pre><span></span><code><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;USN&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS003&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;15ELE15&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span>
+    <span class="nt">&quot;15MAT11&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span>
+    <span class="nt">&quot;15MAT21&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;USN&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS005&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;15CS53&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
+    <span class="nt">&quot;15CS61&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">29</span><span class="p">],</span>
+    <span class="nt">&quot;15CS62&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">23</span><span class="p">],</span>
+    <span class="nt">&quot;15CS63&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">29</span><span class="p">],</span>
+    <span class="nt">&quot;15CS64&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+    <span class="nt">&quot;15CS651&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span>
+    <span class="nt">&quot;15CS664&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">28</span><span class="p">],</span>
+    <span class="nt">&quot;15CS71&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">23</span><span class="p">],</span>
+    <span class="nt">&quot;15CS72&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">21</span><span class="p">],</span>
+    <span class="nt">&quot;15CS73&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">18</span><span class="p">],</span>
+    <span class="nt">&quot;15CS754&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">28</span><span class="p">]</span>
+  <span class="p">}</span>
 <span class="p">]</span>
 </code></pre></div>
                 

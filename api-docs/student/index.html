@@ -443,8 +443,8 @@
                 <p>Handles all of the <strong>Induvidual</strong> student documentation.</p>
 <div class="admonition warning">
 <p class="admonition-title">API Subject to changes.</p>
-<p>As a Small warning, all of the below API routes mentioned can be changed at any moment.</p>
 </div>
+<p>As a Small warning, all of the below API routes mentioned can be changed at any moment.</p>
 <div class="admonition abstract">
 <p class="admonition-title">API Parameters Glossary.</p>
 <p>{student} refers to the USN of a particular student.</p>
@@ -480,41 +480,28 @@
 <p>Example Response:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">[</span>
   <span class="p">{</span>
-    <span class="nt">&quot;BacklogSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS61&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogInternals&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogExternals&quot;</span><span class="p">:</span> <span class="mi">22</span>
+    <span class="nt">&quot;ScoreSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS005&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS53&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreInternals&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreExternals&quot;</span><span class="p">:</span> <span class="mi">14</span>
   <span class="p">},</span>
   <span class="p">{</span>
-    <span class="nt">&quot;BacklogSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS62&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogInternals&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogExternals&quot;</span><span class="p">:</span> <span class="mi">16</span>
+    <span class="nt">&quot;ScoreSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS005&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS61&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreInternals&quot;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+    <span class="nt">&quot;ScoreExternals&quot;</span><span class="p">:</span> <span class="mi">29</span>
   <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;BacklogSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS64&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogInternals&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogExternals&quot;</span><span class="p">:</span> <span class="mi">22</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;BacklogSerialNumber&quot;</span><span class="p">:</span> <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogSubjectCode&quot;</span><span class="p">:</span> <span class="s2">&quot;15CS664&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogSemester&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogInternals&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-    <span class="nt">&quot;BacklogExternals&quot;</span><span class="p">:</span> <span class="mi">22</span>
-  <span class="p">}</span>
+  <span class="err">...</span>
 <span class="p">]</span>
 </code></pre></div>
 
 
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This route may return nothing.</p>
 </div>
+<p>This route may return nothing.</p>
 <h2 id="get-studentstudentsemester">GET /student/{student}/{semester}<a class="headerlink" href="#get-studentstudentsemester" title="Permanent link">&para;</a></h2>
 <p>Fetches the the details of the student for a given semester(Includes merged Arrear Details).</p>
 <p>Example Request:</p>
@@ -573,8 +560,8 @@
 <p>This route gets the details of that student for a particular semester.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This route may return nothing.</p>
 </div>
+<p>This route may return nothing.</p>
                 
               
               
