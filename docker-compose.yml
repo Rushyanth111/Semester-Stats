@@ -8,9 +8,9 @@ services:
     volumes:
       - type: bind
         source: ./FormattedData
-        target: "/project/FormattedData"
+        target: /project/FormattedData
       - type: bind
         source: ./imported
-        target: "/project/imported"
+        target: /project/imported
     stop_signal: SIGINT
     tty: true
