@@ -38,7 +38,6 @@ Example Response:
 
 ### GET /batch/{department}/{batch}/{semester}/summary
 
-
 Example Request:
 
 ```
@@ -130,13 +129,9 @@ Example Response:
   "PassPercentage": 59.56284153005465,
   "FailPercentage": 40.43715846994535
 }
-
 ```
 
-
-
 ### GET /batch/{department}/{batch}/list
-
 
 Example Request:
 
@@ -167,5 +162,38 @@ Example Response:
     "StudentDepartment": "CS"
   },
   ...
+]
+```
+
+### GET /batch/{department}/{batch}/backlogs
+
+Example Request:
+
+```zsh
+/batch/CS/2016/backlogs
+```
+
+```json
+[
+  {
+    "USN": "1CR16CS003",
+    "15ELE15": [12, 15],
+    "15MAT11": [7, 16],
+    "15MAT21": [12, 2]
+  },
+  {
+    "USN": "1CR16CS005",
+    "15CS53": [12, 14],
+    "15CS61": [14, 29],
+    "15CS62": [12, 23],
+    "15CS63": [12, 29],
+    "15CS64": [12, 32],
+    "15CS651": [13, 16],
+    "15CS664": [13, 28],
+    "15CS71": [13, 23],
+    "15CS72": [13, 21],
+    "15CS73": [12, 18],
+    "15CS754": [15, 28]
+  }
 ]
 ```

@@ -1,7 +1,7 @@
 Handles all of the **Induvidual** student documentation.
 
 !!! warning "API Subject to changes."
-    As a Small warning, all of the below API routes mentioned can be changed at any moment.
+As a Small warning, all of the below API routes mentioned can be changed at any moment.
 
 !!! abstract "API Parameters Glossary."
 
@@ -48,38 +48,25 @@ Example Response:
 ```json
 [
   {
-    "BacklogSerialNumber": "1CR16CS024",
-    "BacklogSubjectCode": "15CS61",
-    "BacklogSemester": 6,
-    "BacklogInternals": 12,
-    "BacklogExternals": 22
+    "ScoreSerialNumber": "1CR16CS005",
+    "ScoreSubjectCode": "15CS53",
+    "ScoreSemester": 6,
+    "ScoreInternals": 12,
+    "ScoreExternals": 14
   },
   {
-    "BacklogSerialNumber": "1CR16CS024",
-    "BacklogSubjectCode": "15CS62",
-    "BacklogSemester": 6,
-    "BacklogInternals": 12,
-    "BacklogExternals": 16
+    "ScoreSerialNumber": "1CR16CS005",
+    "ScoreSubjectCode": "15CS61",
+    "ScoreSemester": 6,
+    "ScoreInternals": 14,
+    "ScoreExternals": 29
   },
-  {
-    "BacklogSerialNumber": "1CR16CS024",
-    "BacklogSubjectCode": "15CS64",
-    "BacklogSemester": 6,
-    "BacklogInternals": 12,
-    "BacklogExternals": 22
-  },
-  {
-    "BacklogSerialNumber": "1CR16CS024",
-    "BacklogSubjectCode": "15CS664",
-    "BacklogSemester": 6,
-    "BacklogInternals": 12,
-    "BacklogExternals": 22
-  }
+  ...
 ]
 ```
 
 !!! note
-    This route may return nothing.
+This route may return nothing.
 
 ## GET /student/{student}/{semester}
 
@@ -143,4 +130,4 @@ Example Response:
 This route gets the details of that student for a particular semester.
 
 !!! note
-    This route may return nothing.
+This route may return nothing.
