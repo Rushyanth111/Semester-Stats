@@ -4,14 +4,14 @@ from ..config import db
 
 # Gets The Semester Based on the Given Subject Code.
 def get_subject_semester(string: str):
-    Matches = re.search("[0-9]{2}[A-Z]{2,4}([0-9]{2,3})", string)
-    return int(Matches.group(1)[0])
+    matches = re.search("[0-9]{2}[A-Z]{2,6}([0-9]{2,3})", string)
+    return int(matches.group(1)[0])
 
 
 # Gets the Department Based on the Given USN
 def get_serial_number_department(string: str):
-    Matches = re.search("1CR[0-9]{2}([A-Z]{2})[0-9]{3}", string)
-    return Matches.group(1)
+    matches = re.search("1CR[0-9]{2}([A-Z]{2})[0-9]{3}", string)
+    return matches.group(1)
 
 
 # https://github.com/Rushyanth111/Semster-Stats/issues/21

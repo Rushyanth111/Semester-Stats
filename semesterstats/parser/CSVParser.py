@@ -16,6 +16,7 @@ from .Utils import (
 
 
 def csv_parser(filename: str) -> None:
+    AppLog.info(f"Recieved {filename} for parsing...")
     parsed_filename = re.search(
         "Data-([A-Za-z]*)-([0-9]*)-([0-9]*)-([0-9]*)(-[Aa]rrear)?.csv", filename
     )
