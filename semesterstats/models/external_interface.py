@@ -1,4 +1,4 @@
-from peewee import SqliteDatabase
+from peewee import SqliteDatabase, fn
 from .basic_models import (
     Department,
     BatchSchemeInfo,
@@ -192,39 +192,66 @@ class ExternalInterface:
         )
 
         subject_code_list = Subject.select(Subject.SubjectCode).where(
-            (Subject.SubjectScheme == scheme) & (Subject.SubjectSemester == semester)
+            (Subject.SubjectScheme == scheme)
+            & (Subject.SubjectSemester == semester)
+            & (Subject.SubjectDepartment == department)
         )
 
-        fcd_count = Score.select().where(
-            (
-                (Score.ScoreSerialNumber.in_(usn_list))
-                & (Score.ScoreSubjectCode.in_(subject_code_list))
-                & ((Score.ScoreExternals + Score.ScoreInternals) > 70)
+        fcd_count = (
+            Score.select()
+            .where(
+                (
+                    (Score.ScoreSerialNumber.in_(usn_list))
+                    & (Score.ScoreSubjectCode.in_(subject_code_list))
+                    & ((Score.ScoreExternals + Score.ScoreInternals) > 70)
+                )
+            )
+            .group_by(Score.ScoreSerialNumber)
+            .having((fn.SUM(Score.ScoreInternals) + fn.SUM(Score.ScoreExternals)) > 600)
+        )
+
+        fc_count = (
+            Score.select()
+            .where(
+                (
+                    (Score.ScoreSerialNumber.in_(usn_list))
+                    & (Score.ScoreSubjectCode.in_(subject_code_list))
+                )
+            )
+            .group_by(Score.ScoreSerialNumber)
+            .having(
+                (fn.SUM(Score.ScoreInternals) + fn.SUM(Score.ScoreExternals)).between(
+                    450, 600
+                )
             )
         )
 
-        fc_count = Score.select().where(
-            (
-                (Score.ScoreSerialNumber.in_(usn_list))
-                & (Score.ScoreSubjectCode.in_(subject_code_list))
-                & ((Score.ScoreExternals + Score.ScoreInternals).between(60, 70))
+        sc_count = (
+            Score.select()
+            .where(
+                (
+                    (Score.ScoreSerialNumber.in_(usn_list))
+                    & (Score.ScoreSubjectCode.in_(subject_code_list))
+                )
+            )
+            .group_by(Score.ScoreSerialNumber)
+            .having(
+                (fn.SUM(Score.ScoreInternals) + fn.SUM(Score.ScoreExternals)).between(
+                    300, 450
+                )
             )
         )
 
-        sc_count = Score.select().where(
-            (
-                (Score.ScoreSerialNumber.in_(usn_list))
-                & (Score.ScoreSubjectCode.in_(subject_code_list))
-                & ((Score.ScoreExternals + Score.ScoreInternals).between(45, 60))
+        fail_count = (
+            Score.select()
+            .where(
+                (
+                    (Score.ScoreSerialNumber.in_(usn_list))
+                    & (Score.ScoreSubjectCode.in_(subject_code_list))
+                )
             )
-        )
-
-        fail_count = Score.select().where(
-            (
-                (Score.ScoreSerialNumber.in_(usn_list))
-                & (Score.ScoreSubjectCode.in_(subject_code_list))
-                & ((Score.ScoreExternals + Score.ScoreInternals) < 45)
-            )
+            .group_by(Score.ScoreSerialNumber)
+            .having((fn.SUM(Score.ScoreInternals) + fn.SUM(Score.ScoreExternals)) < 350)
         )
 
         for subject_code in subject_code_list:
@@ -271,11 +298,16 @@ class ExternalInterface:
             final_information[subject_code]["FailPercentage"] = 100 - (
                 (usn_list.count() - sub_fail_count.count()) * 100 / usn_list.count()
             )
+            final_information["Pass"] = usn_list.count() - sub_fail_count.count()
+            final_information["Fail"] = sub_fail_count.count()
+
         final_information["SubjectCodes"] = [x.SubjectCode for x in subject_code_list]
         final_information["TotalAttendees"] = usn_list.count()
         final_information["FCD"] = fcd_count.count()
         final_information["FC"] = fc_count.count()
         final_information["SC"] = sc_count.count()
+        final_information["Pass"] = usn_list.count() - fail_count.count()
+        final_information["Fail"] = fail_count.count()
         final_information["PassPercentage"] = (
             (usn_list.count() - fail_count.count()) * 100 / usn_list.count()
         )
