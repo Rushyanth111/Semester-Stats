@@ -1,5 +1,7 @@
 from fastapi import APIRouter
+from fastapi.responses import FileResponse
 from ...config import db
+from ...docgen import docs_mail_merge_gen
 
 
 batch = APIRouter()
@@ -23,3 +25,9 @@ def get_batch_students(department: str, batch: int):
 @batch.get("/{department}/{batch}/backlogs")
 def get_batch_backlog(department: str, batch: int):
     return db.external_get_batch_backlogs(batch, department)
+
+
+@batch.get("/{department}/{batch}/{semester}/sfile")
+def get_batch_summary_file(department: str, semester: int, batch: int):
+    docs_mail_merge_gen(batch, semester, department)
+    return FileResponse(path="demo.docx", media_type="docx", filename="Report.docx")

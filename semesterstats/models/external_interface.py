@@ -254,6 +254,12 @@ class ExternalInterface:
             .having((fn.SUM(Score.ScoreInternals) + fn.SUM(Score.ScoreExternals)) < 350)
         )
 
+        sub_fail_count_array = []
+        sub_pass_count_array = []
+        sub_fcd_count_array = []
+        sub_fc_count_array = []
+        sub_sc_count_array = []
+
         for subject_code in subject_code_list:
             subject_code = subject_code.SubjectCode
             sub_fcd_count = Score.select().where(
@@ -298,10 +304,22 @@ class ExternalInterface:
             final_information[subject_code]["FailPercentage"] = 100 - (
                 (usn_list.count() - sub_fail_count.count()) * 100 / usn_list.count()
             )
-            final_information["Pass"] = usn_list.count() - sub_fail_count.count()
-            final_information["Fail"] = sub_fail_count.count()
+            final_information[subject_code]["Pass"] = (
+                usn_list.count() - sub_fail_count.count()
+            )
+            final_information[subject_code]["Fail"] = sub_fail_count.count()
+            sub_fail_count_array.append(sub_fail_count.count())
+            sub_fcd_count_array.append(sub_fcd_count.count())
+            sub_fc_count_array.append(sub_fc_count.count())
+            sub_sc_count_array.append(sub_sc_count.count())
+            sub_pass_count_array.append(usn_list.count() - sub_fail_count.count())
 
         final_information["SubjectCodes"] = [x.SubjectCode for x in subject_code_list]
+        final_information["SubjectFailArray"] = sub_fail_count_array
+        final_information["SubjectPassArray"] = sub_pass_count_array
+        final_information["SubjectFCDArray"] = sub_fcd_count_array
+        final_information["SubjectFCArray"] = sub_fc_count_array
+        final_information["SubjectSCArray"] = sub_sc_count_array
         final_information["TotalAttendees"] = usn_list.count()
         final_information["FCD"] = fcd_count.count()
         final_information["FC"] = fc_count.count()

@@ -5,12 +5,5 @@ services:
     build: .
     ports:
       - "9000:9000"
-    volumes:
-      - type: bind
-        source: ./FormattedData
-        target: /project/FormattedData
-      - type: bind
-        source: ./imported
-        target: /project/imported
     stop_signal: SIGINT
     tty: true

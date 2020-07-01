@@ -1,52 +1,50 @@
 from mailmerge import MailMerge
-from ..response_builder import get_summary
-
-DepartmentCodeDictionary = {}
+from ..config import db
 
 
-def docsGeneratorAlternate(Batch: int, Semester: int, Department: str):
-    Data = get_summary(Batch, Semester, Department)
-    with MailMerge("TemplateDocument.docx") as document:
+def docs_mail_merge_gen(batch: int, semester: int, department: str):
+    Data = db.external_get_batch_semester_summary(batch, department, semester)
+
+    with MailMerge("Resources/TemplateDocument.docx") as document:
         MainInformation = {
             "Total": str(Data["TotalAttendees"]),
             "FCD": str(Data["FCD"]),
             "FC": str(Data["FC"]),
             "SC": str(Data["SC"]),
             "Pass": str(Data["Pass"]),
-            "Fail": str(Data["Failures"]),
-            "PassP": Data["PassPercentage"],
-            "Batch": str(Batch),
+            "Fail": str(Data["Fail"]),
+            "PassP": str(Data["PassPercentage"]),
+            "Batch": str(batch),
             "ODEV": "Odd",
             "BYear": "2019",
-            "Department": DepartmentCodeDictionary.get(Department),
-            "Semester": str(Semester),
-            "DPS": str(Department),
+            "Department": department,
+            "Semester": str(semester),
+            "DPS": str(department),
         }
 
-        Rows = []
-        RowF = []
-        for SubjectDetail in Data["EachSubjectDetail"]:
+        rows = []
+        row_f = []
+        for subject in Data["SubjectCodes"]:
             d = {
-                "SubjectCodeT": SubjectDetail["SubjectCode"],
-                "TeachersNameT": SubjectDetail["FacultyName"]
-                + str("Placeholder for long string here"),
-                "AppT": str(SubjectDetail["Attendees"]),
-                "FailT": str(SubjectDetail["Failures"]),
-                "R1": str(SubjectDetail["FCD"]),
-                "R2": str(SubjectDetail["FC"]),
-                "R3": str(SubjectDetail["SC"]),
-                "PPT": str(SubjectDetail["PassPercentage"]),
+                "SubjectCodeT": str(subject),
+                "TeachersNameT": str("Placeholder for long string here"),
+                "AppT": str(Data[subject]["TotalAttendees"]),
+                "FailT": str(Data[subject]["Fail"]),
+                "R1": str(Data[subject]["FCD"]),
+                "R2": str(Data[subject]["FC"]),
+                "R3": str(Data[subject]["SC"]),
+                "PPT": str(Data[subject]["PassPercentage"]),
             }
-            Rows.append(d)
+            rows.append(d)
         d = {}
-        for x in list(Rows[-1].keys()):
-            d[x + "F"] = Rows[-1][x]
-        RowF.append(d)
+        for x in list(rows[-1].keys()):
+            d[x + "F"] = rows[-1][x]
+        row_f.append(d)
 
-        Rows = Rows[: len(Rows) - 1]
+        rows = rows[: len(rows) - 1]
 
         document.merge(**MainInformation)
-        document.merge_rows("SubjectCodeT", Rows)
+        document.merge_rows("SubjectCodeT", rows)
 
-        document.merge_rows("SubjectCodeTF", RowF)
+        document.merge_rows("SubjectCodeTF", row_f)
         document.write("demo.docx")
