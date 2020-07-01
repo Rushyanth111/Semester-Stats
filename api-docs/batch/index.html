@@ -370,6 +370,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#get-batchdepartmentbatchsemestersfile" class="md-nav__link">
+    GET batch/{department}/{batch}/{semester}/sfile
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -435,6 +442,13 @@
           <li class="md-nav__item">
   <a href="#get-batchdepartmentbatchbacklogs" class="md-nav__link">
     GET /batch/{department}/{batch}/backlogs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-batchdepartmentbatchsemestersfile" class="md-nav__link">
+    GET batch/{department}/{batch}/{semester}/sfile
   </a>
   
 </li>
@@ -509,86 +523,70 @@
 
 <p>Example Response:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;17CS51&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">183</span><span class="p">,</span>
-    <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">65</span><span class="p">,</span>
-    <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">72</span><span class="p">,</span>
-    <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
-    <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">98.90710382513662</span><span class="p">,</span>
-    <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">1.0928961748633839</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;17CS52&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">183</span><span class="p">,</span>
-    <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">73</span><span class="p">,</span>
-    <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">46</span><span class="p">,</span>
-    <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">44</span><span class="p">,</span>
-    <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">96.17486338797814</span><span class="p">,</span>
-    <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">3.825136612021865</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;17CS53&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">183</span><span class="p">,</span>
-    <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">41</span><span class="p">,</span>
-    <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">61</span><span class="p">,</span>
-    <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">54</span><span class="p">,</span>
-    <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">90.1639344262295</span><span class="p">,</span>
-    <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">9.836065573770497</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;17CS553&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">183</span><span class="p">,</span>
-    <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">68</span><span class="p">,</span>
-    <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">43</span><span class="p">,</span>
-    <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">43</span><span class="p">,</span>
-    <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">92.89617486338798</span><span class="p">,</span>
-    <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">7.103825136612016</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;17CS564&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">183</span><span class="p">,</span>
-    <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">78</span><span class="p">,</span>
-    <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">41</span><span class="p">,</span>
-    <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
-    <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">93.44262295081967</span><span class="p">,</span>
-    <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">6.557377049180332</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;17CS54&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">183</span><span class="p">,</span>
-    <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">38</span><span class="p">,</span>
-    <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span>
-    <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
-    <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">87.97814207650273</span><span class="p">,</span>
-    <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">12.021857923497265</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;17CSL57&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">183</span><span class="p">,</span>
-    <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">145</span><span class="p">,</span>
-    <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span>
+  <span class="nt">&quot;15CS81&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">198</span><span class="p">,</span>
+    <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-    <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
-    <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">0.0</span>
+    <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">98.48484848484848</span><span class="p">,</span>
+    <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">1.5151515151515156</span><span class="p">,</span>
+    <span class="nt">&quot;Pass&quot;</span><span class="p">:</span> <span class="mi">195</span><span class="p">,</span>
+    <span class="nt">&quot;Fail&quot;</span><span class="p">:</span> <span class="mi">3</span>
   <span class="p">},</span>
-  <span class="nt">&quot;17CSL58&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">183</span><span class="p">,</span>
-    <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">156</span><span class="p">,</span>
-    <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-    <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-    <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
-    <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">0.0</span>
+  <span class="nt">&quot;15CS832&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">198</span><span class="p">,</span>
+    <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">98.98989898989899</span><span class="p">,</span>
+    <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">1.0101010101010104</span><span class="p">,</span>
+    <span class="nt">&quot;Pass&quot;</span><span class="p">:</span> <span class="mi">196</span><span class="p">,</span>
+    <span class="nt">&quot;Fail&quot;</span><span class="p">:</span> <span class="mi">2</span>
   <span class="p">},</span>
-  <span class="nt">&quot;SubjectCodes&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;17CS51&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;17CS52&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;17CS53&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;17CS553&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;17CS564&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;17CS54&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;17CSL57&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;17CSL58&quot;</span>
-  <span class="p">],</span>
-  <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">183</span><span class="p">,</span>
-  <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">664</span><span class="p">,</span>
-  <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">339</span><span class="p">,</span>
-  <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">286</span><span class="p">,</span>
-  <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">59.56284153005465</span><span class="p">,</span>
-  <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">40.43715846994535</span>
+  <span class="nt">&quot;15CS82&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">198</span><span class="p">,</span>
+    <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">98.98989898989899</span><span class="p">,</span>
+    <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">1.0101010101010104</span><span class="p">,</span>
+    <span class="nt">&quot;Pass&quot;</span><span class="p">:</span> <span class="mi">196</span><span class="p">,</span>
+    <span class="nt">&quot;Fail&quot;</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;15CS84&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">198</span><span class="p">,</span>
+    <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+    <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="nt">&quot;Pass&quot;</span><span class="p">:</span> <span class="mi">198</span><span class="p">,</span>
+    <span class="nt">&quot;Fail&quot;</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;15CSP85&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">198</span><span class="p">,</span>
+    <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+    <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+    <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="nt">&quot;Pass&quot;</span><span class="p">:</span> <span class="mi">198</span><span class="p">,</span>
+    <span class="nt">&quot;Fail&quot;</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;SubjectCodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;15CS81&quot;</span><span class="p">,</span> <span class="s2">&quot;15CS832&quot;</span><span class="p">,</span> <span class="s2">&quot;15CS82&quot;</span><span class="p">,</span> <span class="s2">&quot;15CS84&quot;</span><span class="p">,</span> <span class="s2">&quot;15CSP85&quot;</span><span class="p">],</span>
+  <span class="nt">&quot;SubjectFailArray&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+  <span class="nt">&quot;SubjectPassArray&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">195</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">198</span><span class="p">,</span> <span class="mi">198</span><span class="p">],</span>
+  <span class="nt">&quot;SubjectFCDArray&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+  <span class="nt">&quot;SubjectFCArray&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+  <span class="nt">&quot;SubjectSCArray&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+  <span class="nt">&quot;TotalAttendees&quot;</span><span class="p">:</span> <span class="mi">198</span><span class="p">,</span>
+  <span class="nt">&quot;FCD&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;FC&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="nt">&quot;SC&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+  <span class="nt">&quot;Pass&quot;</span><span class="p">:</span> <span class="mi">198</span><span class="p">,</span>
+  <span class="nt">&quot;Fail&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;PassPercentage&quot;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span>
+  <span class="nt">&quot;FailPercentage&quot;</span><span class="p">:</span> <span class="mf">0.0</span>
 <span class="p">}</span>
 </code></pre></div>
 
@@ -653,6 +651,16 @@
   <span class="p">}</span>
 <span class="p">]</span>
 </code></pre></div>
+
+
+<h3 id="get-batchdepartmentbatchsemestersfile">GET batch/{department}/{batch}/{semester}/sfile<a class="headerlink" href="#get-batchdepartmentbatchsemestersfile" title="Permanent link">&para;</a></h3>
+<p>Obtain the report file for that particular semester.</p>
+<p>Example Request:</p>
+<div class="codehilite"><pre><span></span><code>batch/CS/2016/6/sfile
+</code></pre></div>
+
+
+<p>No Example Response, it directly links to the download file</p>
                 
               
               
