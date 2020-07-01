@@ -48,86 +48,70 @@ Example Response:
 
 ```json
 {
-  "17CS51": {
-    "TotalAttendees": 183,
-    "FCD": 65,
-    "FC": 72,
-    "SC": 35,
-    "PassPercentage": 98.90710382513662,
-    "FailPercentage": 1.0928961748633839
-  },
-  "17CS52": {
-    "TotalAttendees": 183,
-    "FCD": 73,
-    "FC": 46,
-    "SC": 44,
-    "PassPercentage": 96.17486338797814,
-    "FailPercentage": 3.825136612021865
-  },
-  "17CS53": {
-    "TotalAttendees": 183,
-    "FCD": 41,
-    "FC": 61,
-    "SC": 54,
-    "PassPercentage": 90.1639344262295,
-    "FailPercentage": 9.836065573770497
-  },
-  "17CS553": {
-    "TotalAttendees": 183,
-    "FCD": 68,
-    "FC": 43,
-    "SC": 43,
-    "PassPercentage": 92.89617486338798,
-    "FailPercentage": 7.103825136612016
-  },
-  "17CS564": {
-    "TotalAttendees": 183,
-    "FCD": 78,
-    "FC": 41,
-    "SC": 42,
-    "PassPercentage": 93.44262295081967,
-    "FailPercentage": 6.557377049180332
-  },
-  "17CS54": {
-    "TotalAttendees": 183,
-    "FCD": 38,
-    "FC": 55,
-    "SC": 57,
-    "PassPercentage": 87.97814207650273,
-    "FailPercentage": 12.021857923497265
-  },
-  "17CSL57": {
-    "TotalAttendees": 183,
-    "FCD": 145,
-    "FC": 17,
+  "15CS81": {
+    "TotalAttendees": 198,
+    "FCD": 0,
+    "FC": 1,
     "SC": 5,
-    "PassPercentage": 100.0,
-    "FailPercentage": 0.0
+    "PassPercentage": 98.48484848484848,
+    "FailPercentage": 1.5151515151515156,
+    "Pass": 195,
+    "Fail": 3
   },
-  "17CSL58": {
-    "TotalAttendees": 183,
-    "FCD": 156,
-    "FC": 4,
-    "SC": 6,
-    "PassPercentage": 100.0,
-    "FailPercentage": 0.0
+  "15CS832": {
+    "TotalAttendees": 198,
+    "FCD": 0,
+    "FC": 3,
+    "SC": 4,
+    "PassPercentage": 98.98989898989899,
+    "FailPercentage": 1.0101010101010104,
+    "Pass": 196,
+    "Fail": 2
   },
-  "SubjectCodes": [
-    "17CS51",
-    "17CS52",
-    "17CS53",
-    "17CS553",
-    "17CS564",
-    "17CS54",
-    "17CSL57",
-    "17CSL58"
-  ],
-  "TotalAttendees": 183,
-  "FCD": 664,
-  "FC": 339,
-  "SC": 286,
-  "PassPercentage": 59.56284153005465,
-  "FailPercentage": 40.43715846994535
+  "15CS82": {
+    "TotalAttendees": 198,
+    "FCD": 3,
+    "FC": 1,
+    "SC": 3,
+    "PassPercentage": 98.98989898989899,
+    "FailPercentage": 1.0101010101010104,
+    "Pass": 196,
+    "Fail": 2
+  },
+  "15CS84": {
+    "TotalAttendees": 198,
+    "FCD": 8,
+    "FC": 1,
+    "SC": 1,
+    "PassPercentage": 100.0,
+    "FailPercentage": 0.0,
+    "Pass": 198,
+    "Fail": 0
+  },
+  "15CSP85": {
+    "TotalAttendees": 198,
+    "FCD": 9,
+    "FC": 0,
+    "SC": 0,
+    "PassPercentage": 100.0,
+    "FailPercentage": 0.0,
+    "Pass": 198,
+    "Fail": 0
+  },
+  "SubjectCodes": ["15CS81", "15CS832", "15CS82", "15CS84", "15CSP85"],
+  "SubjectFailArray": [3, 2, 2, 0, 0],
+  "SubjectPassArray": [195, 196, 196, 198, 198],
+  "SubjectFCDArray": [0, 0, 3, 8, 9],
+  "SubjectFCArray": [1, 3, 1, 1, 0],
+  "SubjectSCArray": [5, 4, 3, 1, 0],
+  "TotalAttendees": 198,
+  "FCD": 0,
+  "FC": 2,
+  "SC": 7,
+  "Pass": 198,
+  "Fail": 0,
+  "PassPercentage": 100.0,
+  "FailPercentage": 0.0
 }
 ```
 
@@ -197,3 +181,15 @@ Example Request:
   }
 ]
 ```
+
+### GET batch/{department}/{batch}/{semester}/sfile
+
+Obtain the report file for that particular semester.
+
+Example Request:
+
+```zsh
+batch/CS/2016/6/sfile
+```
+
+No Example Response, it directly links to the download file
