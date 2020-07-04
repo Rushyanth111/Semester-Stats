@@ -60,7 +60,6 @@ class TeacherTaught(BaseModel):
 class Score(BaseModel):
     ScoreSerialNumber = ForeignKeyField(Student, field=Student.StudentUSN)
     ScoreSubjectCode = ForeignKeyField(Subject, field=Subject.SubjectCode)
-    ScoreSemester = IntegerField()
     ScoreInternals = IntegerField()
     ScoreExternals = IntegerField()
 
@@ -72,7 +71,6 @@ class Score(BaseModel):
 class Backlog(BaseModel):
     BacklogSerialNumber = ForeignKeyField(Student, field=Student.StudentUSN)
     BacklogSubjectCode = ForeignKeyField(Subject, field=Subject.SubjectCode)
-    BacklogSemester = IntegerField()
     BacklogInternals = IntegerField()
     BacklogExternals = IntegerField()
 
