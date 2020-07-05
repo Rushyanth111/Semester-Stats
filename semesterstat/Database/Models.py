@@ -7,7 +7,6 @@ from peewee import (
     CompositeKey,
     AutoField,
     FixedCharField,
-    BooleanField,
     SqliteDatabase,
 )
 from ..Config import database_store_path, formatted_data_path
@@ -67,9 +66,7 @@ class Teacher(BaseModel):
 class TeacherTaught(BaseModel):
     TeacherUSN = ForeignKeyField(Teacher, field=Teacher.TeacherUSN)
     TeacherBatch = IntegerField()
-
-    class Meta:
-        primary_key = CompositeKey("TeacherUSN", "TeacherBatch")
+    TeacherSubject = ForeignKeyField(Subject, field=Subject.SubjectCode)
 
 
 class Score(BaseModel):
@@ -92,23 +89,6 @@ class BacklogHistory(BaseModel):
     class Meta:
         indexes = ((("BacklogSerialNumber", "BacklogSubjectCode"), False),)
         primary_key = False
-
-
-class Parsed(BaseModel):
-    ParsedDepartment = FixedCharField(3)
-    ParsedScheme = IntegerField()
-    ParsedBatch = IntegerField()
-    ParsedSemester = IntegerField()
-    ParsedArrear = BooleanField()
-
-    class Meta:
-        primary_key = CompositeKey(
-            "ParsedScheme",
-            "ParsedBatch",
-            "ParsedSemester",
-            "ParsedDepartment",
-            "ParsedArrear",
-        )
 
 
 logger.info("Creating Tables if not existing.")
@@ -139,31 +119,27 @@ with open(formatted_data_path + "/Departments.json") as file, db.atomic():
 logger.info("Creating Trigger for Table: Score")
 
 trigger_string = """
-create trigger score_1 if not exists after update
+create trigger if not exists score_1  after update
     on {}
     when {}
 BEGIN
     Insert into {}({}) values ({});
 END;
 """
-db.execute_sql(
-    trigger_string.format(
-        Score._meta.table_name,
-        "(old.ScoreInternals + old.ScoreExternals) < (new.ScoreInternals + new.ScoreExternals)",
-        BacklogHistory._meta.table_name,
-        ",".join(
-            [
-                str(feild.name)
-                for feild in db.get_columns(BacklogHistory._meta.table_name)
-            ]
-        ),
-        ",".join(
-            [
-                "old." + str(feild.name)
-                for feild in db.get_columns(Score._meta.table_name)
-            ]
-        ),
-    )
+formatted_trigger = trigger_string.format(
+    Score._meta.table_name,
+    "(old.ScoreInternals + old.ScoreExternals) < (new.ScoreInternals + new.ScoreExternals)",
+    BacklogHistory._meta.table_name,
+    ",".join(
+        [str(feild.name) for feild in db.get_columns(BacklogHistory._meta.table_name)]
+    ),
+    ",".join(
+        ["old." + str(feild.name) for feild in db.get_columns(Score._meta.table_name)]
+    ),
 )
+
+logger.debug("Processing Trigger: {}", formatted_trigger)
+
+db.execute_sql(formatted_trigger)
 
 logger.info("Database Initalized with: Tables, Triggers, and Department Information")
