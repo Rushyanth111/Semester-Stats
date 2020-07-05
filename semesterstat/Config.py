@@ -1,5 +1,18 @@
-# Let us read some of the Configurations here.
+import configparser
+import os
+
+config = configparser.ConfigParser()
+config.read("config.ini")
+
+is_dev = False
+
+if os.environ.get("APP_MODE") is None or os.environ.get("APP_MODE") == "DEV":
+    is_dev = True
+
+formatted_data_path = config["Routes"]["FilePath"]
+database_store_path = config["Routes"]["DataBasePath"]
+# If the mode is developement, then change these variables.
 
 
-formatted_data_path = ""
-database_store_path = ""
+if is_dev:
+    database_store_path = ":memory:"
