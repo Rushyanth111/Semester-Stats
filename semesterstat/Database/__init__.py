@@ -4,7 +4,6 @@ from .Models import (
     Student,
     Subject,
     Score,
-    BacklogHistory,
     Teacher,
     TeacherTaught,
     BacklogHistory,

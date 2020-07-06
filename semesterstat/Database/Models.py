@@ -128,7 +128,7 @@ END;
 """
 formatted_trigger = trigger_string.format(
     Score._meta.table_name,
-    "(old.ScoreInternals + old.ScoreExternals) < (new.ScoreInternals + new.ScoreExternals)",
+    "(old.ScoreInternals+old.ScoreExternals) < (new.ScoreInternals+new.ScoreExternals)",
     BacklogHistory._meta.table_name,
     ",".join(
         [str(feild.name) for feild in db.get_columns(BacklogHistory._meta.table_name)]
