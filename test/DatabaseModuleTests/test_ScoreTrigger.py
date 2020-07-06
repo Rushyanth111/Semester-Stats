@@ -1,4 +1,4 @@
-from semesterstat.Database import Score, BacklogHistory, Student, Department, Subject
+from semesterstat.Database import Score, BacklogHistory, Student, Subject
 from peewee import EXCLUDED
 import unittest
 
@@ -7,18 +7,11 @@ class ScoreTriggerTest(unittest.TestCase):
     def setUp(self):
 
         Student.insert(
-            StudentUSN="1CR17CS001",
-            StudentName="Dummy",
-            StudentBatch=2016,
-            StudentDepartment="CS",
+            Usn="1CR17CS001", Name="Dummy", Batch=2016, Department="CS",
         ).execute()
 
         Subject.insert(
-            SubjectCode="17CS56",
-            SubjectName="Dummy",
-            SubjectSemester=5,
-            SubjectScheme=2017,
-            SubjectDepartment="CS",
+            Code="17CS56", Name="Dummy", Semester=5, Scheme=2017, Department="CS",
         ).execute()
 
     def tearDown(self):
@@ -30,26 +23,20 @@ class ScoreTriggerTest(unittest.TestCase):
     def test_check_trigger_working(self):
 
         Score.insert(
-            ScoreSerialNumber="1CR17CS001",
-            ScoreSubjectCode="17CS56",
-            ScoreInternals=56,
-            ScoreExternals=22,
+            Usn="1CR17CS001", SubjectCode="17CS56", Internals=56, Externals=22,
         ).execute()
 
         Score.insert(
-            ScoreSerialNumber="1CR17CS001",
-            ScoreSubjectCode="17CS56",
-            ScoreInternals=56,
-            ScoreExternals=26,
+            Usn="1CR17CS001", SubjectCode="17CS56", Internals=56, Externals=26,
         ).on_conflict(
-            conflict_target=[Score.ScoreSerialNumber, Score.ScoreSubjectCode],
+            conflict_target=[Score.Usn, Score.SubjectCode],
             update={
-                Score.ScoreInternals: EXCLUDED.ScoreInternals,
-                Score.ScoreExternals: EXCLUDED.ScoreExternals,
+                Score.Internals: EXCLUDED.Internals,
+                Score.Externals: EXCLUDED.Externals,
             },
             where=(
-                (Score.ScoreExternals + Score.ScoreInternals)
-                < (EXCLUDED.ScoreInternals + EXCLUDED.ScoreExternals)
+                (Score.Externals + Score.Internals)
+                < (EXCLUDED.Internals + EXCLUDED.Externals)
             ),
         ).execute()
 
@@ -59,26 +46,20 @@ class ScoreTriggerTest(unittest.TestCase):
 
     def test_check_trigger_ignores_lower_score(self):
         Score.insert(
-            ScoreSerialNumber="1CR17CS001",
-            ScoreSubjectCode="17CS56",
-            ScoreInternals=56,
-            ScoreExternals=22,
+            Usn="1CR17CS001", SubjectCode="17CS56", Internals=56, Externals=22,
         ).execute()
 
         Score.insert(
-            ScoreSerialNumber="1CR17CS001",
-            ScoreSubjectCode="17CS56",
-            ScoreInternals=56,
-            ScoreExternals=20,
+            Usn="1CR17CS001", SubjectCode="17CS56", Internals=56, Externals=20,
         ).on_conflict(
-            conflict_target=[Score.ScoreSerialNumber, Score.ScoreSubjectCode],
+            conflict_target=[Score.Usn, Score.SubjectCode],
             update={
-                Score.ScoreInternals: EXCLUDED.ScoreInternals,
-                Score.ScoreExternals: EXCLUDED.ScoreExternals,
+                Score.Internals: EXCLUDED.Internals,
+                Score.Externals: EXCLUDED.Externals,
             },
             where=(
-                (Score.ScoreExternals + Score.ScoreInternals)
-                < (EXCLUDED.ScoreInternals + EXCLUDED.ScoreExternals)
+                (Score.Externals + Score.Internals)
+                < (EXCLUDED.Internals + EXCLUDED.Externals)
             ),
         ).execute()
 

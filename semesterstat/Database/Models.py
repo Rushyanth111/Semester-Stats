@@ -34,8 +34,8 @@ class BaseModel(Model):
 
 
 class Department(BaseModel):
-    DepartmentCode = FixedCharField(3, primary_key=True)
-    DepartmentName = TextField()
+    Code = FixedCharField(3, primary_key=True)
+    Name = TextField()
 
 
 class BatchSchemeInfo(BaseModel):
@@ -44,50 +44,52 @@ class BatchSchemeInfo(BaseModel):
 
 
 class Student(BaseModel):
-    StudentUSN = FixedCharField(10, primary_key=True)
-    StudentName = TextField()
-    StudentBatch = IntegerField()
-    StudentDepartment = ForeignKeyField(Department, field=Department.DepartmentCode)
+    Id = AutoField()
+    Usn = FixedCharField(10, unique=True)
+    Name = TextField()
+    Batch = IntegerField()
+    Department = ForeignKeyField(Department, field=Department.Code)
 
 
 class Subject(BaseModel):
-    SubjectCode = CharField(7, primary_key=True)
-    SubjectName = TextField()
-    SubjectSemester = IntegerField()
-    SubjectScheme = IntegerField()
-    SubjectDepartment = ForeignKeyField(Department, field=Department.DepartmentCode)
+    Id = AutoField()
+    Code = CharField(7, unique=True)
+    Name = TextField()
+    Semester = IntegerField()
+    Scheme = IntegerField()
+    Department = ForeignKeyField(Department, field=Department.Code)
 
 
 class Teacher(BaseModel):
-    TeacherUSN = AutoField()
-    TeacherName = TextField()
+    Usn = AutoField()
+    Name = TextField()
 
 
 class TeacherTaught(BaseModel):
-    TeacherUSN = ForeignKeyField(Teacher, field=Teacher.TeacherUSN)
-    TeacherBatch = IntegerField()
-    TeacherSubject = ForeignKeyField(Subject, field=Subject.SubjectCode)
+    Usn = ForeignKeyField(Teacher, field=Teacher.Usn)
+    Batch = IntegerField()
+    Subject = ForeignKeyField(Subject, field=Subject.Code)
 
 
 class Score(BaseModel):
-    ScoreSerialNumber = ForeignKeyField(Student, field=Student.StudentUSN)
-    ScoreSubjectCode = ForeignKeyField(Subject, field=Subject.SubjectCode)
-    ScoreInternals = IntegerField()
-    ScoreExternals = IntegerField()
+    Usn = ForeignKeyField(Student, field=Student.Usn, on_update="CASCADE")
+    SubjectCode = ForeignKeyField(Subject, field=Subject.Code, on_update="CASCADE")
+    Internals = IntegerField()
+    Externals = IntegerField()
 
     class Meta:
-        primary_key = CompositeKey("ScoreSerialNumber", "ScoreSubjectCode")
-        indexes = ((("ScoreSerialNumber", "ScoreSubjectCode"), True),)
+        primary_key = CompositeKey("Usn", "SubjectCode")
+        indexes = ((("Usn", "SubjectCode"), True),)
 
 
 class BacklogHistory(BaseModel):
-    BacklogSerialNumber = ForeignKeyField(Student, field=Student.StudentUSN)
-    BacklogSubjectCode = ForeignKeyField(Subject, field=Subject.SubjectCode)
-    BacklogInternals = IntegerField()
-    BacklogExternals = IntegerField()
+    Usn = ForeignKeyField(Student, field=Student.Usn)
+    SubjectCode = ForeignKeyField(Subject, field=Subject.Code)
+    Internals = IntegerField()
+    Externals = IntegerField()
 
     class Meta:
-        indexes = ((("BacklogSerialNumber", "BacklogSubjectCode"), False),)
+        indexes = ((("Usn", "SubjectCode"), False),)
         primary_key = False
 
 
@@ -112,7 +114,7 @@ with open(formatted_data_path + "/Departments.json") as file, db.atomic():
     dep_codes = json.loads(file.read())
     Department.insert_many(
         set(zip(dep_codes.keys(), dep_codes.values(),)),
-        fields=[Department.DepartmentCode, Department.DepartmentName],
+        fields=[Department.Code, Department.Name],
     ).execute()
 
 
@@ -128,7 +130,7 @@ END;
 """
 formatted_trigger = trigger_string.format(
     Score._meta.table_name,
-    "(old.ScoreInternals+old.ScoreExternals) < (new.ScoreInternals+new.ScoreExternals)",
+    "(old.Internals+old.Externals) < (new.Internals+new.Externals)",
     BacklogHistory._meta.table_name,
     ",".join(
         [str(feild.name) for feild in db.get_columns(BacklogHistory._meta.table_name)]

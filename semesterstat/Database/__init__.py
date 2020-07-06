@@ -1,4 +1,5 @@
 from .Models import (
+    db,
     Department,
     BatchSchemeInfo,
     Student,
@@ -10,6 +11,7 @@ from .Models import (
 )
 
 __all__ = [
+    "db",
     "Department",
     "BatchSchemeInfo",
     "Student",
