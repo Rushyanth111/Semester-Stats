@@ -40,11 +40,8 @@ class StudentEntity(BaseModel):
             ).on_conflict_ignore().execute()
 
     @staticmethod
-    def update_student(student: "StudentEntity") -> None:
-        # Insert or Replace.
-        Student.insert(
-            Usn=student.usn,
-            Name=student.name,
-            Batch=student.batch,
-            Department=student.department,
-        ).on_conflict_replace()
+    def update_student(old_id: str, stu: "StudentEntity") -> None:
+
+        Student.update(
+            Usn=stu.usn, Name=stu.name, Batch=stu.batch, department=stu.department
+        ).where(Student.Usn == old_id)
