@@ -44,16 +44,14 @@ class BatchSchemeInfo(BaseModel):
 
 
 class Student(BaseModel):
-    Id = AutoField()
-    Usn = FixedCharField(10, unique=True)
+    Usn = FixedCharField(10, primary_key=True)
     Name = TextField()
     Batch = IntegerField()
     Department = ForeignKeyField(Department, field=Department.Code)
 
 
 class Subject(BaseModel):
-    Id = AutoField()
-    Code = CharField(7, unique=True)
+    Code = CharField(7, primary_key=True)
     Name = TextField()
     Semester = IntegerField()
     Scheme = IntegerField()
