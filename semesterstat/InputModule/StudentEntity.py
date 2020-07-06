@@ -1,5 +1,7 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Tuple
+
+from ..Database import db, Student
 
 
 class StudentEntity(BaseModel):
@@ -8,10 +10,41 @@ class StudentEntity(BaseModel):
     batch: int
     department: str
 
-    @staticmethod
-    def create(usn: str, name: int, batch: int, department: str) -> "StudentEntity":
-        return StudentEntity(usn=usn, name=name, batch=batch, department=department)
+    @classmethod
+    def convert_to_database_tuple(cls: "StudentEntity"):
+        return (cls.usn, cls.name, cls.batch, cls.department)
 
     @staticmethod
-    def submit(objects: List["StudentEntity"]):
-        pass
+    def create(usn: str, name: str, batch: int, department: str) -> "StudentEntity":
+        return StudentEntity(
+            usn=usn.upper(),
+            name=name.upper(),
+            batch=batch,
+            department=department.upper(),
+        )
+
+    @staticmethod
+    def submit_bulk(objects: List["StudentEntity"]):
+        # Convert All of the StudentEntity Objects to Student Objects.
+        stu_list: List[Tuple[str, str, int, str]] = [
+            obj.convert_to_database_tuple() for obj in objects
+        ]
+
+        # Insert all of the tuples into the StudentDatabase.
+        # Ignore Conflicts, do not proceed with them.
+
+        with db.atomic():
+            Student.insert_many(
+                stu_list,
+                fields=[Student.Usn, Student.Name, Student.Batch, Student.Department],
+            ).on_conflict_ignore().execute()
+
+    @staticmethod
+    def update_student(student: "StudentEntity") -> None:
+        # Insert or Replace.
+        Student.insert(
+            Usn=student.usn,
+            Name=student.name,
+            Batch=student.batch,
+            Department=student.department,
+        ).on_conflict_replace()
