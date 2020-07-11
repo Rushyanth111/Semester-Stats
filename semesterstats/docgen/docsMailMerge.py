@@ -13,11 +13,11 @@ def docs_mail_merge_gen(batch: int, semester: int, department: str):
             "SC": str(Data["SC"]),
             "Pass": str(Data["Pass"]),
             "Fail": str(Data["Fail"]),
-            "PassP": str(Data["PassPercentage"]),
+            "PassP": "{:.2f}".format(Data["PassPercentage"]),
             "Batch": str(batch),
             "ODEV": "Odd",
             "BYear": "2019",
-            "Department": department,
+            "Department": str(db.external_get_department(department).DepartmentName),
             "Semester": str(semester),
             "DPS": str(department),
         }
@@ -33,7 +33,7 @@ def docs_mail_merge_gen(batch: int, semester: int, department: str):
                 "R1": str(Data[subject]["FCD"]),
                 "R2": str(Data[subject]["FC"]),
                 "R3": str(Data[subject]["SC"]),
-                "PPT": str(Data[subject]["PassPercentage"]),
+                "PPT": "{:.2f}".format(Data[subject]["PassPercentage"]) + "%",
             }
             rows.append(d)
         d = {}
