@@ -182,6 +182,41 @@ Example Request:
 ]
 ```
 
+### GET batch/{department}/{batch}/detained
+
+Obtain the Detained List for that particular batch based on the most recent data.
+
+Example Request:
+
+```zsh
+"batch/CS/2016/detained"
+
+```
+
+Example Response:
+
+```json
+[
+  "1CR16CS003",
+  "1CR16CS005",
+  "1CR16CS006",
+  "1CR16CS007",
+  "1CR16CS009",
+  "1CR16CS014",
+  "1CR16CS015",
+  "1CR16CS024",
+  "1CR16CS025",
+  "1CR16CS027",
+  "1CR16CS028",
+  "1CR16CS037",
+  "1CR16CS039",
+  "1CR16CS046",
+  "1CR16CS047",
+  ...
+]
+
+```
+
 ### GET batch/{department}/{batch}/{semester}/sfile
 
 Obtain the report file for that particular semester.
