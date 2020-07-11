@@ -31,3 +31,8 @@ def get_batch_backlog(department: str, batch: int):
 def get_batch_summary_file(department: str, semester: int, batch: int):
     docs_mail_merge_gen(batch, semester, department)
     return FileResponse(path="demo.docx", media_type="docx", filename="Report.docx")
+
+
+@batch.get("/{department}/{batch}/detained")
+def get_batch_detained(department: str, batch: int):
+    return db.external_get_batch_detained(batch, department)

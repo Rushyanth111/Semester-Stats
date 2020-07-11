@@ -175,6 +175,25 @@ class ExternalInterface:
             ]
         )
 
+    def external_get_batch_detained(self, batch: int, department: str):
+        usn_list = Student.select(Student.StudentUSN).where(
+            (Student.StudentDepartment == department) & (Student.StudentBatch == batch)
+        )
+
+        return [
+            ScoreModel.construct(**model_to_dict(x, recurse=False)).ScoreSerialNumber
+            for x in Score.select()
+            .where(
+                (
+                    Score.ScoreSerialNumber.in_(usn_list)
+                    & (Score.ScoreInternals + Score.ScoreExternals < 45)
+                )
+            )
+            .group_by(Score.ScoreSerialNumber)
+            .having(fn.count(Score.ScoreSerialNumber) > 4)
+            .objects()
+        ]
+
     def external_get_batch_semester_summary(
         self, batch: int, department: str, semester: int
     ):
