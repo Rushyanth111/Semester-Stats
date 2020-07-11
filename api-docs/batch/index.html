@@ -371,6 +371,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#get-batchdepartmentbatchdetained" class="md-nav__link">
+    GET batch/{department}/{batch}/detained
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get-batchdepartmentbatchsemestersfile" class="md-nav__link">
     GET batch/{department}/{batch}/{semester}/sfile
   </a>
@@ -442,6 +449,13 @@
           <li class="md-nav__item">
   <a href="#get-batchdepartmentbatchbacklogs" class="md-nav__link">
     GET /batch/{department}/{batch}/backlogs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-batchdepartmentbatchdetained" class="md-nav__link">
+    GET batch/{department}/{batch}/detained
   </a>
   
 </li>
@@ -649,6 +663,35 @@
     <span class="nt">&quot;15CS73&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">18</span><span class="p">],</span>
     <span class="nt">&quot;15CS754&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">28</span><span class="p">]</span>
   <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+
+
+<h3 id="get-batchdepartmentbatchdetained">GET batch/{department}/{batch}/detained<a class="headerlink" href="#get-batchdepartmentbatchdetained" title="Permanent link">&para;</a></h3>
+<p>Obtain the Detained List for that particular batch based on the most recent data.</p>
+<p>Example Request:</p>
+<div class="codehilite"><pre><span></span><code><span class="s2">&quot;batch/CS/2016/detained&quot;</span>
+</code></pre></div>
+
+
+<p>Example Response:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">[</span>
+  <span class="s2">&quot;1CR16CS003&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS005&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS006&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS007&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS009&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS014&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS015&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS024&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS025&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS027&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS028&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS037&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS039&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS046&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;1CR16CS047&quot;</span><span class="p">,</span>
+  <span class="err">...</span>
 <span class="p">]</span>
 </code></pre></div>
 
