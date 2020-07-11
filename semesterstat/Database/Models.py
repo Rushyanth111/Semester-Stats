@@ -61,6 +61,7 @@ class Subject(BaseModel):
 class Teacher(BaseModel):
     Usn = AutoField()
     Name = TextField()
+    Department = ForeignKeyField(Department, field=Department.Code)
 
 
 class TeacherTaught(BaseModel):
