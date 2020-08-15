@@ -1,6 +1,12 @@
 from pydantic import BaseModel, validator
 from typing import List, Optional
-from ...common.extractor import batch_from_usn, dept_from_usn
+from ...common.extractor import (
+    batch_from_usn,
+    dept_from_usn,
+    semester_from_subject,
+    scheme_from_subject,
+    dept_from_subject,
+)
 
 
 class StudentReport(BaseModel):
@@ -27,15 +33,15 @@ class SubjectReport(BaseModel):
 
     @validator("Semester", pre=True, always=True)
     def set_semester(self, v, values):
-        pass
+        return semester_from_subject(values["Code"])
 
     @validator("Scheme", pre=True, always=True)
     def set_scheme(self, v, values):
-        pass
+        return scheme_from_subject(values["Code"])
 
     @validator("Department", pre=True, always=True)
     def set_dept(self, v, values):
-        pass
+        return dept_from_subject(values["Code"])
 
 
 class DepartmentReport(BaseModel):
