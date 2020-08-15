@@ -69,4 +69,3 @@ dept_dict = {
     "TE": "Telecommunication Engineering",
     "TX": "Textile Technology",
 }
-
