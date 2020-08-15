@@ -33,7 +33,7 @@ class ExtractorTest(unittest.TestCase):
             ("15MATDIP31", 3, 2015, "XX", False),
             ("18ECS84", 8, 2018, "EC", False),
             ("18ECMP68", 6, 2018, "EC", False),
-            ("18ECL67", 6, 2018, "EC", False),
+            ("18ECL67", 6, 2018, "EC", True),
             ("15EC553", 5, 2015, "EC", False),
         )
 
