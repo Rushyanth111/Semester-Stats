@@ -1,5 +1,5 @@
 import unittest
-from semesterstat.Database import Student, Score, Subject
+from semesterstat.database import Student, Score, Subject
 
 
 class StudentTests(unittest.TestCase):

@@ -1,4 +1,4 @@
-from semesterstat.Database import Score, BacklogHistory, Student, Subject
+from semesterstat.database import Score, BacklogHistory, Student, Subject
 from peewee import EXCLUDED
 import unittest
 
