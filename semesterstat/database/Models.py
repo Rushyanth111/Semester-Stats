@@ -109,7 +109,7 @@ db.create_tables(
 
 logger.info("Inserting Department Details")
 
-with open(formatted_data_path + "/Departments.json") as file, db.atomic():
+with open("../constants/Departments.json") as file, db.atomic():
     dep_codes = json.loads(file.read())
     Department.insert_many(
         set(zip(dep_codes.keys(), dep_codes.values(),)),
