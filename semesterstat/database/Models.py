@@ -9,10 +9,9 @@ from peewee import (
     FixedCharField,
     SqliteDatabase,
 )
-from ..Config import database_store_path, formatted_data_path
+from ..Config import database_store_path
 from loguru import logger
-import json
-
+from ..constants.dept import dept_dict
 
 # Define the database:
 db = SqliteDatabase(
@@ -109,12 +108,10 @@ db.create_tables(
 
 logger.info("Inserting Department Details")
 
-with open("../constants/Departments.json") as file, db.atomic():
-    dep_codes = json.loads(file.read())
-    Department.insert_many(
-        set(zip(dep_codes.keys(), dep_codes.values(),)),
-        fields=[Department.Code, Department.Name],
-    ).execute()
+Department.insert_many(
+    set(zip(dept_dict.keys(), dept_dict.values(),)),
+    fields=[Department.Code, Department.Name],
+).execute()
 
 
 logger.info("Creating Trigger for Table: Score")
