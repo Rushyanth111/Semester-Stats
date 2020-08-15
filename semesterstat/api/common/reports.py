@@ -1,3 +1,4 @@
+# https://pydantic-docs.helpmanual.io/usage/validators/#validate-always
 from pydantic import BaseModel, validator
 from typing import List, Optional
 from ...common.extractor import (
@@ -16,11 +17,11 @@ class StudentReport(BaseModel):
     Department: Optional[str]
 
     @validator("Batch", pre=True, always=True)
-    def set_batch(self, v, values):
+    def set_batch(cls, v, values):
         return batch_from_usn(values["Usn"])
 
     @validator("Department", pre=True, always=True)
-    def set_dept(self, v, values):
+    def set_dept(cls, v, values):
         return dept_from_usn(values["Usn"])
 
 
@@ -28,25 +29,20 @@ class SubjectReport(BaseModel):
     Code: str
     Name: str
     Semester: Optional[int]
-    Scheme: Optional[str]
+    Scheme: Optional[int]
     Department: Optional[str]
 
     @validator("Semester", pre=True, always=True)
-    def set_semester(self, v, values):
+    def set_semester(cls, v, values):
         return semester_from_subject(values["Code"])
 
     @validator("Scheme", pre=True, always=True)
-    def set_scheme(self, v, values):
+    def set_scheme(cls, v, values):
         return scheme_from_subject(values["Code"])
 
     @validator("Department", pre=True, always=True)
-    def set_dept(self, v, values):
+    def set_dept(cls, v, values):
         return dept_from_subject(values["Code"])
-
-
-class DepartmentReport(BaseModel):
-    Code: str
-    Name: str
 
 
 class ScoreReport(BaseModel):
@@ -64,18 +60,19 @@ class Report(BaseModel):
     Internals: int
     Externals: int
 
-    # https://pydantic-docs.helpmanual.io/usage/validators/#validate-always
     def export_student(self) -> StudentReport:
         return StudentReport(Usn=self.Usn, Name=self.Name)
 
     def export_score(self) -> ScoreReport:
-        pass
-
-    def export_department(self) -> DepartmentReport:
-        pass
+        return ScoreReport(
+            Usn=self.Usn,
+            SubjectCode=self.Subcode,
+            Internals=self.Internals,
+            Externals=self.Externals,
+        )
 
     def export_subject(self) -> SubjectReport:
-        pass
+        return SubjectReport(Code=self.Subcode, Name=self.Subname)
 
 
 class BulkReport(BaseModel):
