@@ -1,4 +1,7 @@
 import re
+from ..constants.dept import dept_dict
+
+# Define Constant Data
 
 
 # Format of the USN: (Uni Code{3})(Batch{2})(Dept{2})(RollNo{3})
@@ -67,8 +70,31 @@ def dept_from_subject(subcode: str) -> str:
 
     if res is None:
         return None
-    else:
+
+    # Department Can be two or Three Characters Long, Check for Length
+
+    if len(res) == 2 and res in dept_dict:
+        # If Two, then just check in dept list
         return res
+
+    if len(res) == 3:
+        # If Three, then Check if the Last ends with S or L.
+        # If True, then Check in dept_dict if remaining string exist.
+        # Else, check in dept_dict if exists, else, return BS
+
+        if res[-1] in ("L", "S") and res[: len(res) - 1] in dept_dict:
+            return res[: len(res) - 1]
+
+        elif res in dept_dict:
+            return res
+
+    if len(res) == 4 and res[-2:] == "MP" and res[: len(res) - 2] in dept_dict:
+        # Check for MP At the end, if so, check for
+        return res[: len(res) - 2]
+
+    # If all Else Fails, Return XX -> Basic Science
+
+    return "XX"
 
 
 def is_lab(subcode: str) -> bool:
