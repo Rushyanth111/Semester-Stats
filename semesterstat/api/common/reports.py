@@ -1,6 +1,6 @@
 # https://pydantic-docs.helpmanual.io/usage/validators/#validate-always
 from pydantic import BaseModel, validator
-from typing import List, Optional
+from typing import Optional
 from ...common.extractor import (
     batch_from_usn,
     dept_from_usn,
@@ -73,7 +73,3 @@ class Report(BaseModel):
 
     def export_subject(self) -> SubjectReport:
         return SubjectReport(Code=self.Subcode, Name=self.Subname)
-
-
-class BulkReport(BaseModel):
-    report: List[Report]

@@ -1,35 +1,47 @@
+from typing import List
+
 from fastapi import APIRouter
-from ..common.reports import BulkReport
-from ...database import Department, Subject, Student, Score, db
+from fastapi.logger import logger
+from fastapi.params import Depends
+from sqlalchemy.orm.session import Session
+
+from ...database import Score, Student, Subject, get_db
+from ..common.reports import Report
 
 upload = APIRouter()
 
 
 @upload.post("/", status_code=201)
-def parse_batch_results(bulk_reports: BulkReport):
-    students = []
-    departments = []
-    subjects = []
-    scores = []
+async def parse_batch_results(reports: List[Report], db: Session = Depends(get_db)):
+    student_list = []
+    sub_list = []
+    score_list = []
     # Split Each of the Report into the 4 main Categories.
-    for report in bulk_reports.report:
-        students.append(report.export_student().dict())
-        departments.append(report.export_department().dict())
-        scores.append(report.export_score().dict())
-        subjects.append(report.export_subject().dict())
+    for rp in reports:
+        x = rp.export_student()
+        if db.query(Student).filter(Student.Usn == x.Usn).one_or_none() is None:
+            student_list.append(x.dict())
+
+        x = rp.export_subject()
+        if db.query(Subject).filter(Subject.Code == x.Code).one_or_none() is None:
+            sub_list.append(x.dict())
+
+        x = rp.export_score()
+        if (
+            db.query(Subject)
+            .filter(Score.SubjectCode == x.SubjectCode, Score.Usn == x.Usn)
+            .one_or_none()
+            is None
+        ):
+            score_list.append(x.dict())
 
     # Add them into the database
     # In the Order of:
     # Dept, Subject, Student, Score
+    logger.info("Parsing batch_results")
 
-    with db.atomic():
-        Department.insert_many(departments).execute()
+    db.bulk_insert_mappings(Student, student_list)
+    db.bulk_insert_mappings(Subject, sub_list)
+    db.bulk_insert_mappings(Score, score_list)
 
-        Subject.insert_many(subjects).on_conflict_ignore().execute()
-
-        Student.insert_many(students).execute()
-
-        Score.insert_many(scores).execute()
-
-    # If Done without error, return a 200.
-    return
+    db.commit()
