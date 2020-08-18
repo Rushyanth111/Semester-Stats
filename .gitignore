@@ -12,3 +12,4 @@ csvData/*
 FormattedData/*
 .python-version
 .gitignore
+.venv
