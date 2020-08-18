@@ -28,7 +28,7 @@ async def parse_batch_results(reports: List[Report], db: Session = Depends(get_d
 
         x = rp.export_score()
         if (
-            db.query(Subject)
+            db.query(Score)
             .filter(Score.SubjectCode == x.SubjectCode, Score.Usn == x.Usn)
             .one_or_none()
             is None
