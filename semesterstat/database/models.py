@@ -1,10 +1,9 @@
-from sys import modules
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from .database import engine
 
-# Base Model.
+# Base Model
 Base = declarative_base()
 
 
@@ -60,4 +59,5 @@ class Score(Base):
     Externals = Column(Integer)
 
 
+# Create all of the Tables.
 Base.metadata.create_all(bind=engine)

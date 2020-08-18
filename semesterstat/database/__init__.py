@@ -1,23 +1,11 @@
-from .Models import (
-    db,
-    Department,
-    BatchSchemeInfo,
-    Student,
-    Subject,
-    Score,
-    Teacher,
-    TeacherTaught,
-    BacklogHistory,
-)
+from .models import Score, Student, Subject, Department, BatchSchemeInfo
+from .database import session_create
 
 __all__ = [
-    "db",
-    "Department",
-    "BatchSchemeInfo",
+    "Score",
     "Student",
     "Subject",
-    "Score",
-    "Teacher",
-    "TeacherTaught",
-    "BacklogHistory",
+    "Department",
+    "BatchSchemeInfo",
+    "session_create",
 ]
