@@ -1,4 +1,4 @@
-from semesterstat.api.common.reports import (
+from semesterstat.common import (
     StudentReport,
     SubjectReport,
 )

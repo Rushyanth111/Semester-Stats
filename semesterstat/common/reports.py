@@ -1,7 +1,7 @@
 # https://pydantic-docs.helpmanual.io/usage/validators/#validate-always
 from pydantic import BaseModel, validator
 from typing import Optional
-from ...common.extractor import (
+from .extractor import (
     batch_from_usn,
     dept_from_usn,
     semester_from_subject,
