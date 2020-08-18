@@ -11,5 +11,5 @@ developer_app_mode = config["Developer"]["ApplicationMode"]
 # If the mode is developement, then change these variables.
 
 if developer_app_mode == "Dev":
-    database_store_path = ":memory:"
+    database_store_path = ""
     is_dev = True
