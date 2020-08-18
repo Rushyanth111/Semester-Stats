@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
 
-class DeparmentReceipt(BaseModel):
+class DepartmentReceipt(BaseModel):
     Name: str
     Code: str

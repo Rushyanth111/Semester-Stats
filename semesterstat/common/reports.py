@@ -73,3 +73,8 @@ class Report(BaseModel):
 
     def export_subject(self) -> SubjectReport:
         return SubjectReport(Code=self.Subcode, Name=self.Subname)
+
+
+class DepartmentReport(BaseModel):
+    Code: str
+    Name: str

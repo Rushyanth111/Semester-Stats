@@ -1,5 +1,5 @@
-from .reciept import DeparmentReceipt
-from .reports import Report, ScoreReport, StudentReport, SubjectReport
+from .reciept import DepartmentReceipt
+from .reports import Report, ScoreReport, StudentReport, SubjectReport, DepartmentReport
 from .extractor import (
     batch_from_usn,
     dept_from_usn,
@@ -17,7 +17,8 @@ __all__ = [
     "StudentReport",
     "ScoreReport",
     "SubjectReport",
-    "DeparmentReceipt",
+    "DepartmentReport",
+    "DepartmentReceipt",
     "batch_from_usn",
     "dept_from_usn",
     "is_diploma",
