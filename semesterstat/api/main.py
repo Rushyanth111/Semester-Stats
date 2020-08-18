@@ -1,9 +1,12 @@
 from fastapi import FastAPI
-from .dept import dept
-from .batch import batch
 from uvicorn.config import logger
-from ..database import session_create, Department
+
 from ..constants import dept_dict
+from ..database import Department, session_create
+from .batch import batch
+from .dept import dept
+from .student import student
+from .subject import subject
 
 app = FastAPI()
 
@@ -25,3 +28,5 @@ async def startup_event():
 
 app.include_router(batch, prefix="/batch")
 app.include_router(dept, prefix="/dept")
+app.include_router(student, prefix="/student")
+app.include_router(subject, prefix="/subject")

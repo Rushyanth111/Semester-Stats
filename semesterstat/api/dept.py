@@ -30,7 +30,7 @@ def add_department(
     db.commit()
 
 
-@dept.put("/{department}", response_model=DepartmentReceipt)
+@dept.put("/", response_model=DepartmentReceipt)
 def update_department(
     dept: DepartmentReport, resp: Response, db: Session = Depends(get_db)
 ):

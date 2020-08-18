@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, status
 from fastapi.logger import logger
@@ -11,7 +11,7 @@ from ..common import Report, ScoreReport
 batch = APIRouter()
 
 
-@batch.post("/update", status_code=status.HTTP_204_NO_CONTENT)
+@batch.put("/", status_code=status.HTTP_204_NO_CONTENT)
 async def update_batch_results(reports: List[Report], db: Session = Depends(get_db)):
     student_list = []
     sub_list = []
@@ -47,12 +47,7 @@ async def update_batch_results(reports: List[Report], db: Session = Depends(get_
     db.commit()
 
 
-@batch.get("/results/{department}/{batch}/{semester}", response_model=ScoreReport)
-async def get_batch_results(department: str, batch: int, semester: int):
-    pass
-
-
-@batch.post("/insert", status_code=201)
+@batch.post("/", status_code=201)
 async def insert_batch_results(reports: List[Report], db: Session = Depends(get_db)):
     student_list = []
     sub_list = []
@@ -79,10 +74,45 @@ async def insert_batch_results(reports: List[Report], db: Session = Depends(get_
     # Add them into the database
     # In the Order of:
     # Dept, Subject, Student, Score
-    logger.info("Parsing batch_results")
+    logger.info("Adding batch_results")
 
     db.bulk_insert_mappings(Student, student_list)
     db.bulk_insert_mappings(Subject, sub_list)
     db.bulk_insert_mappings(Score, score_list)
 
     db.commit()
+
+
+@batch.get("/{batch}/summary", response_model=ScoreReport)
+async def get_batch_summary(
+    batch: int, department: Optional[str] = None, semester: Optional[int] = None
+):
+    pass
+
+
+@batch.get("/{batch}/detail")
+async def get_batch_detail(
+    batch: int, department: Optional[str] = None, semester: Optional[int] = None
+):
+    pass
+
+
+@batch.get("/{batch}/list")
+async def get_batch_list(
+    batch: int, department: Optional[str] = None, semester: Optional[int] = None
+):
+    pass
+
+
+@batch.get("/{batch}/backlog")
+async def get_batch_backlog(
+    batch: int, department: Optional[str] = None, semester: Optional[int] = None
+):
+    pass
+
+
+@batch.get("/{batch}/detained")
+async def get_batch_detained(
+    batch: int, department: Optional[str] = None, semester: Optional[int] = None
+):
+    pass
