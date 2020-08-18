@@ -8,10 +8,10 @@ from sqlalchemy.orm.session import Session
 from ...database import Score, Student, Subject, get_db
 from ..common.reports import Report
 
-upload = APIRouter()
+insert = APIRouter()
 
 
-@upload.post("/insert", status_code=201)
+@insert.post("/insert", status_code=201)
 async def parse_batch_results(reports: List[Report], db: Session = Depends(get_db)):
     student_list = []
     sub_list = []
