@@ -7,12 +7,21 @@ from semesterstat.database import (
     Student,
     Subject,
 )
+from sqlalchemy import create_engine
 
 
 class CommonQueryTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+
+        # Create a New Engine:
+        engine = create_engine("sqlite:///:memory:")
+        session_create.configure(bind=engine)
+        Department.metadata.create_all(engine)
         db = session_create()
+        db.query(Department).delete()
+        db.commit()
+
         x = BatchSchemeInfo(Batch=2017, Scheme=2017)
         db.add(x)
 
