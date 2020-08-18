@@ -13,3 +13,12 @@ engine = create_engine(database_store_path, connect_args={"check_same_thread": F
 session_create: Callable[[], Session] = sessionmaker(
     bind=engine, autocommit=False, autoflush=False
 )
+
+
+# Helper Function that cleans up after itself.
+def get_db() -> Session:
+    db = session_create()
+    try:
+        yield db
+    finally:
+        db.close()
