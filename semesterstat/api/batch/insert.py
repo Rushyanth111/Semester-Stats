@@ -11,7 +11,7 @@ from ..common.reports import Report
 insert = APIRouter()
 
 
-@insert.post("/insert", status_code=201)
+@insert.post("/", status_code=201)
 async def parse_batch_results(reports: List[Report], db: Session = Depends(get_db)):
     student_list = []
     sub_list = []
