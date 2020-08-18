@@ -15,7 +15,7 @@ class CommonQueryTest(unittest.TestCase):
     def setUpClass(cls) -> None:
 
         # Create a New Engine:
-        engine = create_engine("sqlite:///:memory:")
+        engine = create_engine("sqlite://")
         session_create.configure(bind=engine)
         Department.metadata.create_all(engine)
         db = session_create()
