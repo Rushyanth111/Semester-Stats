@@ -1,118 +1,48 @@
+from enum import Flag
 from typing import List, Optional
 
-from fastapi import APIRouter, status
-from fastapi.logger import logger
+from fastapi import APIRouter, Depends, status
 from fastapi.params import Depends
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, session
+from starlette.responses import Response
+from uvicorn.config import logger
 
-from ..database import Score, Student, Subject, get_db
 from ..common import Report, ScoreReport
+from ..database import Score, Student, Subject, get_db
 
 batch = APIRouter()
 
+"""
+/batch/Endpoint Details for Developer:
 
-@batch.put("/", status_code=status.HTTP_204_NO_CONTENT)
-async def update_batch_results(reports: List[Report], db: Session = Depends(get_db)):
-    student_list = []
-    sub_list = []
-    score_list = []
-    # Split Each of the Report into the 4 main Categories.
-    for rp in reports:
-        x = rp.export_student()
-        if db.query(Student).filter(Student.Usn == x.Usn).one_or_none() is not None:
-            student_list.append(x.dict())
+- The Batch Endpoint is Strictly only for a given Batch.
+- Available Mandatory Filters:
+    - Department, Semester.
+- Optional Filters.
+    - detain: Bool = Only detained students returned.
+    - listusn: Bool = Only USNs returned.
+    - detail: Bool = Returns the Full List of Details, Students, USN, Scores, etc.
+    - backlogs: Bool = Returns the List of Backlogs attained by students in the filter.
 
-        x = rp.export_subject()
-        if db.query(Subject).filter(Subject.Code == x.Code).one_or_none() is not None:
-            sub_list.append(x.dict())
+- Invalid Queries:
+    - list and detail both True = Return a Bad Request.
 
-        x = rp.export_score()
-        if (
-            db.query(Score)
-            .filter(Score.SubjectCode == x.SubjectCode, Score.Usn == x.Usn)
-            .one_or_none()
-            is not None
-        ):
-            score_list.append(x.dict())
-
-    # Add them into the database
-    # In the Order of:
-    # Dept, Subject, Student, Score
-    logger.info("Updating batch_results")
-
-    db.bulk_update_mappings(Student, student_list)
-    db.bulk_update_mappings(Subject, sub_list)
-    db.bulk_update_mappings(Score, score_list)
-
-    db.commit()
-
-
-@batch.post("/", status_code=201)
-async def insert_batch_results(reports: List[Report], db: Session = Depends(get_db)):
-    student_list = []
-    sub_list = []
-    score_list = []
-    # Split Each of the Report into the 4 main Categories.
-    for rp in reports:
-        x = rp.export_student()
-        if db.query(Student).filter(Student.Usn == x.Usn).one_or_none() is None:
-            student_list.append(x.dict())
-
-        x = rp.export_subject()
-        if db.query(Subject).filter(Subject.Code == x.Code).one_or_none() is None:
-            sub_list.append(x.dict())
-
-        x = rp.export_score()
-        if (
-            db.query(Score)
-            .filter(Score.SubjectCode == x.SubjectCode, Score.Usn == x.Usn)
-            .one_or_none()
-            is None
-        ):
-            score_list.append(x.dict())
-
-    # Add them into the database
-    # In the Order of:
-    # Dept, Subject, Student, Score
-    logger.info("Adding batch_results")
-
-    db.bulk_insert_mappings(Student, student_list)
-    db.bulk_insert_mappings(Subject, sub_list)
-    db.bulk_insert_mappings(Score, score_list)
-
-    db.commit()
+"""
 
 
 @batch.get("/{batch}/summary", response_model=ScoreReport)
 async def get_batch_summary(
-    batch: int, department: Optional[str] = None, semester: Optional[int] = None
+    batch: int,
+    department: Optional[str] = None,
+    semester: Optional[int] = None,
+    detain: Optional[bool] = False,
+    listusn: Optional[bool] = False,
+    detail: Optional[bool] = False,
+    backlogs: Optional[bool] = False,
+    db: Session = Depends(get_db),
 ):
-    pass
+    if listusn is True and detail is True:
+        # Cannot be detailed and Summary at the same time.
+        return Response(status_code=status.HTTP_400_BAD_REQUEST)
 
-
-@batch.get("/{batch}/detail")
-async def get_batch_detail(
-    batch: int, department: Optional[str] = None, semester: Optional[int] = None
-):
-    pass
-
-
-@batch.get("/{batch}/list")
-async def get_batch_list(
-    batch: int, department: Optional[str] = None, semester: Optional[int] = None
-):
-    pass
-
-
-@batch.get("/{batch}/backlog")
-async def get_batch_backlog(
-    batch: int, department: Optional[str] = None, semester: Optional[int] = None
-):
-    pass
-
-
-@batch.get("/{batch}/detained")
-async def get_batch_detained(
-    batch: int, department: Optional[str] = None, semester: Optional[int] = None
-):
-    pass
+    db.query()

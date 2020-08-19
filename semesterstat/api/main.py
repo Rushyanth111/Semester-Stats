@@ -7,6 +7,7 @@ from .batch import batch
 from .dept import dept
 from .student import student
 from .subject import subject
+from .bulk import bulk
 
 app = FastAPI()
 
@@ -30,3 +31,4 @@ app.include_router(batch, prefix="/batch")
 app.include_router(dept, prefix="/dept")
 app.include_router(student, prefix="/student")
 app.include_router(subject, prefix="/subject")
+app.include_router(bulk, prefix="/bulk")
