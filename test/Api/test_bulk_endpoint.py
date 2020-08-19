@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 from semesterstat.api import app
 
 
-class BulkReportTest(unittest.TestCase):
+class BulkEndPointTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.client = TestClient(app)
