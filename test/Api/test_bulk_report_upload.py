@@ -19,7 +19,7 @@ class BulkReportTest(unittest.TestCase):
                 "Externals": 20,
             }
         ]
-        res = self.client.post("/batch/insert", json=data)
+        res = self.client.post("/bulk/", json=data)
 
         self.assertEqual(res.status_code, 201, "Creation of data did not happen")
 
@@ -43,10 +43,10 @@ class BulkReportTest(unittest.TestCase):
             },
         ]
 
-        res = self.client.post("/batch/insert", json=[data[0]])
+        res = self.client.post("/bulk/", json=[data[0]])
 
         self.assertEqual(res.status_code, 201)
 
-        res = self.client.post("/batch/insert", json=[data[1]])
+        res = self.client.post("/batch/", json=[data[1]])
 
         self.assertEqual(res.status_code, 201)

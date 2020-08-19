@@ -1,4 +1,4 @@
-from semesterstat.common.extractor import (
+from semesterstat.common import (
     batch_from_usn,
     dept_from_usn,
     semester_from_subject,
