@@ -13,6 +13,7 @@ class Department(Base):
     Code = Column(String, primary_key=True, index=True)
     Name = Column(String)
     Subjects = relationship("Subject")
+    Students = relationship("Student")
 
 
 class BatchSchemeInfo(Base):
@@ -31,6 +32,8 @@ class Student(Base):
     Department = Column(
         String, ForeignKey("department.Code", onupdate="CASCADE", ondelete="CASCADE")
     )
+
+    Scores = relationship("Score")
 
 
 class Subject(Base):
