@@ -17,7 +17,7 @@ and Adding new Reports.
 
 
 @bulk.post("/", status_code=status.HTTP_204_NO_CONTENT)
-async def update_batch_results(reports: List[Report], db: Session = Depends(get_db)):
+async def upsert_bulk(reports: List[Report], db: Session = Depends(get_db)):
     student_list = []
     student_list_update = []
     sub_list = []
