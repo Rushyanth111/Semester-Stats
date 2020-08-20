@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import glob
 
 setup(
-    name="semesterstats",
+    name="semesterstat",
     version="0.1",
     packages=find_packages(),
     maintainer="Rushyanth111",
@@ -13,5 +13,5 @@ setup(
         ("resources", glob.glob("Resources/*")),
     ],
     zip_safe=False,
-    py_modules=["semesterstats"],
+    py_modules=["semesterstat"],
 )
