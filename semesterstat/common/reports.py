@@ -24,6 +24,9 @@ class StudentReport(BaseModel):
     def set_dept(cls, v, values):
         return dept_from_usn(values["Usn"])
 
+    def __hash__(self) -> int:
+        return hash(self.Usn)
+
 
 class SubjectReport(BaseModel):
     Code: str
@@ -44,12 +47,18 @@ class SubjectReport(BaseModel):
     def set_dept(cls, v, values):
         return dept_from_subject(values["Code"])
 
+    def __hash__(self) -> int:
+        return hash(self.Code)
+
 
 class ScoreReport(BaseModel):
     Usn: str
     SubjectCode: str
     Internals: int
     Externals: int
+
+    def __hash__(self) -> int:
+        return hash(self.Usn + self.SubjectCode)
 
 
 class Report(BaseModel):
