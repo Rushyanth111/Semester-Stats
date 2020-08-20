@@ -1,4 +1,7 @@
 from enum import Flag
+
+from fastapi.param_functions import Query
+from semesterstat.database.models import BatchSchemeInfo, Department
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, status
@@ -30,7 +33,7 @@ batch = APIRouter()
 """
 
 
-@batch.get("/{batch}/summary", response_model=ScoreReport)
+@batch.get("/{batch}/summary")
 async def get_batch_summary(
     batch: int,
     department: Optional[str] = None,
@@ -45,4 +48,9 @@ async def get_batch_summary(
         # Cannot be detailed and Summary at the same time.
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
 
-    db.query()
+    # if (
+    #     db.query(BatchSchemeInfo).filter(BatchSchemeInfo.Batch == batch).one_or_none()
+    #     is None
+    # ):
+    #     return Response(status_code=status.HTTP_404_NOT_FOUND)
+    pass
