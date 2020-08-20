@@ -16,7 +16,7 @@ and Adding new Reports.
 """
 
 
-@bulk.post("/", status_code=status.HTTP_204_NO_CONTENT)
+@bulk.post("/", status_code=status.HTTP_201_CREATED)
 async def upsert_bulk(reports: List[Report], db: Session = Depends(get_db)):
     student_list = []
     student_list_update = []
@@ -53,13 +53,18 @@ async def upsert_bulk(reports: List[Report], db: Session = Depends(get_db)):
     # In the Order of:
     # Dept, Subject, Student, Score
     logger.info("Updating batch_results")
+    if not student_list:
+        db.bulk_insert_mappings(Student, student_list)
+    if not sub_list:
+        db.bulk_insert_mappings(Subject, sub_list)
+    if not score_list:
+        db.bulk_insert_mappings(Score, score_list)
 
-    db.bulk_insert_mappings(Student, student_list)
-    db.bulk_insert_mappings(Subject, sub_list)
-    db.bulk_insert_mappings(Score, score_list)
-
-    db.bulk_update_mappings(Student, student_list_update)
-    db.bulk_update_mappings(Subject, sub_list_update)
-    db.bulk_update_mappings(Score, score_list_update)
+    if not student_list_update:
+        db.bulk_update_mappings(Student, student_list_update)
+    if not sub_list_update:
+        db.bulk_update_mappings(Subject, sub_list_update)
+    if not score_list_update:
+        db.bulk_update_mappings(Score, score_list_update)
 
     db.commit()
