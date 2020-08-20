@@ -15,7 +15,7 @@ if database_store_path == "":
         DATABASE_PATH, connect_args={"check_same_thread": False}, poolclass=StaticPool
     )
 else:
-    engine = create_engine(DATABASE_PATH, poolclass=NullPool)
+    engine = create_engine(DATABASE_PATH, poolclass=NullPool, echo=True)
 
 # Exporting the Session_create Object
 session_create: Callable[[], Session] = sessionmaker(
