@@ -10,7 +10,7 @@ This was started off as a Project to maintain all existing Scores recieved from 
 
 This is a Flexible Data Project that does not require Special Functions as dictated by any college.
 
-Please note that there will be many Changes That can happen Before 
+Please note that there will be many Changes That can happen Before
 
 # Additional Notes:
 
@@ -23,17 +23,16 @@ Additional Things Needed to be implemented.
 - Proper Structure.
 - Documentation. <- Mostly for future Maintence.
 
-
 # Problems:
 
 USNs that change.
-Diploma? 
+Diploma?
 Arrears -- Designed, Data? Inconsistent.
-Missing Data? 
+Missing Data?
 
--> Data: 
-If USN + Code In new? 
-    OldTable <= Previous
+-> Data:
+If USN + Code In new?
+OldTable <= Previous
 
 Else Insert.
 
@@ -43,13 +42,13 @@ Else Insert.
 
 # RoadMap:
 
-
 ## For Modularize
+
 - Fix response builders
 - Fix the API functionality
 
-
 ## For Further
+
 - Integrate documentation
 - Generate Fake data with parameters to trip parsing.
 - Fake Data Generator
@@ -57,3 +56,7 @@ Else Insert.
 - Extend API for Single Record Insertion.
 - Extend API for Teacher Update.
 - Extend API for all functionalities.
+
+# Things that are very varaible, and no Single Solution to Fix:
+
+Failing and Passing: These are Parameters that have no single Answer, and must be an Input to handle With the Given Batch/Scheme Results.
