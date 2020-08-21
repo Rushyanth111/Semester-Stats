@@ -1,5 +1,5 @@
 import unittest
-from semesterstat.common.query import get_scheme, get_student_usn_list, get_subject_list
+from semesterstat.crud.query import get_scheme, get_student_usn_list, get_subject_list
 from semesterstat.database import (
     session_create,
     BatchSchemeInfo,
