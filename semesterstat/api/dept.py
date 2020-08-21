@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Response, status
 from fastapi.params import Depends
 from sqlalchemy.orm.session import Session
+from sqlalchemy.orm import noload
 from typing import Union
 
 from ..database import Department, get_db
@@ -13,8 +14,9 @@ dept = APIRouter()
 def get_department(department: str, db: Session = Depends(get_db)):
     res = (
         db.query(Department)
+        .options(noload("Subjects"))
+        .options(noload("Students"))
         .filter(Department.Code == department)
-        .noload()
         .one_or_none()
     )
     if res is None:
