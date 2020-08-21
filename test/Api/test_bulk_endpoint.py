@@ -47,6 +47,6 @@ class BulkEndPointTest(unittest.TestCase):
 
         self.assertEqual(res.status_code, 201)
 
-        res = self.client.post("/batch/", json=[data[1]])
+        res = self.client.post("/bulk/", json=[data[1]])
 
         self.assertEqual(res.status_code, 201)
