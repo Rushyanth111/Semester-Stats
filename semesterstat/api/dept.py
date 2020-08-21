@@ -4,18 +4,23 @@ from sqlalchemy.orm.session import Session
 from typing import Union
 
 from ..database import Department, get_db
-from ..common import DepartmentReceipt, DepartmentReport
+from ..common import DepartmentReport
 
 dept = APIRouter()
 
 
-@dept.get("/{department}", response_model=DepartmentReceipt)
+@dept.get("/{department}", response_model=DepartmentReport)
 def get_department(department: str, db: Session = Depends(get_db)):
-    res = db.query(Department).filter(Department.Code == department).one_or_none()
+    res = (
+        db.query(Department)
+        .filter(Department.Code == department)
+        .noload()
+        .one_or_none()
+    )
     if res is None:
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     else:
-        return DepartmentReceipt(Code=res.Code, Name=res.Name)
+        return DepartmentReport.from_orm(res)
 
 
 @dept.post("/")
@@ -30,7 +35,7 @@ def add_department(
     db.commit()
 
 
-@dept.put("/", response_model=DepartmentReceipt)
+@dept.put("/", response_model=DepartmentReport)
 def update_department(
     dept: DepartmentReport, resp: Response, db: Session = Depends(get_db)
 ):
