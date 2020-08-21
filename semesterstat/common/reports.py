@@ -1,34 +1,60 @@
-# https://pydantic-docs.helpmanual.io/usage/validators/#validate-always
+from typing import List, Optional
+
 from pydantic import BaseModel, validator
-from typing import Optional
+
 from .extractor import (
     batch_from_usn,
     dept_from_usn,
-    semester_from_subject,
     scheme_from_subject,
-    dept_from_subject,
+    semester_from_subject,
 )
 
+# https://pydantic-docs.helpmanual.io/usage/validators/#validate-always
 
-class StudentReport(BaseModel):
+# List Optional[] Validation if Needed:
+# https://github.com/samuelcolvin/pydantic/issues/367
+
+
+class ReportBaseModel(BaseModel):
+    class Config:
+        orm_mode = True
+
+
+class DepartmentReport(ReportBaseModel):
+    Code: str
+    Name: str
+
+    Subjects: Optional[List["SubjectReport"]]
+    Students: Optional[List["StudentReport"]]
+
+
+class StudentReport(ReportBaseModel):
     Usn: str
     Name: str
     Batch: Optional[int]
     Department: Optional[str]
 
+    Scores: Optional[List["ScoreReport"]]
+
     @validator("Batch", pre=True, always=True)
     def set_batch(cls, v, values):
-        return batch_from_usn(values["Usn"])
+        if "Usn" in values:
+            return batch_from_usn(values["Usn"])
+        else:
+            return None
 
     @validator("Department", pre=True, always=True)
     def set_dept(cls, v, values):
-        return dept_from_usn(values["Usn"])
+        if "Usn" in values:
+            return dept_from_usn(values["Usn"])
+        else:
+            return None
 
     def __hash__(self) -> int:
         return hash(self.Usn)
 
 
-class SubjectReport(BaseModel):
+class SubjectReport(ReportBaseModel):
     Code: str
     Name: str
     Semester: Optional[int]
@@ -37,21 +63,23 @@ class SubjectReport(BaseModel):
 
     @validator("Semester", pre=True, always=True)
     def set_semester(cls, v, values):
-        return semester_from_subject(values["Code"])
+        if "Code" in values:
+            return semester_from_subject(values["Code"])
+        else:
+            return None
 
     @validator("Scheme", pre=True, always=True)
     def set_scheme(cls, v, values):
-        return scheme_from_subject(values["Code"])
-
-    @validator("Department", pre=True, always=True)
-    def set_dept(cls, v, values):
-        return dept_from_subject(values["Code"])
+        if "Code" in values:
+            return scheme_from_subject(values["Code"])
+        else:
+            return None
 
     def __hash__(self) -> int:
         return hash(self.Code)
 
 
-class ScoreReport(BaseModel):
+class ScoreReport(ReportBaseModel):
     Usn: str
     SubjectCode: str
     Internals: int
@@ -61,7 +89,7 @@ class ScoreReport(BaseModel):
         return hash(self.Usn + self.SubjectCode)
 
 
-class Report(BaseModel):
+class Report(ReportBaseModel):
     Usn: str
     Name: str
     Subcode: str
@@ -84,6 +112,5 @@ class Report(BaseModel):
         return SubjectReport(Code=self.Subcode, Name=self.Subname)
 
 
-class DepartmentReport(BaseModel):
-    Code: str
-    Name: str
+DepartmentReport.update_forward_refs()
+StudentReport.update_forward_refs()
