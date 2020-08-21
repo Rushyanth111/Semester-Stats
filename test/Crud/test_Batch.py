@@ -3,8 +3,8 @@ from test.BaseForDB import CommonTestClass
 from sqlalchemy.orm.session import Session
 
 from semesterstat.common import Report
-from semesterstat.crud.batch import get_batch, listusn_filter
-from semesterstat.database import Student, Subject, Score
+from semesterstat.crud.batch import BatchCrud
+from semesterstat.database import Score, Student, Subject
 
 
 class BatchFunctionsTest(CommonTestClass):
@@ -56,17 +56,40 @@ class BatchFunctionsTest(CommonTestClass):
         self.db.close()
 
     def test_default(self):
-        res = get_batch(self.db, 2010)
+        res = BatchCrud(self.db, 2010).export_student_report()
         self.assertCountEqual(
             [x.Usn for x in res], ["1CR10CS101", "1CR10CS102"], "USN is not Correct",
         )
 
-        res = get_batch(self.db, 2011)
+        res = BatchCrud(self.db, 2011).export_student_report()
 
         self.assertCountEqual([x.Usn for x in res], [])
 
     def test_default_usnonly(self):
-        res = listusn_filter(get_batch(self.db, 2010))
+        res = BatchCrud(self.db, 2010).export_usn_list()
         self.assertCountEqual(
-            [x for (x,) in res], ["1CR10CS101", "1CR10CS102"], "USN is not Correct",
+            res, ["1CR10CS101", "1CR10CS102"], "USN is not Correct",
         )
+
+    def test_department_filter(self):
+        pass
+
+    def test_semester_filter(self):
+        pass
+
+    def test_department_semester_filter(self):
+        pass
+
+    def test_detained_filter(self):
+        res = BatchCrud(self.db, 2010).backlog_filter(40, 21).export_usn_list(True, 1)
+
+        self.assertCountEqual(["1CR10CS101"], res)
+
+        res = BatchCrud(self.db, 2010).backlog_filter(40, 21).export_usn_list(True, 2)
+
+        self.assertFalse(res)
+
+    def test_backlog_filter(self):
+        res = BatchCrud(self.db, 2010).backlog_filter(40, 21).export_student_report()
+
+        self.assertCountEqual([y.SubjectCode for y in res[0].Scores], ["10CS64"])
