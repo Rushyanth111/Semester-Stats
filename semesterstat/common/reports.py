@@ -4,6 +4,7 @@ from pydantic import BaseModel, validator
 
 from .extractor import (
     batch_from_usn,
+    dept_from_subject,
     dept_from_usn,
     scheme_from_subject,
     semester_from_subject,
@@ -72,6 +73,13 @@ class SubjectReport(ReportBaseModel):
     def set_scheme(cls, v, values):
         if "Code" in values:
             return scheme_from_subject(values["Code"])
+        else:
+            return None
+
+    @validator("Department", pre=True, always=True)
+    def set_department(cls, v, values):
+        if "Code" in values:
+            return dept_from_subject(values["Code"])
         else:
             return None
 
