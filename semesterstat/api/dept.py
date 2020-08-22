@@ -10,7 +10,11 @@ from ..common import DepartmentReport
 dept = APIRouter()
 
 
-@dept.get("/{department}", response_model=DepartmentReport)
+@dept.get(
+    "/{department}",
+    response_model=DepartmentReport,
+    response_model_include={"Code", "Name"},
+)
 def get_department(department: str, db: Session = Depends(get_db)):
     res = (
         db.query(Department)
@@ -27,7 +31,7 @@ def get_department(department: str, db: Session = Depends(get_db)):
 
 @dept.post("/")
 def add_department(
-    dept: DepartmentReport, resp: Response, db: Session = Depends(get_db)
+    dept: DepartmentReport, resp: Response, db: Session = Depends(get_db),
 ):
     res = db.query(Department).filter(Department.Code == dept.Code).one_or_none()
 
@@ -37,7 +41,7 @@ def add_department(
     db.commit()
 
 
-@dept.put("/", response_model=DepartmentReport)
+@dept.put("/")
 def update_department(
     dept: DepartmentReport, resp: Response, db: Session = Depends(get_db)
 ):
