@@ -52,7 +52,7 @@ class BatchFunctionsTest(CommonTestClass):
         super(BatchFunctionsTest, cls).tearDownClass()
 
     def setUp(self):
-        self.db: Session = self.session_create()
+        self.db = self.session_create()
 
     def tearDown(self) -> None:
         self.db.close()

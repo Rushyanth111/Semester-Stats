@@ -1,3 +1,4 @@
+from typing import Callable
 import unittest
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import Session, sessionmaker
@@ -17,7 +18,7 @@ class CommonTestClass(unittest.TestCase):
         cls.engine = create_engine(
             "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
         )
-        cls.session_create = sessionmaker(
+        cls.session_create: Callable[[], Session] = sessionmaker(
             bind=cls.engine, autocommit=False, autoflush=False
         )
 

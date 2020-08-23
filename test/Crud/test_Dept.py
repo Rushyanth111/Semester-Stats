@@ -57,7 +57,7 @@ class DepartmentTest(CommonTestClass):
         super(DepartmentTest, cls).setUpClass()
 
     def setUp(self) -> None:
-        self.db: Session = self.session_create()
+        self.db = self.session_create()
 
     def tearDown(self) -> None:
         self.db.close()
