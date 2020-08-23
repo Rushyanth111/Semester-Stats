@@ -1,6 +1,7 @@
 from sqlalchemy import Column, ForeignKey, Index, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql.schema import UniqueConstraint
 
 from .database import engine
 
@@ -10,9 +11,10 @@ Base = declarative_base()
 
 class Department(Base):
     __tablename__ = "department"
-
-    Code = Column(String, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    Code = Column(String, unique=True, index=True)
     Name = Column(String)
+
     Subjects = relationship("Subject")
     Students = relationship("Student")
 
@@ -26,8 +28,8 @@ class BatchSchemeInfo(Base):
 
 class Student(Base):
     __tablename__ = "student"
-
-    Usn = Column(String, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    Usn = Column(String, unique=True, index=True)
     Name = Column(String)
     Batch = Column(Integer)
     Department = Column(
@@ -36,14 +38,13 @@ class Student(Base):
 
     Scores = relationship("Score")
 
-
-Index("Student_IDX", Student.Batch, Student.Department, Student.Usn)
+    __table_args__ = (Index("Student_IDX", "Batch", "Department", "Usn"),)
 
 
 class Subject(Base):
     __tablename__ = "subject"
-
-    Code = Column(String(11), primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    Code = Column(String(11), unique=True, index=True)
     Name = Column(String)
     Semester = Column(Integer)
     Scheme = Column(Integer)
@@ -51,22 +52,23 @@ class Subject(Base):
         String, ForeignKey("department.Code", onupdate="CASCADE", ondelete="CASCADE")
     )
 
-
-Index("Subject_IDX", Subject.Scheme, Subject.Department, Subject.Code)
+    __table_args__ = (Index("Subject_IDX", "Scheme", "Department", "Code"),)
 
 
 class Score(Base):
     __tablename__ = "score"
-
-    Usn = Column(String(10), ForeignKey("student.Usn"), primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    Usn = Column(String(10), ForeignKey("student.Usn"), index=True)
     SubjectCode = Column(
-        String(11),
-        ForeignKey("subject.Code", onupdate="CASCADE"),
-        primary_key=True,
-        index=True,
+        String(11), ForeignKey("subject.Code", onupdate="CASCADE"), index=True
     )
     Internals = Column(Integer)
     Externals = Column(Integer)
+
+    __table_args__ = (
+        Index("Score_IDX", "Usn", "SubjectCode"),
+        UniqueConstraint("Usn", "SubjectCode"),
+    )
 
 
 # Create all of the Tables.
