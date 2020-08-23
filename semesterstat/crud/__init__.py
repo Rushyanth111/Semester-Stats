@@ -10,6 +10,18 @@ from .dept import (
     put_department,
 )
 
+
+from .student import (
+    get_student,
+    get_student_backlogs,
+    get_student_scores,
+    get_student_scores_by_semester,
+    get_student_subject,
+    is_student_exists,
+    put_student,
+    update_student,
+)
+
 __all__ = [
     "BatchQuery",
     "get_dept_by_code",
@@ -17,4 +29,14 @@ __all__ = [
     "get_dept_students",
     "get_dept_subjects",
     "is_dept_exist",
+    "update_department",
+    "put_department",
+    "get_student",
+    "get_student_backlogs",
+    "get_student_scores",
+    "get_student_scores_by_semester",
+    "get_student_subject",
+    "is_student_exists",
+    "put_student",
+    "update_student",
 ]
