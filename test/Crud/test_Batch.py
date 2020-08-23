@@ -105,5 +105,4 @@ class BatchFunctionsTest(CommonTestClass):
     def test_sem_dept(self):
 
         res = BatchQuery(self.db, 2015).dept("TE").sem(1).export_usns()
-        print(res)
         self.assertCountEqual(res, ["1CR15TE102"])
