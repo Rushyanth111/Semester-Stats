@@ -112,4 +112,3 @@ class StudentCrudTests(CommonTestClass):
         res = is_student_exists(self.db, "1CR10CS102")
         self.assertTrue(res)
         self.db.rollback()
-
