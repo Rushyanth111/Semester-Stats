@@ -16,7 +16,7 @@ loguru = "^0.5.1"
 SQLAlchemy = "^1.3.18"
 
 [tool.poetry.dev-dependencies]
-pep8-naming = "^0.10.0"
+pep8-naming = "^0.11.1"
 flake8 = "^3.8.1"
 black = {version = "^19.10b0", allow-prereleases = true}
 Faker = "^4.1.0"
