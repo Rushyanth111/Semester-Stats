@@ -1,10 +1,10 @@
 from typing import List
 
-from sqlalchemy import func, or_
-from sqlalchemy.orm import contains_eager
-from sqlalchemy.orm.session import Session
+from sqlalchemy import or_
+from sqlalchemy.orm import Session, noload
+from sqlalchemy.sql.functions import func
 
-from semesterstat.common.reports import StudentReport
+from semesterstat.common.reports import ScoreReport, StudentReport
 
 from ..database import Score, Student, Subject
 
@@ -18,51 +18,81 @@ get_batch
     |-> Semester Filter     -> List Filters (Optional)
     |-> Detained Filter     -> List Filters (Optional)
     |-> BackLog Filter      -> List Filters (Optional)
+
+Purpose:
+- Obtain Scores As Per the Given Parameters.
+
+Output:
+- List[Student(List[Scores])]
+
 """
 
 
-class BatchCrud:
-    def __init__(self, db: Session, batch: int):
-        self.res = db.query(Student).filter(Student.Batch == batch)
+class BatchQuery:
+    def __init__(self, db: Session, batch: int) -> None:
+        self.usn_batch = db.query(Student).filter(Student.Batch == batch)
+        self.res = db.query(Score)
+        self.subject_codes = db.query(Subject)
 
-    def department_filter(self, department: str):
-        self.res = self.res.filter(Student.Department == department)
+    def dept(self, dept: str):
+        self.usn_batch = self.usn_batch.filter(Student.Department == dept)
+
         return self
 
-    def semester_filter(self, semester: int):
-        self.res = self.res.filter(Subject.Semester == semester)
+    def sem(self, sem: int):
+        self.subject_codes = self.subject_codes.filter(Subject.Semester == sem)
+
         return self
 
-    def backlog_filter(self, total_thres: int, external_thres: int):
-        # Needs a Number that tries to request how many marks are required
-        # At Minimim
-        self.res = (
-            self.res.join(Student.Scores)
-            .filter(
-                or_(
-                    (Score.Internals + Score.Externals) < total_thres,
-                    Score.Externals < external_thres,
-                )
+    def backlog(self, ext_thres: int = 21, total_thres: int = 40):
+        self.res = self.res.filter(
+            or_(
+                (Score.Internals + Score.Externals) < total_thres,
+                Score.Externals < ext_thres,
             )
-            .options(contains_eager(Student.Scores))
         )
+
         return self
 
-    def export_usn_list(self, detain: bool = False, detain_thres: int = 4) -> List[str]:
-        if detain:
-            return [
-                x.Usn
-                for x in [StudentReport.from_orm(y) for y in self.res]
-                if len(x.Scores) >= detain_thres
-            ]
-        else:
-            return [x.Usn for x in self.res]
+    def detain(self, det_thres: int = 4):
+        """ Having count det_thres or more """
+        self.res = self.res.filter(
+            Score.Usn.in_(
+                self.res.group_by(Score.Usn)
+                .having(func.count() > det_thres)
+                .with_entities(Score.Usn)
+            )
+        )
 
-    def export_student_report(
-        self, detain: bool = False, detain_thres: int = 4
-    ) -> List[StudentReport]:
-        if detain:
-            return [StudentReport.from_orm(x) for x in self.res]
-        else:
-            return [StudentReport.from_orm(x) for x in self.res]
+        return self
 
+    def __export(self):
+        # Exporting the subqueries.
+        usns = self.usn_batch.with_entities(Student.Usn)
+        subcodes = self.subject_codes.with_entities(Subject.Code)
+
+        return self.res.filter(Score.Usn.in_(usns)).filter(
+            Score.SubjectCode.in_(subcodes)
+        )
+
+    def export_report(self) -> List[StudentReport]:
+        scores = [ScoreReport.from_orm(x) for x in self.__export()]
+
+        # Get the USN List, As Filtered
+
+        students = [
+            StudentReport.from_orm(x)
+            for x in self.usn_batch.options(noload(Student.Scores))
+        ]
+
+        for student in students:
+            for score in scores:
+                if student.Usn == score.Usn:
+                    student.Scores.append(score)
+
+        return students
+
+    def export_usns(self) -> List[str]:
+        return [
+            x for (x,) in self.__export().group_by(Score.Usn).with_entities(Score.Usn)
+        ]

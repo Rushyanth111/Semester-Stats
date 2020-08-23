@@ -3,7 +3,8 @@ from test.BaseForDB import CommonTestClass
 from sqlalchemy.orm.session import Session
 
 from semesterstat.common import Report
-from semesterstat.crud.batch import BatchCrud
+from semesterstat.common.reports import StudentReport
+from semesterstat.crud.batch import BatchQuery
 from semesterstat.database import Score, Student, Subject
 
 
@@ -55,41 +56,47 @@ class BatchFunctionsTest(CommonTestClass):
     def tearDown(self) -> None:
         self.db.close()
 
-    def test_default(self):
-        res = BatchCrud(self.db, 2010).export_student_report()
+    def test_default(self) -> None:
+
+        res = BatchQuery(self.db, 2010).export_usns()
+
         self.assertCountEqual(
-            [x.Usn for x in res], ["1CR10CS101", "1CR10CS102"], "USN is not Correct",
+            ["1CR10CS101", "1CR10CS102"], res, "Usn's Are not Matched."
         )
 
-        res = BatchCrud(self.db, 2011).export_student_report()
+    def test_semester(self) -> None:
 
-        self.assertCountEqual([x.Usn for x in res], [])
+        res = BatchQuery(self.db, 2010).sem(6).export_usns()
+        self.assertCountEqual(["1CR10CS101"], res, "Too many/Too Few in Semester")
 
-    def test_default_usnonly(self):
-        res = BatchCrud(self.db, 2010).export_usn_list()
-        self.assertCountEqual(
-            res, ["1CR10CS101", "1CR10CS102"], "USN is not Correct",
-        )
-
-    def test_department_filter(self):
-        pass
-
-    def test_semester_filter(self):
-        pass
-
-    def test_department_semester_filter(self):
-        pass
-
-    def test_detained_filter(self):
-        res = BatchCrud(self.db, 2010).backlog_filter(40, 21).export_usn_list(True, 1)
-
-        self.assertCountEqual(["1CR10CS101"], res)
-
-        res = BatchCrud(self.db, 2010).backlog_filter(40, 21).export_usn_list(True, 2)
-
+        res = BatchQuery(self.db, 2010).sem(7).export_usns()
         self.assertFalse(res)
 
-    def test_backlog_filter(self):
-        res = BatchCrud(self.db, 2010).backlog_filter(40, 21).export_student_report()
+    def test_department(self) -> None:
 
-        self.assertCountEqual([y.SubjectCode for y in res[0].Scores], ["10CS64"])
+        res = BatchQuery(self.db, 2010).dept("CS").export_usns()
+        self.assertCountEqual(
+            ["1CR10CS101", "1CR10CS102"], res, "Usn's Are not Matched."
+        )
+
+        res = BatchQuery(self.db, 2010).dept("TE").export_usns()
+        self.assertFalse(res, "Usn's Are not Matched.")
+
+    def test_backlog(self) -> None:
+
+        res = BatchQuery(self.db, 2010).backlog().export_usns()
+
+        self.assertCountEqual(["1CR10CS101"], res, "Backlog Numbers Are Wrong")
+
+    def test_detain(self) -> None:
+
+        res = BatchQuery(self.db, 2010).detain(1).export_usns()
+
+        self.assertCountEqual(["1CR10CS101"], res, "Usn's Are not Matched.")
+
+    def test_report(self) -> None:
+
+        res = BatchQuery(self.db, 2010).export_report()
+
+        for r in res:
+            self.assertIsInstance(r, StudentReport)
