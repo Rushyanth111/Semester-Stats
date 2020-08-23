@@ -74,4 +74,3 @@ class SubjectTests(CommonTestClass):
 
         res = is_subjects_exists(self.db, ["10CS14", "10CS26"])
         self.assertFalse(res)
-
