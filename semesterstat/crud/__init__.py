@@ -22,6 +22,14 @@ from .student import (
     update_student,
 )
 
+from .subject import (
+    get_subject,
+    put_subject,
+    update_subject,
+    is_subject_exist,
+    is_subjects_exists,
+)
+
 __all__ = [
     "BatchQuery",
     "get_dept_by_code",
@@ -39,4 +47,9 @@ __all__ = [
     "is_student_exists",
     "put_student",
     "update_student",
+    "get_subject",
+    "put_subject",
+    "update_subject",
+    "is_subject_exist",
+    "is_subjects_exists",
 ]
