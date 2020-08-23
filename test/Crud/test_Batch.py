@@ -27,8 +27,9 @@ class BatchFunctionsTest(CommonTestClass):
                 ("1CR10CS101", "X", "10CS65", "X", 12, 42),
                 ("1CR10CS101", "X", "10CS64", "X", 16, 15),
                 ("1CR10CS102", "X", "10CS54", "X", 19, 29),
-                ("1CR15TE102", "X", "10MAT11", "X", 19, 55),
-                ("1CR15TE102", "X", "10CSL76", "X", 38, 26),
+                ("1CR15TE102", "X", "15MAT11", "X", 19, 55),
+                ("1CR15TE102", "X", "15CSL76", "X", 38, 26),
+                ("1CR15CS102", "X", "15CS55", "X", 28, 20),
             ]
         ]
 
@@ -100,3 +101,9 @@ class BatchFunctionsTest(CommonTestClass):
 
         for r in res:
             self.assertIsInstance(r, StudentReport)
+
+    def test_sem_dept(self):
+
+        res = BatchQuery(self.db, 2015).dept("TE").sem(1).export_usns()
+        print(res)
+        self.assertCountEqual(res, ["1CR15TE102"])

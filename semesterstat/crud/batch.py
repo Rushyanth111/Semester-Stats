@@ -6,7 +6,7 @@ from sqlalchemy.sql.functions import func
 
 from semesterstat.common.reports import ScoreReport, StudentReport
 
-from ..database import Score, Student, Subject
+from ..database import Score, Student, Subject, BatchSchemeInfo
 
 
 """
@@ -32,7 +32,13 @@ class BatchQuery:
     def __init__(self, db: Session, batch: int) -> None:
         self.usn_batch = db.query(Student).filter(Student.Batch == batch)
         self.res = db.query(Score)
-        self.subject_codes = db.query(Subject)
+
+        scheme = (
+            db.query(BatchSchemeInfo.Scheme)
+            .filter(BatchSchemeInfo.Batch == batch)
+            .scalar()
+        )
+        self.subject_codes = db.query(Subject).filter(Subject.Scheme == scheme)
 
     def dept(self, dept: str):
         self.usn_batch = self.usn_batch.filter(Student.Department == dept)
