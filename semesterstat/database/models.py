@@ -1,6 +1,7 @@
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, ForeignKey, Index, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+
 from .database import engine
 
 # Base Model
@@ -36,6 +37,9 @@ class Student(Base):
     Scores = relationship("Score")
 
 
+Index("Student_IDX", Student.Batch, Student.Department, Student.Usn)
+
+
 class Subject(Base):
     __tablename__ = "subject"
 
@@ -46,6 +50,9 @@ class Subject(Base):
     Department = Column(
         String, ForeignKey("department.Code", onupdate="CASCADE", ondelete="CASCADE")
     )
+
+
+Index("Subject_IDX", Subject.Scheme, Subject.Department, Subject.Code)
 
 
 class Score(Base):
