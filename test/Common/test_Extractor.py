@@ -1,19 +1,20 @@
 from semesterstat.common import (
-    batch_from_usn,
-    dept_from_usn,
-    semester_from_subject,
-    scheme_from_subject,
-    dept_from_subject,
-    is_diploma,
-    is_lab,
+    get_usn_batch,
+    get_usn_dept,
+    get_subject_semester,
+    get_subject_scheme,
+    get_subject_dept,
+    is_usn_diploma,
+    is_subject_lab,
 )
 
 import unittest
 
 
-class ExtractorTest(unittest.TestCase):
-    def setUp(self):
-        self.sample_usn = (
+class UsnExtractorTest(unittest.TestCase):
+    @classmethod
+    def setUp(cls):
+        cls.sample_usn = (
             ("1CR17CS117", 2017, "CS", False),
             ("1CR16IS113", 2016, "IS", False),
             ("1CR14ME154", 2014, "ME", False),
@@ -28,7 +29,23 @@ class ExtractorTest(unittest.TestCase):
             ("1RV15EC404", 2015, "EC", True),
         )
 
-        self.sample_subcodes = (
+    def test_batch(self):
+        for query, batch, dept, diploma in self.sample_usn:
+            assert get_usn_batch(query) == batch
+
+    def test_dept(self):
+        for query, batch, dept, diploma in self.sample_usn:
+            assert get_usn_dept(query) == dept
+
+    def test_diploma(self):
+        for query, batch, dept, diploma in self.sample_usn:
+            assert is_usn_diploma(query) == diploma
+
+
+class SubjectExtractorTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.sample_subcodes = (
             ("17CS41", 4, 2017, "CS", False),
             ("15MATDIP31", 3, 2015, "XX", False),
             ("18ECS84", 8, 2018, "EC", False),
@@ -37,30 +54,18 @@ class ExtractorTest(unittest.TestCase):
             ("15EC553", 5, 2015, "EC", False),
         )
 
-    def test_batch_from_usn(self):
-        for query, batch, dept, diploma in self.sample_usn:
-            assert batch_from_usn(query) == batch
-
-    def test_dept_from_usn(self):
-        for query, batch, dept, diploma in self.sample_usn:
-            assert dept_from_usn(query) == dept
-
-    def test_is_diploma(self):
-        for query, batch, dept, diploma in self.sample_usn:
-            assert is_diploma(query) == diploma
-
-    def test_semester_from_subject(self):
+    def test_semester(self):
         for query, sem, scheme, dept, lab in self.sample_subcodes:
-            assert semester_from_subject(query) == sem
+            assert get_subject_semester(query) == sem
 
-    def test_scheme_from_subject(self):
+    def test_scheme(self):
         for query, sem, scheme, dept, lab in self.sample_subcodes:
-            assert scheme_from_subject(query) == scheme
+            assert get_subject_scheme(query) == scheme
 
-    def test_dept_from_subject(self):
+    def test_dept(self):
         for query, sem, scheme, dept, lab in self.sample_subcodes:
-            assert dept_from_subject(query) == dept
+            assert get_subject_dept(query) == dept
 
-    def test_is_lab(self):
+    def test_lab(self):
         for query, sem, scheme, dept, lab in self.sample_subcodes:
-            assert is_lab(query) == lab
+            assert is_subject_lab(query) == lab

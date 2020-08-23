@@ -2,13 +2,12 @@ from typing import List, Optional
 
 from pydantic import BaseModel, validator
 
-from .extractor import (
-    batch_from_usn,
-    dept_from_subject,
-    dept_from_usn,
-    scheme_from_subject,
-    semester_from_subject,
+from .subject_extractor import (
+    get_subject_dept,
+    get_subject_scheme,
+    get_subject_semester,
 )
+from .usn_extractor import get_usn_batch, get_usn_dept
 
 # https://pydantic-docs.helpmanual.io/usage/validators/#validate-always
 
@@ -40,14 +39,14 @@ class StudentReport(ReportBaseModel):
     @validator("Batch", pre=True, always=True)
     def set_batch(cls, v, values):
         if "Usn" in values:
-            return batch_from_usn(values["Usn"])
+            return get_usn_batch(values["Usn"])
         else:
             return None
 
     @validator("Department", pre=True, always=True)
     def set_dept(cls, v, values):
         if "Usn" in values:
-            return dept_from_usn(values["Usn"])
+            return get_usn_dept(values["Usn"])
         else:
             return None
 
@@ -65,21 +64,21 @@ class SubjectReport(ReportBaseModel):
     @validator("Semester", pre=True, always=True)
     def set_semester(cls, v, values):
         if "Code" in values:
-            return semester_from_subject(values["Code"])
+            return get_subject_semester(values["Code"])
         else:
             return None
 
     @validator("Scheme", pre=True, always=True)
     def set_scheme(cls, v, values):
         if "Code" in values:
-            return scheme_from_subject(values["Code"])
+            return get_subject_scheme(values["Code"])
         else:
             return None
 
     @validator("Department", pre=True, always=True)
     def set_department(cls, v, values):
         if "Code" in values:
-            return dept_from_subject(values["Code"])
+            return get_subject_dept(values["Code"])
         else:
             return None
 
