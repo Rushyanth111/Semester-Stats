@@ -1,14 +1,14 @@
+import unittest
+
 from semesterstat.common import (
+    get_subject_dept,
+    get_subject_scheme,
+    get_subject_semester,
     get_usn_batch,
     get_usn_dept,
-    get_subject_semester,
-    get_subject_scheme,
-    get_subject_dept,
-    is_usn_diploma,
     is_subject_lab,
+    is_usn_diploma,
 )
-
-import unittest
 
 
 class UsnExtractorTest(unittest.TestCase):
