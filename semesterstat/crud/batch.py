@@ -102,3 +102,12 @@ class BatchQuery:
         return [
             x for (x,) in self.__export().group_by(Score.Usn).with_entities(Score.Usn)
         ]
+
+
+def is_batch_exists(db: Session, batch: int):
+    sb = db.query(Student).filter(Student.Batch == batch).exists()
+
+    if db.query(sb).scalar() is False:
+        return False
+
+    return True
