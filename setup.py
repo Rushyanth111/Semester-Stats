@@ -1,5 +1,6 @@
-from setuptools import setup, find_packages
 import glob
+
+from setuptools import find_packages, setup
 
 setup(
     name="semesterstat",
