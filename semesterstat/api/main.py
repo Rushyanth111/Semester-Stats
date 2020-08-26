@@ -1,7 +1,8 @@
+from semesterstat.database.models import BatchSchemeInfo
 from fastapi import FastAPI
 from uvicorn.config import logger
 
-from ..constants import dept_dict
+from ..constants import dept_dict, batch_dict
 from ..database import Department, session_create
 from .batch import batch
 from .dept import dept
@@ -10,6 +11,15 @@ from .subject import subject
 from .bulk import bulk
 
 app = FastAPI()
+
+"""
+General Documentation of my Intention:
+
+GET : For Records that have very little Q-Params
+POST : For Inserting Records. Notable Exception is Search, /search/ with Params.
+PATCH: Modfies Record.
+DELETE: Remove Record.
+"""
 
 
 @app.on_event("startup")
@@ -22,13 +32,23 @@ async def startup_event():
             Department,
             [{"Code": code, "Name": name} for code, name in dept_dict.items()],
         )
-        db.commit()
 
+    if db.query(BatchSchemeInfo).count() == 0:
+        logger.info("Inserting Batch Details, Previously None")
+        db.bulk_insert_mappings(
+            BatchSchemeInfo,
+            [
+                {"Batch": batch, "Scheme": scheme}
+                for batch, scheme in batch_dict.items()
+            ],
+        )
+
+    db.commit()
     db.close()
 
 
-app.include_router(batch, prefix="/batch")
-app.include_router(dept, prefix="/dept")
-app.include_router(student, prefix="/student")
-app.include_router(subject, prefix="/subject")
-app.include_router(bulk, prefix="/bulk")
+app.include_router(batch, prefix="/batch", tags=["Batch"])
+app.include_router(dept, prefix="/dept", tags=["Department"])
+app.include_router(student, prefix="/student", tags=["Student"])
+app.include_router(subject, prefix="/subject", tags=["Subject"])
+app.include_router(bulk, prefix="/bulk", tags=["Private API"])
