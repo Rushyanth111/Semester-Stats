@@ -97,9 +97,7 @@ class DepartmentTest(CommonTestClass):
 
     def test_dept_update(self):
         update_department(
-            self.db,
-            DepartmentReport(Code="CS", Name="X"),
-            DepartmentReport(Code="XC", Name="OSD"),
+            self.db, "CS", DepartmentReport(Code="XC", Name="OSD"),
         )
         res = is_dept_exist(self.db, "XC")
         self.assertTrue(res)

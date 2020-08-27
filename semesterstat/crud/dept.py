@@ -62,11 +62,9 @@ def put_department(db: Session, obj: DepartmentReport) -> None:
     db.flush()
 
 
-def update_department(
-    db: Session, old_obj: DepartmentReport, new_obj: DepartmentReport
-) -> bool:
+def update_department(db: Session, dept: str, new_obj: DepartmentReport) -> bool:
 
-    upd = db.query(Department).filter(Department.Code == old_obj.Code).first()
+    upd = db.query(Department).filter(Department.Code == dept).first()
 
     upd.Code = new_obj.Code
     upd.Name = new_obj.Name
