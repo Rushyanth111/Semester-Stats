@@ -43,16 +43,7 @@ class CommonTestClass(unittest.TestCase):
 
         cls.batch_scheme = [
             {"Batch": batch, "Scheme": scheme}
-            for (batch, scheme) in [
-                (2010, 2010),
-                (2011, 2010),
-                (2012, 2010),
-                (2013, 2010),
-                (2014, 2010),
-                (2015, 2015),
-                (2016, 2015),
-                (2017, 2017),
-            ]
+            for (batch, scheme) in [(2015, 2015), (2016, 2015), (2017, 2017)]
         ]
 
         db.bulk_insert_mappings(BatchSchemeInfo, cls.batch_scheme)
