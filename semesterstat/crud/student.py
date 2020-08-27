@@ -11,7 +11,6 @@ Purpose: Student Details Only:
     - Backlogs
 """
 from sqlalchemy.orm import Session, noload
-from sqlalchemy.sql import or_
 from ..database import Student, Score, Subject
 from ..common import StudentReport, ScoreReport
 
@@ -45,15 +44,7 @@ def get_student_subject(db: Session, usn: str, subcode: str):
 
 
 def get_student_backlogs(db: Session, usn: str, ext_thres: int, total_thres: int):
-    res = db.query(Score).filter(
-        Score.Usn == usn,
-        or_(
-            (Score.Internals + Score.Externals) < total_thres,
-            Score.Externals < ext_thres,
-        ),
-    )
-
-    return [ScoreReport.from_orm(x) for x in res]
+    pass
 
 
 def is_student_exists(db: Session, usn: str) -> bool:
@@ -74,9 +65,9 @@ def put_student(db: Session, rep: StudentReport) -> None:
     db.flush()
 
 
-def update_student(db: Session, old: StudentReport, new: StudentReport) -> None:
+def update_student(db: Session, old: str, new: StudentReport) -> None:
 
-    upd = db.query(Student).filter(Student.Usn == old.Usn).first()
+    upd = db.query(Student).filter(Student.Usn == old).first()
 
     upd.Usn = new.Usn
     upd.Name = new.Name
