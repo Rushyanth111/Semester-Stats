@@ -1,10 +1,17 @@
+from semesterstat.common.reports import StudentReport
+from semesterstat.crud.batch import get_batch_students_usn
 from test.BaseForDB import CommonTestClass
 
 from sqlalchemy.orm.session import Session
+from sqlalchemy.orm.exc import NoResultFound
 
 from semesterstat.common import Report
-from semesterstat.common.reports import StudentReport
-from semesterstat.crud.batch import BatchQuery
+from semesterstat.crud import (
+    get_batch_scores,
+    get_batch_students,
+    is_batch_exists,
+    get_scheme,
+)
 from semesterstat.database import Score, Student, Subject
 
 
@@ -24,12 +31,12 @@ class BatchFunctionsTest(CommonTestClass):
                 Externals=externals,
             )
             for (usn, name, subcode, subname, internals, externals) in [
-                ("1CR10CS101", "X", "10CS65", "X", 12, 42),
-                ("1CR10CS101", "X", "10CS64", "X", 16, 15),
-                ("1CR10CS102", "X", "10CS54", "X", 19, 29),
-                ("1CR15TE102", "X", "15MAT11", "X", 19, 55),
-                ("1CR15TE102", "X", "15CSL76", "X", 38, 26),
-                ("1CR15CS102", "X", "15CS55", "X", 28, 20),
+                ("1CR15CS101", "X", "15CS65", "X", 12, 42),
+                ("1CR15CS101", "X", "15CS64", "X", 16, 15),
+                ("1CR15CS102", "X", "15CS54", "X", 19, 29),
+                ("1CR17TE102", "X", "17MAT11", "X", 19, 55),
+                ("1CR17TE102", "X", "17CSL76", "X", 38, 26),
+                ("1CR17CS102", "X", "17CS55", "X", 28, 20),
             ]
         ]
 
@@ -57,52 +64,68 @@ class BatchFunctionsTest(CommonTestClass):
     def tearDown(self) -> None:
         self.db.close()
 
-    def test_default(self) -> None:
+    def test_get_scheme(self):
+        res = get_scheme(self.db, 2015)
+        self.assertEqual(res, 2015)
 
-        res = BatchQuery(self.db, 2010).export_usns()
+        res = get_scheme(self.db, 2016)
+        self.assertEqual(res, 2015)
 
-        self.assertCountEqual(
-            ["1CR10CS101", "1CR10CS102"], res, "Usn's Are not Matched."
-        )
+        self.assertRaises(NoResultFound, get_scheme(self.db, 2014))
 
-    def test_semester(self) -> None:
+    def test_is_batch_exists(self):
+        self.assertTrue(is_batch_exists(self.db, 2017))
+        self.assertFalse(is_batch_exists(self.db, 2014))
 
-        res = BatchQuery(self.db, 2010).sem(6).export_usns()
-        self.assertCountEqual(["1CR10CS101"], res, "Too many/Too Few in Semester")
+    def test_get_batch_students(self):
+        res = get_batch_students(self.db, 2015)
+        self.assertIsInstance(res[0], StudentReport)
+        self.assertCountEqual(["1CR15CS101", "1CR15CS102"], [x.Usn for x in res])
 
-        res = BatchQuery(self.db, 2010).sem(7).export_usns()
+        res = get_batch_students(self.db, 2015, "CS")
+        self.assertIsInstance(res[0], StudentReport)
+        self.assertCountEqual(["1CR15CS101", "1CR15CS102"], [x.Usn for x in res])
+
+        res = get_batch_students(self.db, 2015, "TE")
         self.assertFalse(res)
 
-    def test_department(self) -> None:
+    def test_get_batch_students_usn(self):
+        res = get_batch_students_usn(self.db, 2015)
+        self.assertIsInstance(res, list)
+        self.assertCountEqual(["1CR15CS101", "1CR15CS102"], res)
 
-        res = BatchQuery(self.db, 2010).dept("CS").export_usns()
+        res = get_batch_students_usn(self.db, 2015, "CS")
+        self.assertIsInstance(res, list)
+        self.assertCountEqual(["1CR15CS101", "1CR15CS102"], res)
+
+        res = get_batch_students_usn(self.db, 2015, "TE")
+        self.assertFalse(res)
+
+    def test_get_batch_scores(self):
+        res = get_batch_scores(self.db, 2015)
+
+        res_a = ["1CR15CS101", "1CR15CS102"]
+        res_a_scores = ["15CS65", "15CS64", "15CS54"]
+        self.assertEqual(len(res), 2)
+        self.assertCountEqual(res_a, [x.Usn for x in res])
         self.assertCountEqual(
-            ["1CR10CS101", "1CR10CS102"], res, "Usn's Are not Matched."
+            res_a_scores, [y.SubjectCode for x in res for y in x.Scores]
         )
 
-        res = BatchQuery(self.db, 2010).dept("TE").export_usns()
-        self.assertFalse(res, "Usn's Are not Matched.")
+        res = get_batch_scores(self.db, 2014)
+        self.assertFalse(res)
 
-    def test_backlog(self) -> None:
+        res = get_batch_scores(self.db, 2015, sem=6)
+        self.assertCountEqual(res_a[0:1], [x.Usn for x in res])
+        self.assertCountEqual(
+            res_a_scores[0:2], [y.SubjectCode for x in res for y in x.Scores]
+        )
 
-        res = BatchQuery(self.db, 2010).backlog().export_usns()
+        res = get_batch_scores(self.db, 2015, dept="CS", sem=6)
+        self.assertCountEqual(res_a[0:1], [x.Usn for x in res])
+        self.assertCountEqual(
+            res_a_scores[0:2], [y.SubjectCode for x in res for y in x.Scores]
+        )
 
-        self.assertCountEqual(["1CR10CS101"], res, "Backlog Numbers Are Wrong")
-
-    def test_detain(self) -> None:
-
-        res = BatchQuery(self.db, 2010).detain(1).export_usns()
-
-        self.assertCountEqual(["1CR10CS101"], res, "Usn's Are not Matched.")
-
-    def test_report(self) -> None:
-
-        res = BatchQuery(self.db, 2010).export_report()
-
-        for r in res:
-            self.assertIsInstance(r, StudentReport)
-
-    def test_sem_dept(self):
-
-        res = BatchQuery(self.db, 2015).dept("TE").sem(1).export_usns()
-        self.assertCountEqual(res, ["1CR15TE102"])
+        res = get_batch_scores(self.db, 2015, dept="CS", sem=7)
+        self.assertFalse(res)
