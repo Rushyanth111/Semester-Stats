@@ -1,57 +1,42 @@
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, HTTPException, Response, status
 from fastapi.params import Depends
 from sqlalchemy.orm.session import Session
-from sqlalchemy.orm import noload
-from typing import Union
 
-from ..database import Department, get_db
 from ..common import DepartmentReport
+from ..crud import get_dept_by_code, is_dept_exist, put_department, update_department
+from ..database import get_db
 
 dept = APIRouter()
 
 
-@dept.get(
-    "/{department}",
-    response_model=DepartmentReport,
-    response_model_include={"Code", "Name"},
-)
-def get_department(department: str, db: Session = Depends(get_db)):
-    res = (
-        db.query(Department)
-        .options(noload("Subjects"))
-        .options(noload("Students"))
-        .filter(Department.Code == department)
-        .one_or_none()
-    )
-    if res is None:
-        return Response(status_code=status.HTTP_204_NO_CONTENT)
-    else:
-        return DepartmentReport.from_orm(res)
+def common_department_verify(dept: str, db: Session = Depends(get_db)) -> str:
+    if not is_dept_exist(db, dept):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="No Such Department"
+        )
+    return dept
+
+
+@dept.get("/{dept}")
+def department_get(
+    dept: str = Depends(common_department_verify), db: Session = Depends(get_db)
+):
+    print(dept)
+    return get_dept_by_code(db, dept)
 
 
 @dept.post("/")
-def add_department(
+def department_add(
     dept: DepartmentReport, resp: Response, db: Session = Depends(get_db),
 ):
-    res = db.query(Department).filter(Department.Code == dept.Code).one_or_none()
-
-    if res is None:
-        obj = Department(Code=dept.Code, Name=dept.Name)
-        db.add(obj)
+    put_department(db, dept)
     db.commit()
 
 
-@dept.put("/")
-def update_department(
-    dept: DepartmentReport, resp: Response, db: Session = Depends(get_db)
+@dept.put("/{dept}")
+def department_update(
+    dept: str = Depends(common_department_verify),
+    obj: DepartmentReport = None,
+    db: Session = Depends(get_db),
 ):
-    res: Union[Department, None] = db.query(Department).filter(
-        Department.Code == dept.Code
-    ).one_or_none()
-
-    if res is None:
-        return Response(status_code=status.HTTP_400_BAD_REQUEST)
-    else:
-        res.Name = dept.Name
-
-    db.commit()
+    update_department(db, dept, obj)
