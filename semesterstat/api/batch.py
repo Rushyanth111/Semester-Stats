@@ -1,16 +1,19 @@
-from typing import List, Optional, Union
+from typing import List
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic.main import BaseModel
 from sqlalchemy.orm import Session
 
-from semesterstat.common.reports import ScoreReport
+from semesterstat.common.reports import StudentReport
+from semesterstat.crud.batch import get_batch_detained_students, get_scheme
 
+from ..crud import get_batch_students, get_batch_students_usn, is_batch_exists
 from ..database import get_db
 
 batch = APIRouter()
 
 """
-/batch/Endpoint Details for Developer:
+/batch/ Endpoint Details for Developer:
 
 - The Batch Endpoint is Strictly only for a given Batch.
 - Available Mandatory Filters:
@@ -29,35 +32,81 @@ batch = APIRouter()
 
     - Expensive.
 
+- Endpoint Details:
+
+POST {batch}/search
+    - Note: Reserved to ensure that Other Operations can be streamlined.
+    - Above Details
+
 """
 
 
-@batch.get("/{batch}/summary", response_model=Union[List[ScoreReport], List[str]])
-async def get_batch_summary(
-    batch: int,
-    department: Optional[str] = None,
-    semester: Optional[int] = None,
-    detain: Optional[bool] = False,
-    listusn: Optional[bool] = False,
-    backlogs: Optional[bool] = False,
+class ListOnlyOutput(BaseModel):
+    Usn: List[str]
+
+
+def common_batch_verify(batch: int, db: Session = Depends(get_db)):
+    if not is_batch_exists(db, batch):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Batch does not Exist."
+        )
+    return batch
+
+
+@batch.get("/{batch}", response_model=List[StudentReport])
+async def batch_get_students(
+    batch: int = Depends(common_batch_verify),
+    dept: str = None,
+    db: Session = Depends(get_db),
+):
+    return get_batch_students(db, batch, dept)
+
+
+@batch.get("/{batch}/scores", response_model=List[StudentReport])
+async def batch_get_scores(
+    batch: int = Depends(common_batch_verify),
+    dept: str = None,
+    sem: int = None,
     db: Session = Depends(get_db),
 ):
     pass
 
 
-@batch.get("/{batch}/detail", response_model=Union[List[ScoreReport], List[str]])
-async def get_batch_detail(
-    batch: int,
-    fcd: int,
-    fc: int,
-    sc: int,
-    total: int,
-    avoid: List[str] = Query(...),
-    department: Optional[str] = None,
-    semester: Optional[int] = None,
-    detain: Optional[bool] = False,
-    listusn: Optional[bool] = False,
-    backlogs: Optional[bool] = False,
+@batch.get("/{batch}/usns", response_model=List[str])
+async def batch_get_student_usns(
+    batch: int = Depends(common_batch_verify),
+    dept: str = None,
     db: Session = Depends(get_db),
+):
+    return get_batch_students_usn(db, batch, dept)
+
+
+@batch.get("/{batch}/scheme")
+async def batch_get_scheme(
+    batch: int = Depends(common_batch_verify), db: Session = Depends(get_db)
+):
+    return get_scheme(db, batch)
+
+
+@batch.get("/{batch}/detained")
+async def batch_get_detained(
+    batch: int, dept: str = None, db: Session = Depends(get_db)
+):
+    return get_batch_detained_students(db, batch, dept)
+
+
+@batch.get("/{batch}/backlogs")
+async def batch_get_backlogs(
+    batch: int = Depends(common_batch_verify),
+    dept: str = None,
+    sem: int = None,
+    db: Session = Depends(get_db),
+):
+    pass
+
+
+@batch.post("/{batch}/search", deprecated=True)
+async def batch_search(
+    batch: int = Depends(common_batch_verify), db: Session = Depends(get_db),
 ):
     pass
