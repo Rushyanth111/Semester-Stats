@@ -1,16 +1,21 @@
-from .batch import BatchQuery
-
+from .batch import (
+    get_batch_backlog,
+    get_batch_detained_students,
+    get_batch_scores,
+    get_batch_students,
+    get_batch_students_usn,
+    get_scheme,
+    is_batch_exists,
+)
 from .dept import (
     get_dept_by_code,
     get_dept_by_name,
     get_dept_students,
     get_dept_subjects,
     is_dept_exist,
-    update_department,
     put_department,
+    update_department,
 )
-
-
 from .student import (
     get_student,
     get_student_backlogs,
@@ -21,17 +26,22 @@ from .student import (
     put_student,
     update_student,
 )
-
 from .subject import (
     get_subject,
-    put_subject,
-    update_subject,
     is_subject_exist,
     is_subjects_exists,
+    put_subject,
+    update_subject,
 )
 
 __all__ = [
-    "BatchQuery",
+    "get_batch_backlog",
+    "get_batch_scores",
+    "get_batch_students",
+    "get_batch_students_usn",
+    "get_batch_detained_students",
+    "get_scheme",
+    "is_batch_exists",
     "get_dept_by_code",
     "get_dept_by_name",
     "get_dept_students",
