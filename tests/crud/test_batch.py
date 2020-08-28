@@ -1,10 +1,11 @@
 from collections import Counter
-from typing import List
+from typing import List, Tuple
 
 import pytest
 from sqlalchemy.orm.session import Session
 
 from semesterstat.crud import (
+    get_batch_aggregate,
     get_batch_scores,
     get_batch_students,
     get_batch_students_usn,
@@ -72,3 +73,15 @@ def test_batch_scores(
 
     assert Counter(opusn) == Counter([x.Usn for x in res])
     assert Counter(opsubcode) == Counter([y.SubjectCode for x in res for y in x.Scores])
+
+
+@pytest.mark.parametrize(
+    ["batch", "dept", "op"],
+    [
+        (2015, "CS", [("1CR15CS101", 85), ("1CR15CS102", 48)]),
+        (2016, "CS", []),
+        (2017, "TE", [("1CR17TE102", 138)]),
+    ],
+)
+def test_batch_aggregate(db: Session, batch: int, dept: str, op: List[Tuple[str, int]]):
+    assert Counter(get_batch_aggregate(db, batch, dept)) == Counter(op)
