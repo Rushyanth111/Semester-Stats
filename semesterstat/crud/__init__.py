@@ -1,4 +1,5 @@
 from .batch import (
+    get_batch_aggregate,
     get_batch_backlog,
     get_batch_detained_students,
     get_batch_scores,
@@ -35,6 +36,7 @@ from .subject import (
 )
 
 __all__ = [
+    "get_batch_aggregate",
     "get_batch_backlog",
     "get_batch_scores",
     "get_batch_students",

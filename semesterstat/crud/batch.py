@@ -1,6 +1,7 @@
-from typing import List
+from typing import List, Tuple
 
 from sqlalchemy.orm import Session, noload
+from sqlalchemy import func
 
 from semesterstat.common.reports import ScoreReport, StudentReport
 
@@ -102,3 +103,18 @@ def get_batch_detained_students(db: Session, batch: int, dept: str):
 
 def get_batch_backlog(db: Session, batch: int, dept: str = None, sem: int = None):
     pass
+
+
+def get_batch_aggregate(
+    db: Session, batch: int, dept: str = None
+) -> List[Tuple[str, int]]:
+    res_score = (
+        db.query(Score.Usn, func.sum(Score.Internals + Score.Externals))
+        .join(Student)
+        .filter(Student.Batch == batch)
+        .group_by(Score.Usn)
+    )
+
+    if dept is not None:
+        res_score = res_score.filter(Student.Department == dept)
+    return [(x, y) for (x, y,) in res_score]
