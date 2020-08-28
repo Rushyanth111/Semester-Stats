@@ -1,19 +1,37 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException, status
 
+from ..common import SubjectReport
+from ..crud import (
+    get_subject,
+    is_subject_exist,
+    put_subject,
+    update_subject,
+)
+from ..database import get_db
 
 subject = APIRouter()
 
 
+def common_subcode_verify(subcode: str, db=Depends(get_db)) -> str:
+    if not is_subject_exist(subcode):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Subject Does not Exist."
+        )
+    return subcode
+
+
 @subject.get("/{subcode}")
-def get_subject():
-    pass
+def subject_get(subcode: str = Depends(common_subcode_verify), db=Depends(get_db)):
+    return get_subject(db, subcode)
 
 
 @subject.post("/")
-def add_subject():
-    pass
+def subject_insert(obj: SubjectReport, db=Depends(get_db)):
+    put_subject(db, obj)
+    db.commit()
 
 
-@subject.put("/")
-def update_subject():
-    pass
+@subject.put("/{subcode}")
+def subject_update(obj: SubjectReport, subcode: str, db=Depends(common_subcode_verify)):
+    update_subject(db, subcode, obj)
+    db.commit()
