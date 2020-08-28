@@ -28,9 +28,9 @@ def put_subject(db: Session, sub: SubjectReport):
     db.flush()
 
 
-def update_subject(db: Session, old_sub: SubjectReport, new_sub: SubjectReport):
+def update_subject(db: Session, old_sub: str, new_sub: SubjectReport):
 
-    upd = db.query(Subject).filter(Subject.Code == old_sub.Code).first()
+    upd = db.query(Subject).filter(Subject.Code == old_sub).first()
 
     upd.Code = new_sub.Code
     upd.Name = new_sub.Name
