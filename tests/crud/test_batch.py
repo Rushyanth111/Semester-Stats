@@ -3,8 +3,13 @@ from collections import Counter
 import pytest
 from sqlalchemy.orm.session import Session
 
-from semesterstat.crud import get_batch_students, get_scheme, is_batch_exists
-from semesterstat.crud.batch import get_batch_scores, get_batch_students_usn
+from semesterstat.crud import (
+    get_batch_students,
+    get_scheme,
+    is_batch_exists,
+    get_batch_scores,
+    get_batch_students_usn,
+)
 
 
 @pytest.mark.parametrize(
