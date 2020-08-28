@@ -6,6 +6,7 @@ csvData/*
 docs
 site
 test
+tests
 TestHouse
 website
 .gitignore
