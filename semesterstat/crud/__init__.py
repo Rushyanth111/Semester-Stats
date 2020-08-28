@@ -35,6 +35,13 @@ from .subject import (
     update_subject,
 )
 
+from .bulk import (
+    put_department_bulk,
+    put_score_bulk,
+    put_student_bulk,
+    put_subject_bulk,
+)
+
 __all__ = [
     "get_batch_aggregate",
     "get_batch_backlog",
