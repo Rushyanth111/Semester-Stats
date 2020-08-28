@@ -23,11 +23,11 @@ def def_db():
     depts = [
         {"Code": code, "Name": name}
         for (code, name) in [
-            ("CS", "X"),
-            ("IS", "X"),
-            ("TE", "X"),
-            ("ME", "X"),
-            ("AE", "X"),
+            ("CS", "Computer Science"),
+            ("IS", "Information Science"),
+            ("TE", "Telecommunication"),
+            ("ME", "Mechanical Engineering"),
+            ("AE", "Aeronautical Engineering"),
         ]
     ]
 
