@@ -28,6 +28,7 @@ requests = "^2.24.0"
 sqlalchemy-stubs = "^0.3"
 isort = "^5.4.2"
 pytest = "^6.0.1"
+mccabe = "^0.6.1"
 
 [build-system]
 requires = ["poetry>=0.12"]
