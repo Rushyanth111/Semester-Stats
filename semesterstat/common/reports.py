@@ -27,6 +27,12 @@ class DepartmentReport(ReportBaseModel):
     Subjects: Optional[List["SubjectReport"]]
     Students: Optional[List["StudentReport"]]
 
+    def __eq__(self, o: "DepartmentReport") -> bool:
+        return self.Code == o.Code
+
+    def __hash__(self) -> int:
+        return hash(self.Code)
+
 
 class StudentReport(ReportBaseModel):
     Usn: str
@@ -52,6 +58,9 @@ class StudentReport(ReportBaseModel):
 
     def __hash__(self) -> int:
         return hash(self.Usn)
+
+    def __eq__(self, o: "StudentReport") -> bool:
+        return self.Usn == o.Usn
 
 
 class SubjectReport(ReportBaseModel):
@@ -85,6 +94,9 @@ class SubjectReport(ReportBaseModel):
     def __hash__(self) -> int:
         return hash(self.Code)
 
+    def __eq__(self, o: "SubjectReport") -> bool:
+        return self.Code == o.Code
+
 
 class ScoreReport(ReportBaseModel):
     Usn: str
@@ -93,7 +105,16 @@ class ScoreReport(ReportBaseModel):
     Externals: int
 
     def __hash__(self) -> int:
-        return hash(self.Usn + self.SubjectCode)
+        return hash((self.Usn, self.SubjectCode))
+
+    def __eq__(self, o: "ScoreReport") -> bool:
+        return self.Usn == o.Usn and self.SubjectCode == o.SubjectCode
+
+    def __gt__(self, o: "ScoreReport") -> bool:
+        return (self.Internals + self.Externals) > (o.Internals + o.Externals)
+
+    def __ge__(self, o: "ScoreReport") -> bool:
+        return (self.Internals + self.Externals) >= (o.Internals + o.Externals)
 
 
 class Report(ReportBaseModel):
