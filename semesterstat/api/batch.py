@@ -4,10 +4,16 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic.main import BaseModel
 from sqlalchemy.orm import Session
 
-from semesterstat.common.reports import StudentReport
-from semesterstat.crud.batch import get_batch_detained_students, get_scheme
+from semesterstat.common import StudentReport
 
-from ..crud import get_batch_students, get_batch_students_usn, is_batch_exists
+from ..crud import (
+    get_batch_students,
+    get_batch_students_usn,
+    is_batch_exists,
+    get_batch_aggregate,
+    get_batch_detained_students,
+    get_scheme,
+)
 from ..database import get_db
 
 batch = APIRouter()
@@ -103,6 +109,15 @@ async def batch_get_backlogs(
     db: Session = Depends(get_db),
 ):
     pass
+
+
+@batch.get("/{batch}/aggregate")
+async def batch_get_aggregate(
+    batch: int = Depends(common_batch_verify),
+    dept: str = None,
+    db: Session = Depends(get_db),
+):
+    return get_batch_aggregate(db, batch, dept)
 
 
 @batch.post("/{batch}/search", deprecated=True)
