@@ -21,7 +21,6 @@ def common_department_verify(dept: str, db: Session = Depends(get_db)) -> str:
 def department_get(
     dept: str = Depends(common_department_verify), db: Session = Depends(get_db)
 ):
-    print(dept)
     return get_dept_by_code(db, dept)
 
 
