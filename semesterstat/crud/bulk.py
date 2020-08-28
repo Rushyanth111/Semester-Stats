@@ -82,8 +82,8 @@ def put_score_bulk(db: Session, score_list: List[ScoreReport]):
     db.bulk_insert_mappings(Score, [obj.dict() for obj in not_present])
 
     # Updating Section.
-    # Check if Need To Insert.
 
+    # Check if Need To Insert.
     for pi in in_scores:
         for pb in db_scores:
             if pi == pb and pi > pb:
