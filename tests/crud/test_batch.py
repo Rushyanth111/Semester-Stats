@@ -1,14 +1,15 @@
-from typing import List
 from collections import Counter
+from typing import List
+
 import pytest
 from sqlalchemy.orm.session import Session
 
 from semesterstat.crud import (
+    get_batch_scores,
     get_batch_students,
+    get_batch_students_usn,
     get_scheme,
     is_batch_exists,
-    get_batch_scores,
-    get_batch_students_usn,
 )
 
 
