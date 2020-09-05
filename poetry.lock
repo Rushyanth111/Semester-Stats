@@ -644,6 +644,17 @@ testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xm
 
 [[package]]
 category = "dev"
+description = "Manage dependencies of tests"
+name = "pytest-dependency"
+optional = false
+python-versions = "*"
+version = "0.5.1"
+
+[package.dependencies]
+pytest = ">=3.6.0"
+
+[[package]]
+category = "dev"
 description = "Extensions to the standard Python datetime module"
 name = "python-dateutil"
 optional = false
@@ -908,7 +919,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "ef74c23bd4166a4b057010ae13f511a2e80bb1afb00d32678196d5ce194d0679"
+content-hash = "1adf6aa3cee2ad4945aaf981e5db2b9da2be9f976d71427a2146bc052a16aece"
 lock-version = "1.0"
 python-versions = ">=3.6,<3.9"
 
@@ -1227,6 +1238,9 @@ pyparsing = [
 pytest = [
     {file = "pytest-6.0.1-py3-none-any.whl", hash = "sha256:8b6007800c53fdacd5a5c192203f4e531eb2a1540ad9c752e052ec0f7143dbad"},
     {file = "pytest-6.0.1.tar.gz", hash = "sha256:85228d75db9f45e06e57ef9bf4429267f81ac7c0d742cc9ed63d09886a9fe6f4"},
+]
+pytest-dependency = [
+    {file = "pytest-dependency-0.5.1.tar.gz", hash = "sha256:c2a892906192663f85030a6ab91304e508e546cddfe557d692d61ec57a1d946b"},
 ]
 python-dateutil = [
     {file = "python-dateutil-2.8.1.tar.gz", hash = "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"},
