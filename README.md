@@ -15,3 +15,37 @@ These are some of the assumptions I will work with. They are not Subject to chan
 - Any Score Pertaining to a Student not in the Database will be **_REJECTED_**
 - Any Department Pertaining to a Score **OR** Student not in the Database will be **_REJECTED_**
 - Any Student **OR** Subject Pertaining not pertaining to a Scheme will be **_REJECTED_**
+
+## Permanent API Routes:
+
+New Routes will Be added as necessary, however, these are some of the permanent API Routes Available.
+
+Their Internal Workings are Subject to Change and the Output to Each May Also change from Version to Version, but they remain of the same functionality.
+
+- /batch/
+  - GET​ /batch​/{batch}
+  - GET /batch​/{batch}​/scores
+  - GET /batch​/{batch}​/usns
+  - GET /batch​/{batch}​/scheme
+  - GET /batch​/{batch}​/detained
+  - GET /batch​/{batch}​/backlogs
+  - GET /batch​/{batch}​/aggregate
+- /dept/
+  - GET /dept​/{dept}
+  - PUT ​/dept​/{dept}
+  - POST ​/dept​/
+- /student/
+  - GET /student​/{usn}
+  - GET /student​/{usn}​/scores
+  - GET /student​/{usn}​/semester
+  - GET /student​/{usn}​/backlogs
+  - GET /student​/{usn}​/subject​/{subcode}
+  - PUT /student​/{usn}
+  - POST /student​/
+- /bulk/
+  - POST /bulk​/scores
+  - POST /bulk​/dept
+  - POST /bulk​/student
+  - POST /bulk​/subject
+
+Please take a look at the documentation for the same for detailed Information on how these routes work. (Do note that the documentation is not available for now, due to development reasons.)
