@@ -13,7 +13,7 @@ def put_department_bulk(db: Session, dept_list: List[DepartmentReport]):
         [
             DepartmentReport.from_orm(dept)
             for dept in db.query(Department).filter(
-                Department.Code.in_([x.SubjectCode for x in in_dept_codes])
+                Department.Code.in_([x.Code for x in in_dept_codes])
             )
         ]
     )
