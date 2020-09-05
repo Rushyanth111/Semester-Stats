@@ -1,4 +1,4 @@
-from sqlalchemy.pool.impl import NullPool
+from sqlalchemy.pool import NullPool
 from typing import Callable
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
