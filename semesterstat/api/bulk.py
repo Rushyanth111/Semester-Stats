@@ -21,7 +21,7 @@ and Adding new Reports.
 """
 
 
-@bulk.post("/scores", status_code=status.HTTP_201_CREATED)
+@bulk.post("/score", status_code=status.HTTP_201_CREATED)
 async def score_bulk(reports: List[ScoreReport], db: Session = Depends(get_db)):
     put_score_bulk(db, reports)
     db.commit()
