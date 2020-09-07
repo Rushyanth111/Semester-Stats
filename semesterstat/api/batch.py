@@ -1,3 +1,5 @@
+from attr.filters import exclude
+from semesterstat.crud.batch import get_batch_scores
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -7,12 +9,12 @@ from sqlalchemy.orm import Session
 from semesterstat.common import StudentReport
 
 from ..crud import (
-    get_batch_students,
-    get_batch_students_usn,
-    is_batch_exists,
     get_batch_aggregate,
     get_batch_detained_students,
+    get_batch_students,
+    get_batch_students_usn,
     get_scheme,
+    is_batch_exists,
 )
 from ..database import get_db
 
@@ -59,7 +61,9 @@ def common_batch_verify(batch: int, db: Session = Depends(get_db)):
     return batch
 
 
-@batch.get("/{batch}", response_model=List[StudentReport])
+@batch.get(
+    "/{batch}", response_model=List[StudentReport], response_model_exclude_unset=True
+)
 async def batch_get_students(
     batch: int = Depends(common_batch_verify),
     dept: str = None,
@@ -75,7 +79,7 @@ async def batch_get_scores(
     sem: int = None,
     db: Session = Depends(get_db),
 ):
-    pass
+    return get_batch_scores(db, batch, dept, sem)
 
 
 @batch.get("/{batch}/usns", response_model=List[str])
@@ -94,14 +98,14 @@ async def batch_get_scheme(
     return get_scheme(db, batch)
 
 
-@batch.get("/{batch}/detained")
+@batch.get("/{batch}/detained", deprecated=True)
 async def batch_get_detained(
     batch: int, dept: str = None, db: Session = Depends(get_db)
 ):
     return get_batch_detained_students(db, batch, dept)
 
 
-@batch.get("/{batch}/backlogs")
+@batch.get("/{batch}/backlogs", deprecated=True)
 async def batch_get_backlogs(
     batch: int = Depends(common_batch_verify),
     dept: str = None,
