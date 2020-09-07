@@ -1,16 +1,25 @@
-from semesterstat.database.models import BatchSchemeInfo
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from uvicorn.config import logger
 
-from ..constants import dept_dict, batch_dict
+from semesterstat.database.models import BatchSchemeInfo
+
+from ..constants import batch_dict, dept_dict
 from ..database import Department, session_create
 from .batch import batch
+from .bulk import bulk
 from .dept import dept
 from .student import student
 from .subject import subject
-from .bulk import bulk
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 """
 General Documentation of my Intention:
