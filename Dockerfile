@@ -11,4 +11,7 @@ RUN pip install -r requirements.txt && rm -rf /var/lib/apt/lists/*
 #COPY PROJECT
 COPY semesterstat ./semesterstat
 
+#COPY Config
+COPY config.ini ./
+
 CMD ["python", "-m", "semesterstat"]
