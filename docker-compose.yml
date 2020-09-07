@@ -1,9 +1,10 @@
 version: "3.3"
 services:
   semesterstats:
-    image: semester:0.1
+    image: semester:0.3
     build: .
     ports:
       - "9000:9000"
     stop_signal: SIGINT
     tty: true
+    restart: unless-stopped

@@ -9,8 +9,6 @@ COPY requirements.txt ./
 RUN pip install -r requirements.txt && rm -rf /var/lib/apt/lists/*
 
 #COPY PROJECT
-COPY semesterstats ./semesterstats
-COPY Resources ./Resources
-COPY FormattedData ./FormattedData
+COPY semesterstat ./semesterstat
 
-CMD ["python", "-m", "semesterstats"]
+CMD ["python", "-m", "semesterstat"]

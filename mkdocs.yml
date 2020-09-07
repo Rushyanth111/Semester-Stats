@@ -25,9 +25,15 @@ nav:
   - Calculation: "Calculations.md"
   - Database Structure: "Database.md"
   - CSV Format: "CsvFormat.md"
-  - API:
-      - Home: "api.md"
-      - Department: "api-docs/dept.md"
-      - Student: "api-docs/student.md"
-      - Subject: "api-docs/subject.md"
-      - Batch: "api-docs/batch.md"
+  - API V1:
+      - Home: "v1/api.md"
+      - Department: "v1/dept.md"
+      - Student: "v1/student.md"
+      - Subject: "v1/subject.md"
+      - Batch: "v1/batch.md"
+  - API v2:
+      - Home: "v2/home.md"
+      - Batch: "v2/batch.md"
+      - Student: "v2/student.md"
+      - Deptartment: "v2/dept.md"
+      - Subject: "v2/subject.md"
