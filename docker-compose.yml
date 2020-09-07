@@ -4,7 +4,7 @@ services:
     image: semester:0.3
     build: .
     ports:
-      - "9000:9000"
+      - "9001:9000"
     stop_signal: SIGINT
     tty: true
     restart: unless-stopped

@@ -14,4 +14,4 @@ COPY semesterstat ./semesterstat
 #COPY Config
 COPY config.ini ./
 
-CMD ["python", "-m", "semesterstat"]
+CMD ["uvicorn", "semesterstat:app", "--host", "0.0.0.0","--port", "9000"]
