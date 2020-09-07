@@ -1,4 +1,3 @@
-from attr.filters import exclude
 from semesterstat.crud.batch import get_batch_scores
 from typing import List
 
