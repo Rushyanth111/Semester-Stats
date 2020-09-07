@@ -45,7 +45,7 @@ def _get_subjects_sem(db: Session, scheme: int, sem: int = None):
     return subcodes
 
 
-def get_scheme(db: Session, batch: int) -> str:
+def get_scheme(db: Session, batch: int) -> int:
     return (
         db.query(BatchSchemeInfo.Scheme).filter(BatchSchemeInfo.Batch == batch).scalar()
     )
