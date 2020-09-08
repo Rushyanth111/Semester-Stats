@@ -7,7 +7,6 @@ from .generator import (
 )
 from .reciepts import (
     DepartmentReciept,
-    ListUsnStudentReciept,
     ScoreMinimalReciept,
     ScoreReciept,
     StudentReciept,
