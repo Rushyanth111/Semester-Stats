@@ -49,3 +49,16 @@ Their Internal Workings are Subject to Change and the Output to Each May Also ch
   - POST /bulk​/subject
 
 Please take a look at the documentation for the same for detailed Information on how these routes work. (Do note that the documentation is not available for now, due to development reasons.)
+
+## Reports vs Reciepts:
+
+- Reports: Stritly for Input and Internal Generation.
+
+  - Internal Generation Models Only.
+  - They are also Inputs for the API.
+
+- Reciepts: Stricly for Output and Display.
+  - Why? Simpler, Easier to Manage.
+  - Conversion costs but Data Transmission is Easier.
+
+There are Converters that translate from Report to Reciept.
