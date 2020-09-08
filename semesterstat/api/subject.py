@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from ..common import SubjectReport
+from ..common import SubjectReport, SubjectReciept, convert_subject
 from ..crud import (
     get_subject,
     is_subject_exist,
@@ -20,9 +20,9 @@ def common_subcode_verify(subcode: str, db=Depends(get_db)) -> str:
     return subcode
 
 
-@subject.get("/{subcode}")
+@subject.get("/{subcode}", response_model=SubjectReciept)
 def subject_get(subcode: str = Depends(common_subcode_verify), db=Depends(get_db)):
-    return get_subject(db, subcode)
+    return convert_subject(get_subject(db, subcode))
 
 
 @subject.post("/")

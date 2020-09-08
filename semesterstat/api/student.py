@@ -1,6 +1,12 @@
-from semesterstat.common import StudentReport
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+
+from semesterstat.common import (
+    ScoreReciept,
+    StudentReciept,
+    StudentReport,
+    StudentScoreReciept,
+)
 
 from ..crud import (
     get_student,
@@ -26,35 +32,35 @@ def common_student_verify(usn: str, db: Session = Depends(get_db)) -> str:
     return usn
 
 
-@student.get("/{usn}", response_model=StudentReport, response_model_exclude={"Scores"})
+@student.get("/{usn}", response_model=StudentReciept)
 def student_get(
     usn: str = Depends(common_student_verify), db: Session = Depends(get_db)
 ):
     return get_student(db, usn)
 
 
-@student.get("/{usn}/scores")
+@student.get("/{usn}/scores", response_model=StudentScoreReciept)
 def student_get_scores(
     usn: str = Depends(common_student_verify), db: Session = Depends(get_db)
 ):
     return get_student_scores(db, usn)
 
 
-@student.get("/{usn}/{semester}")
+@student.get("/{usn}/{semester}", response_model=StudentScoreReciept)
 def student_get_semester_scores(
     sem: int, usn: str = Depends(common_student_verify), db: Session = Depends(get_db)
 ):
     return get_student_scores_by_semester(db, usn, sem)
 
 
-@student.get("/{usn}/backlogs", deprecated=True)
+@student.get("/{usn}/backlogs", deprecated=True, response_model=StudentScoreReciept)
 def student_get_backlog(
     sem: int, usn: str = Depends(common_student_verify), db: Session = Depends(get_db)
 ):
     return get_student_backlogs(db, usn, sem)
 
 
-@student.get("/{usn}/subject/{subcode}")
+@student.get("/{usn}/subject/{subcode}", response_model=ScoreReciept)
 def student_get_subject_score(
     subcode: str,
     usn: str = Depends(common_student_verify),

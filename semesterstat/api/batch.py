@@ -1,24 +1,3 @@
-from semesterstat.crud.batch import get_batch_scores
-from typing import List
-
-from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic.main import BaseModel
-from sqlalchemy.orm import Session
-
-from semesterstat.common import StudentReport
-
-from ..crud import (
-    get_batch_aggregate,
-    get_batch_detained_students,
-    get_batch_students,
-    get_batch_students_usn,
-    get_scheme,
-    is_batch_exists,
-)
-from ..database import get_db
-
-batch = APIRouter()
-
 """
 /batch/ Endpoint Details for Developer:
 
@@ -48,11 +27,28 @@ POST {batch}/search
 """
 
 
-class ListOnlyOutput(BaseModel):
-    Usn: List[str]
+from semesterstat.crud.batch import get_batch_scores
+from typing import List, Tuple
+
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+
+from semesterstat.common import StudentReciept, StudentScoreReciept
+
+from ..crud import (
+    get_batch_aggregate,
+    get_batch_detained_students,
+    get_batch_students,
+    get_batch_students_usn,
+    get_scheme,
+    is_batch_exists,
+)
+from ..database import get_db
+
+batch = APIRouter()
 
 
-def common_batch_verify(batch: int, db: Session = Depends(get_db)):
+def common_batch_verify(batch: int, db: Session = Depends(get_db)) -> int:
     if not is_batch_exists(db, batch):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Batch does not Exist."
@@ -60,9 +56,7 @@ def common_batch_verify(batch: int, db: Session = Depends(get_db)):
     return batch
 
 
-@batch.get(
-    "/{batch}", response_model=List[StudentReport], response_model_exclude_unset=True
-)
+@batch.get("/{batch}", response_model=List[StudentReciept])
 async def batch_get_students(
     batch: int = Depends(common_batch_verify),
     dept: str = None,
@@ -71,7 +65,7 @@ async def batch_get_students(
     return get_batch_students(db, batch, dept)
 
 
-@batch.get("/{batch}/scores", response_model=List[StudentReport])
+@batch.get("/{batch}/scores", response_model=List[StudentScoreReciept])
 async def batch_get_scores(
     batch: int = Depends(common_batch_verify),
     dept: str = None,
@@ -90,21 +84,23 @@ async def batch_get_student_usns(
     return get_batch_students_usn(db, batch, dept)
 
 
-@batch.get("/{batch}/scheme")
+@batch.get("/{batch}/scheme", response_model=int)
 async def batch_get_scheme(
     batch: int = Depends(common_batch_verify), db: Session = Depends(get_db)
 ):
     return get_scheme(db, batch)
 
 
-@batch.get("/{batch}/detained", deprecated=True)
+@batch.get("/{batch}/detained", deprecated=True, response_model=List[StudentReciept])
 async def batch_get_detained(
     batch: int, dept: str = None, db: Session = Depends(get_db)
 ):
     return get_batch_detained_students(db, batch, dept)
 
 
-@batch.get("/{batch}/backlogs", deprecated=True)
+@batch.get(
+    "/{batch}/backlogs", deprecated=True, response_model=List[StudentScoreReciept]
+)
 async def batch_get_backlogs(
     batch: int = Depends(common_batch_verify),
     dept: str = None,
@@ -114,7 +110,7 @@ async def batch_get_backlogs(
     pass
 
 
-@batch.get("/{batch}/aggregate")
+@batch.get("/{batch}/aggregate", response_model=List[Tuple[str, int]])
 async def batch_get_aggregate(
     batch: int = Depends(common_batch_verify),
     dept: str = None,
