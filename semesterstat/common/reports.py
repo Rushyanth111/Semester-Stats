@@ -120,28 +120,5 @@ class ScoreReport(ReportBaseModel):
         return (self.Internals + self.Externals) >= (o.Internals + o.Externals)
 
 
-class Report(ReportBaseModel):
-    Usn: str
-    Name: str
-    Subcode: str
-    Subname: str
-    Internals: int
-    Externals: int
-
-    def export_student(self) -> StudentReport:
-        return StudentReport(Usn=self.Usn, Name=self.Name)
-
-    def export_score(self) -> ScoreReport:
-        return ScoreReport(
-            Usn=self.Usn,
-            SubjectCode=self.Subcode,
-            Internals=self.Internals,
-            Externals=self.Externals,
-        )
-
-    def export_subject(self) -> SubjectReport:
-        return SubjectReport(Code=self.Subcode, Name=self.Subname)
-
-
 DepartmentReport.update_forward_refs()
 StudentReport.update_forward_refs()

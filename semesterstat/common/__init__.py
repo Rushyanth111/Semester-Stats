@@ -14,7 +14,7 @@ from .reciepts import (
     SubjectReciept,
     UsnStudentReciept,
 )
-from .reports import DepartmentReport, Report, ScoreReport, StudentReport, SubjectReport
+from .reports import DepartmentReport, ScoreReport, StudentReport, SubjectReport
 from .subject_extractor import (
     get_subject_dept,
     get_subject_scheme,
@@ -38,7 +38,6 @@ __all__ = [
     "convert_student",
     "convert_subject",
     "DepartmentReport",
-    "Report",
     "ScoreReport",
     "StudentReport",
     "SubjectReport",
