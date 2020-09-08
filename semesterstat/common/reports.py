@@ -69,6 +69,9 @@ class SubjectReport(ReportBaseModel):
     Semester: Optional[int]
     Scheme: Optional[int]
     Department: Optional[str]
+    MinExt: Optional[int]
+    MinTotal: Optional[int]
+    Credits: Optional[int]
 
     @validator("Semester", pre=True, always=True)
     def set_semester(cls, v, values):

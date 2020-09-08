@@ -51,6 +51,9 @@ class Subject(Base):
     Department = Column(
         String, ForeignKey("department.Code", onupdate="CASCADE", ondelete="CASCADE")
     )
+    MinExt = Column(Integer)
+    MinTotal = Column(Integer)
+    Credits = Column(Integer)
 
     __table_args__ = (Index("Subject_IDX", "Scheme", "Department", "Code"),)
 
