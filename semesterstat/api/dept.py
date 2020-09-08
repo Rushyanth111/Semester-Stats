@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Response, status
 from fastapi.params import Depends
 from sqlalchemy.orm.session import Session
 
-from ..common import DepartmentReport, DepartmentReciept
+from ..common import DepartmentReport, DepartmentReciept, convert_dept
 from ..crud import get_dept_by_code, is_dept_exist, put_department, update_department
 from ..database import get_db
 
@@ -21,7 +21,7 @@ def common_department_verify(dept: str, db: Session = Depends(get_db)) -> str:
 def department_get(
     dept: str = Depends(common_department_verify), db: Session = Depends(get_db)
 ):
-    return get_dept_by_code(db, dept)
+    return convert_dept(get_dept_by_code(db, dept))
 
 
 @dept.post("/")
