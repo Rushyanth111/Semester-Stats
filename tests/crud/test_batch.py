@@ -9,8 +9,10 @@ from semesterstat.crud import (
     get_batch_scores,
     get_batch_students,
     get_batch_students_usn,
+    get_batch_backlog,
     get_scheme,
     is_batch_exists,
+    get_batch_detained_students,
 )
 
 
@@ -85,3 +87,35 @@ def test_batch_scores(
 )
 def test_batch_aggregate(db: Session, batch: int, dept: str, op: List[Tuple[str, int]]):
     assert Counter(get_batch_aggregate(db, batch, dept)) == Counter(op)
+
+
+@pytest.mark.parametrize(
+    ["batch", "dept", "sem", "op"],
+    [
+        (2015, "CS", None, [("1CR15CS101", "15CS64")]),
+        (2017, "CS", None, [("1CR17CS102", "17CS55")]),
+    ],
+)
+def test_batch_backlog(
+    db: Session, batch: int, dept: str, sem: int, op: List[Tuple[str, int]]
+):
+    res = get_batch_backlog(db, batch, dept, sem)
+
+    assert res[0].Usn == op[0][0]
+    assert res[0].Scores[0].SubjectCode == op[0][1]
+
+
+@pytest.mark.parametrize(
+    ["batch", "dept", "sem", "op"],
+    [
+        (2015, "CS", None, [("1CR15CS101", "15CS64")]),
+        (2017, "CS", None, [("1CR17CS102", "17CS55")]),
+    ],
+)
+def test_batch_detained(
+    db: Session, batch: int, dept: str, sem: int, op: List[Tuple[str, int]]
+):
+    res = get_batch_detained_students(db, batch, dept, thresh=0)
+
+    assert res[0].Usn == op[0][0]
+    assert res[0].Scores[0].SubjectCode == op[0][1]

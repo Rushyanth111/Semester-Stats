@@ -1,7 +1,8 @@
-from typing import List, Tuple
+from operator import or_
+from typing import List, Tuple, Any
 
 from sqlalchemy.orm import Session, noload
-from sqlalchemy import func
+from sqlalchemy import func, tuple_
 
 from semesterstat.common.reports import ScoreReport, StudentReport
 
@@ -45,6 +46,18 @@ def _get_subjects_sem(db: Session, scheme: int, sem: int = None):
     return subcodes
 
 
+def _adjoin_student_scores(students: Any, scores: Any) -> List[StudentReport]:
+    students = [StudentReport.from_orm(x) for x in students]
+    scores = [ScoreReport.from_orm(x) for x in scores]
+
+    for student in students:
+        for score in scores:
+            if score.Usn == student.Usn:
+                student.Scores.append(score)
+
+    return [student for student in students if len(student.Scores) > 0]
+
+
 def get_scheme(db: Session, batch: int) -> int:
     return (
         db.query(BatchSchemeInfo.Scheme).filter(BatchSchemeInfo.Batch == batch).scalar()
@@ -86,23 +99,57 @@ def get_batch_scores(
         .filter(Score.SubjectCode.in_(subcodes.with_entities(Subject.Code).subquery()))
     )
 
-    students = [StudentReport.from_orm(x) for x in usns]
-    scores = [ScoreReport.from_orm(x) for x in scores]
-
-    for student in students:
-        for score in scores:
-            if score.Usn == student.Usn:
-                student.Scores.append(score)
-
-    return [student for student in students if len(student.Scores) > 0]
+    return _adjoin_student_scores(usns, scores)
 
 
-def get_batch_detained_students(db: Session, batch: int, dept: str):
-    pass
+def get_batch_backlog(
+    db: Session, batch: int, dept: str = None, sem: int = None
+) -> List[StudentReport]:
+    scheme = get_scheme(db, batch)
+    usns = _get_students_batch(db, batch, dept)
+    subcodes = _get_subjects_sem(db, scheme, sem)
+
+    scores = (
+        db.query(Score)
+        .join(Subject)
+        .filter(Score.Usn.in_(usns.with_entities(Student.Usn).subquery()))
+        .filter(Score.SubjectCode.in_(subcodes.with_entities(Subject.Code).subquery()))
+        .filter(
+            or_(
+                Score.Internals + Score.Externals < Subject.MinTotal,
+                Score.Externals < Subject.MinExt,
+            )
+        )
+    )
+
+    return _adjoin_student_scores(usns, scores)
 
 
-def get_batch_backlog(db: Session, batch: int, dept: str = None, sem: int = None):
-    pass
+def get_batch_detained_students(db: Session, batch: int, dept: str, thresh: int = 4):
+    scheme = get_scheme(db, batch)
+    usns = _get_students_batch(db, batch, dept)
+    subcodes = _get_subjects_sem(db, scheme)
+
+    blk_scores = (
+        db.query(Score.Usn, Score.SubjectCode)
+        .join(Subject)
+        .filter(Score.Usn.in_(usns.with_entities(Student.Usn).subquery()))
+        .filter(Score.SubjectCode.in_(subcodes.with_entities(Subject.Code).subquery()))
+        .filter(
+            or_(
+                Score.Internals + Score.Externals < Subject.MinTotal,
+                Score.Externals < Subject.MinExt,
+            )
+        )
+        .group_by(Score.Usn)
+        .having(func.count(Score.SubjectCode) > thresh)
+    )
+
+    scores = db.query(Score).filter(
+        tuple_(Score.Usn, Score.SubjectCode).in_(blk_scores)
+    )
+
+    return _adjoin_student_scores(usns, scores)
 
 
 def get_batch_aggregate(
