@@ -1,5 +1,3 @@
-from .common import get_scheme
-
 from .batch import (
     get_batch_aggregate,
     get_batch_backlog,
@@ -9,6 +7,13 @@ from .batch import (
     get_batch_students_usn,
     is_batch_exists,
 )
+from .bulk import (
+    put_department_bulk,
+    put_score_bulk,
+    put_student_bulk,
+    put_subject_bulk,
+)
+from .common import get_scheme
 from .dept import (
     get_dept_by_code,
     get_dept_by_name,
@@ -21,8 +26,11 @@ from .dept import (
 from .student import (
     get_student,
     get_student_backlogs,
+    get_student_cgpa,
+    get_student_score_credits,
     get_student_scores,
     get_student_scores_by_semester,
+    get_student_sgpa,
     get_student_subject,
     is_student_exists,
     put_student,
@@ -36,12 +44,6 @@ from .subject import (
     update_subject,
 )
 
-from .bulk import (
-    put_department_bulk,
-    put_score_bulk,
-    put_student_bulk,
-    put_subject_bulk,
-)
 
 __all__ = [
     "get_batch_aggregate",
@@ -72,4 +74,11 @@ __all__ = [
     "update_subject",
     "is_subject_exist",
     "is_subjects_exists",
+    "put_department_bulk",
+    "put_score_bulk",
+    "put_student_bulk",
+    "put_subject_bulk",
+    "get_student_cgpa",
+    "get_student_score_credits",
+    "get_student_sgpa",
 ]

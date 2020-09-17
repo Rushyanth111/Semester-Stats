@@ -12,7 +12,9 @@ Purpose: Student Details Only:
 """
 from sqlalchemy.orm import Session, noload
 from ..database import Student, Score, Subject
-from ..common import StudentReport, ScoreReport
+from ..common import StudentReport, ScoreReport, get_usn_batch
+from .common import get_scheme
+from sqlalchemy import func, cast, Integer
 
 
 def get_student(db: Session, usn: str):
@@ -77,13 +79,53 @@ def update_student(db: Session, old: str, new: StudentReport) -> None:
     db.commit()
 
 
-def get_student_score_credits(db: Session, usn: str, subcode: str) -> None:
-    pass
+def get_student_score_credits(db: Session, usn: str, subcode: str) -> int:
+    internals, externals, credits = (
+        db.query(Score.Internals, Score.Externals, Subject.Credits)
+        .join(Subject, Score.SubjectCode == Subject.Code)
+        .filter(Score.Usn == usn, Score.SubjectCode == subcode)
+        .first()
+    )
+
+    credits = ((internals + externals) // 10) * credits
+
+    return credits
 
 
-def get_student_sgpa(db: Session, usn: str, semester: str) -> None:
-    pass
+def get_student_sgpa(db: Session, usn: str, semester: int) -> float:
+    batch = get_usn_batch(usn)
+    scheme = get_scheme(db, batch)
+
+    score_list = (
+        db.query(Score.Internals, Score.Externals, Subject.Credits)
+        .join(Subject)
+        .filter(Score.Usn == usn, Subject.Semester == semester)
+    )
+
+    # Incase the Sum Credits are Zero.
+    if score_list.count() == 0:
+        return 0
+
+    score_list = [
+        ((internals + externals) // 10) * credits
+        for internals, externals, credits in score_list
+    ]
+
+    score_total = sum(score_list)
+
+    total_credits = (
+        db.query(func.sum(Subject.Credits))
+        .filter(Subject.Semester == semester, Subject.Scheme == scheme)
+        .scalar()
+    )
+
+    return score_total / total_credits
 
 
-def get_student_cgpa(db: Session, usn: str, semester: str) -> None:
-    pass
+def get_student_cgpa(db: Session, usn: str) -> None:
+    sgpa_list = [get_student_sgpa(db, usn, sem) for sem in range(1, 9)]
+
+    valid_count = 8 - sgpa_list.count(0)
+    if valid_count == 0:
+        return 0
+    return sum(sgpa_list) / valid_count

@@ -9,6 +9,9 @@ from semesterstat.crud import (
     get_student_scores,
     get_student_scores_by_semester,
     get_student_subject,
+    get_student_score_credits,
+    get_student_sgpa,
+    get_student_cgpa,
     is_student_exists,
     put_student,
     update_student,
@@ -109,3 +112,33 @@ def test_update_student(db: Session):
         db, "1CR15CS101", StudentReport(Usn="1CR10CS102", Name="XX"),
     )
     assert is_student_exists(db, "1CR10CS102")
+
+
+@pytest.mark.parametrize(
+    ["usn", "subcode", "op"],
+    [
+        ("1CR15CS101", "15CS65", ((12 + 42) // 10) * 4),
+        ("1CR15CS101", "15CS64", ((16 + 15) // 10) * 4),
+        ("1CR15CS102", "15CS54", ((19 + 29) // 10) * 4),
+        ("1CR17TE102", "17MAT11", ((19 + 55) // 10) * 4),
+        ("1CR17TE102", "17CSL76", ((38 + 26) // 10) * 2),
+        ("1CR17CS102", "17CS55", ((28 + 20) // 10) * 4),
+    ],
+)
+def test_credits(db: Session, usn: str, subcode: str, op: int):
+    assert get_student_score_credits(db, usn, subcode) == op
+
+
+@pytest.mark.parametrize(
+    ["usn", "sem", "op"],
+    [("1CR15CS101", 6, 4.00), ("1CR17CS102", 6, 0.0), ("1CR17CS102", 5, 4.00)],
+)
+def test_student_sgpa(db: Session, usn: str, sem: int, op: float):
+    assert get_student_sgpa(db, usn, sem) == pytest.approx(op)
+
+
+@pytest.mark.parametrize(
+    ["usn", "op"], [("1CR15CS101", 4.00), ("1CR15CS102", 4.00), ("1CR17TE102", 6.5)]
+)
+def test_student_cgpa(db: Session, usn: str, op: float):
+    assert get_student_cgpa(db, usn) == pytest.approx(op)
