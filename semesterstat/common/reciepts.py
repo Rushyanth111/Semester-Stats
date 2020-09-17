@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 
 class RecieptBaseModel(BaseModel):
@@ -100,6 +100,9 @@ class SubjectReciept(RecieptBaseModel):
     Semester: int
     Scheme: int
     Department: str
+    MinExt: Optional[int]
+    MinTotal: Optional[int]
+    Credits: Optional[int]
 
     class Config:
         schema_extra = {
