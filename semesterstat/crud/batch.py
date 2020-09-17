@@ -86,9 +86,9 @@ def get_batch_students_usn(db: Session, batch: int, dept: str = None) -> List[st
     return [x.Usn for x in res]
 
 
-def get_batch_scores(
+def _get_scores(
     db: Session, batch: int, dept: str = None, sem: int = None
-) -> List[StudentReport]:
+) -> Tuple[Any, Any]:
     scheme = get_scheme(db, batch)
     usns = _get_students_batch(db, batch, dept)
     subcodes = _get_subjects_sem(db, scheme, sem)
@@ -99,26 +99,25 @@ def get_batch_scores(
         .filter(Score.SubjectCode.in_(subcodes.with_entities(Subject.Code).subquery()))
     )
 
+    return (scores, usns)
+
+
+def get_batch_scores(
+    db: Session, batch: int, dept: str = None, sem: int = None
+) -> List[StudentReport]:
+    scores, usns = _get_scores(db, batch, dept, sem)
     return _adjoin_student_scores(usns, scores)
 
 
 def get_batch_backlog(
     db: Session, batch: int, dept: str = None, sem: int = None
 ) -> List[StudentReport]:
-    scheme = get_scheme(db, batch)
-    usns = _get_students_batch(db, batch, dept)
-    subcodes = _get_subjects_sem(db, scheme, sem)
+    scores, usns = _get_scores(db, batch, dept, sem)
 
-    scores = (
-        db.query(Score)
-        .join(Subject)
-        .filter(Score.Usn.in_(usns.with_entities(Student.Usn).subquery()))
-        .filter(Score.SubjectCode.in_(subcodes.with_entities(Subject.Code).subquery()))
-        .filter(
-            or_(
-                Score.Internals + Score.Externals < Subject.MinTotal,
-                Score.Externals < Subject.MinExt,
-            )
+    scores = scores.filter(
+        or_(
+            Score.Internals + Score.Externals < Subject.MinTotal,
+            Score.Externals < Subject.MinExt,
         )
     )
 
@@ -130,7 +129,7 @@ def get_batch_detained_students(db: Session, batch: int, dept: str, thresh: int 
     usns = _get_students_batch(db, batch, dept)
     subcodes = _get_subjects_sem(db, scheme)
 
-    blk_scores = (
+    backlog_scores = (
         db.query(Score.Usn, Score.SubjectCode)
         .join(Subject)
         .filter(Score.Usn.in_(usns.with_entities(Student.Usn).subquery()))
@@ -146,7 +145,7 @@ def get_batch_detained_students(db: Session, batch: int, dept: str, thresh: int 
     )
 
     scores = db.query(Score).filter(
-        tuple_(Score.Usn, Score.SubjectCode).in_(blk_scores)
+        tuple_(Score.Usn, Score.SubjectCode).in_(backlog_scores)
     )
 
     return _adjoin_student_scores(usns, scores)
