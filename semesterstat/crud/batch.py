@@ -7,6 +7,7 @@ from sqlalchemy import func, tuple_
 from semesterstat.common.reports import ScoreReport, StudentReport
 
 from ..database import BatchSchemeInfo, Score, Student, Subject
+from .common import get_scheme
 
 
 """
@@ -56,12 +57,6 @@ def _adjoin_student_scores(students: Any, scores: Any) -> List[StudentReport]:
                 student.Scores.append(score)
 
     return [student for student in students if len(student.Scores) > 0]
-
-
-def get_scheme(db: Session, batch: int) -> int:
-    return (
-        db.query(BatchSchemeInfo.Scheme).filter(BatchSchemeInfo.Batch == batch).scalar()
-    )
 
 
 def is_batch_exists(db: Session, batch: int):

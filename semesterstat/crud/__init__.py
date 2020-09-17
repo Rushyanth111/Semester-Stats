@@ -1,3 +1,5 @@
+from .common import get_scheme
+
 from .batch import (
     get_batch_aggregate,
     get_batch_backlog,
@@ -5,7 +7,6 @@ from .batch import (
     get_batch_scores,
     get_batch_students,
     get_batch_students_usn,
-    get_scheme,
     is_batch_exists,
 )
 from .dept import (
