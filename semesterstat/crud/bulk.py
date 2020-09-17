@@ -25,7 +25,7 @@ def put_department_bulk(db: Session, dept_list: List[DepartmentReport]):
     db.bulk_insert_mappings(
         Department, [obj.dict(exclude={"Subjects", "Students"}) for obj in not_present]
     )
-    db.flush()
+    db.commit()
 
 
 def put_student_bulk(db: Session, student_list: List[StudentReport]):
@@ -44,7 +44,7 @@ def put_student_bulk(db: Session, student_list: List[StudentReport]):
     db.bulk_insert_mappings(
         Student, [obj.dict(exclude={"Scores"}) for obj in not_present]
     )
-    db.flush()
+    db.commit()
 
 
 def put_subject_bulk(db: Session, subject_list: List[SubjectReport]):
@@ -61,7 +61,7 @@ def put_subject_bulk(db: Session, subject_list: List[SubjectReport]):
 
     not_present = in_subject - db_subjects
     db.bulk_insert_mappings(Subject, [obj.dict() for obj in not_present])
-    db.flush()
+    db.commit()
 
 
 def put_score_bulk(db: Session, score_list: List[ScoreReport]):
@@ -94,4 +94,4 @@ def put_score_bulk(db: Session, score_list: List[ScoreReport]):
                     synchronize_session="fetch",
                 )
 
-    db.flush()
+    db.commit()

@@ -23,9 +23,8 @@ def put_subject(db: Session, sub: SubjectReport):
         Scheme=sub.Scheme,
         Department=sub.Department,
     )
-
     db.add(ipt)
-    db.flush()
+    db.commit()
 
 
 def update_subject(db: Session, old_sub: str, new_sub: SubjectReport):
@@ -38,7 +37,7 @@ def update_subject(db: Session, old_sub: str, new_sub: SubjectReport):
     upd.Scheme = new_sub.Scheme
     upd.Department = new_sub.Department
 
-    db.flush()
+    db.commit()
 
 
 def is_subject_exist(db: Session, subcode: str) -> bool:

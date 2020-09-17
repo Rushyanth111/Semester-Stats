@@ -28,10 +28,8 @@ def subject_get(subcode: str = Depends(common_subcode_verify), db=Depends(get_db
 @subject.post("/")
 def subject_insert(obj: SubjectReport, db=Depends(get_db)):
     put_subject(db, obj)
-    db.commit()
 
 
 @subject.put("/{subcode}")
 def subject_update(obj: SubjectReport, subcode: str, db=Depends(common_subcode_verify)):
     update_subject(db, subcode, obj)
-    db.commit()

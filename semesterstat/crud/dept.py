@@ -59,7 +59,7 @@ def get_dept_students(db: Session, code: str) -> List[StudentReport]:
 def put_department(db: Session, obj: DepartmentReport) -> None:
     ins = Department(Code=obj.Code, Name=obj.Name)
     db.add(ins)
-    db.flush()
+    db.commit()
 
 
 def update_department(db: Session, dept: str, new_obj: DepartmentReport) -> bool:
@@ -69,4 +69,4 @@ def update_department(db: Session, dept: str, new_obj: DepartmentReport) -> bool
     upd.Code = new_obj.Code
     upd.Name = new_obj.Name
 
-    db.flush()
+    db.commit()

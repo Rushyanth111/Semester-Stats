@@ -8,7 +8,7 @@ from semesterstat.database.models import Base
 from semesterstat.database import Department, BatchSchemeInfo, Student, Subject, Score
 
 
-@pytest.fixture(scope="package")
+@pytest.fixture(scope="module")
 def def_db():
     engine = create_engine(
         "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
@@ -96,6 +96,7 @@ def def_db():
 @pytest.fixture(scope="function")
 def db(def_db):
     _db: Session = def_db()
+    _db.begin_nested()
     yield _db
 
-    _db.close()
+    _db.rollback()

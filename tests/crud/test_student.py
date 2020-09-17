@@ -102,7 +102,6 @@ def test_is_student(db: Session, usn: str, op: bool):
 def test_put_student(db: Session):
     put_student(db, StudentReport(Usn="1CR10CS102", Name="XX"))
     assert is_student_exists(db, "1CR10CS102")
-    db.rollback()
 
 
 def test_update_student(db: Session):
@@ -110,4 +109,3 @@ def test_update_student(db: Session):
         db, "1CR15CS101", StudentReport(Usn="1CR10CS102", Name="XX"),
     )
     assert is_student_exists(db, "1CR10CS102")
-    db.rollback()

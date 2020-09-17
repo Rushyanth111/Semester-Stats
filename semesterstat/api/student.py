@@ -76,7 +76,6 @@ def student_get_subject_score(
 @student.post("/")
 def student_insert(obj: StudentReport, db: Session = Depends(get_db)):
     put_student(db, obj)
-    db.commit()
 
 
 @student.put("/{usn}")
@@ -86,4 +85,3 @@ def student_update(
     db: Session = Depends(get_db),
 ):
     update_student(db, usn, obj)
-    db.commit()

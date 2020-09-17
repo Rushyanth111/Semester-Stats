@@ -29,7 +29,6 @@ def department_add(
     dept: DepartmentReport, resp: Response, db: Session = Depends(get_db),
 ):
     put_department(db, dept)
-    db.commit()
 
 
 @dept.put("/{dept}")

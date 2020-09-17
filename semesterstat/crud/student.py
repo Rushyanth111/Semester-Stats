@@ -62,7 +62,7 @@ def put_student(db: Session, rep: StudentReport) -> None:
         Usn=rep.Usn, Name=rep.Name, Batch=rep.Batch, Department=rep.Department
     )
     db.add(ipt)
-    db.flush()
+    db.commit()
 
 
 def update_student(db: Session, old: str, new: StudentReport) -> None:
@@ -74,4 +74,16 @@ def update_student(db: Session, old: str, new: StudentReport) -> None:
     upd.Batch = new.Batch
     upd.Department = new.Department
 
-    db.flush()
+    db.commit()
+
+
+def get_student_score_credits(db: Session, usn: str, subcode: str) -> None:
+    pass
+
+
+def get_student_sgpa(db: Session, usn: str, semester: str) -> None:
+    pass
+
+
+def get_student_cgpa(db: Session, usn: str, semester: str) -> None:
+    pass

@@ -62,7 +62,6 @@ def test_is_subjects_exist(db: Session, subcodes: List[str], op: bool):
 def test_put_student(db: Session) -> None:
     put_subject(db, SubjectReport(Code="10CS11", Name="EM11"))
     assert is_subject_exist(db, "10CS11")
-    db.rollback()
 
 
 def test_update_student(db: Session) -> None:
@@ -70,4 +69,3 @@ def test_update_student(db: Session) -> None:
         db, "15CS64", SubjectReport(Code="10CS11", Name="EM11"),
     )
     assert is_subject_exist(db, "10CS11")
-    db.rollback()

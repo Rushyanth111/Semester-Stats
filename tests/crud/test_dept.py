@@ -94,7 +94,6 @@ def test_put_dept(db: Session):
     put_department(db, DepartmentReport(Code="1A", Name="OSOSOS"))
 
     assert is_dept_exist(db, "1A")
-    db.rollback()
 
 
 def test_update_department(db: Session):
@@ -103,4 +102,3 @@ def test_update_department(db: Session):
     )
     assert is_dept_exist(db, "XC")
 
-    db.rollback()

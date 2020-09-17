@@ -38,8 +38,6 @@ def test_put_score_bulk(db: Session):
     assert res.Internals == 30
     assert res.Externals == 50
 
-    db.rollback()
-
 
 def test_put_department_bulk(db: Session):
     ins_list = [
@@ -56,8 +54,6 @@ def test_put_department_bulk(db: Session):
     res = get_dept_by_code(db, "CS")
 
     assert res.Name == "Computer Science"
-
-    db.rollback()
 
 
 def test_put_student_bulk(db: Session):
@@ -78,8 +74,6 @@ def test_put_student_bulk(db: Session):
     # No Change from Conftest
     assert res.Name == "X"
 
-    db.rollback()
-
 
 def test_put_subject_bulk(db: Session):
     ins_list = [
@@ -91,11 +85,8 @@ def test_put_subject_bulk(db: Session):
     ]
 
     put_subject_bulk(db, ins_list)
-
     assert is_subject_exist(db, "15CS81")
 
     res = get_subject(db, "15CS64")
-
     assert res.Name == "X"
 
-    db.rollback()
