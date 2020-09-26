@@ -53,7 +53,7 @@ def student_get_semester_scores(
     return get_student_scores_by_semester(db, usn, sem)
 
 
-@student.get("/{usn}/backlogs", deprecated=True, response_model=StudentScoreReciept)
+@student.get("/{usn}/backlogs", response_model=StudentScoreReciept)
 def student_get_backlog(
     sem: int, usn: str = Depends(common_student_verify), db: Session = Depends(get_db)
 ):

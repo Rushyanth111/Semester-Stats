@@ -1,8 +1,12 @@
+from typing import List
+
 from fastapi import APIRouter, HTTPException, Response, status
 from fastapi.params import Depends
-from sqlalchemy.orm.session import Session
+from sqlalchemy.orm import Session
 
-from ..common import DepartmentReport, DepartmentReciept, convert_dept
+from semesterstat.crud.dept import get_all_dept
+
+from ..common import DepartmentReciept, DepartmentReport, convert_dept
 from ..crud import get_dept_by_code, is_dept_exist, put_department, update_department
 from ..database import get_db
 
@@ -15,6 +19,11 @@ def common_department_verify(dept: str, db: Session = Depends(get_db)) -> str:
             status_code=status.HTTP_403_FORBIDDEN, detail="No Such Department"
         )
     return dept
+
+
+@dept.get("/", response_model=List[str])
+def dept_get_all(db: Session = Depends(get_db)):
+    return get_all_dept(db)
 
 
 @dept.get("/{dept}", response_model=DepartmentReciept)
