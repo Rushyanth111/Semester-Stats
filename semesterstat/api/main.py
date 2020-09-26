@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from uvicorn.config import logger
 
 from semesterstat.database.models import BatchSchemeInfo
@@ -61,3 +62,8 @@ app.include_router(dept, prefix="/dept", tags=["Department"])
 app.include_router(student, prefix="/student", tags=["Student"])
 app.include_router(subject, prefix="/subject", tags=["Subject"])
 app.include_router(bulk, prefix="/bulk", tags=["Private API"])
+
+
+@app.get("/", include_in_schema=False)
+def redirect_docs():
+    return RedirectResponse("/docs")
