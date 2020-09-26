@@ -1,25 +1,14 @@
-from semesterstat.common.reports import ScoreReport, StudentReport, SubjectReport
 import pytest
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
-from typing import Callable
+
+from semesterstat.common.reports import ScoreReport, StudentReport, SubjectReport
+from semesterstat.database import BatchSchemeInfo, Department, Score, Student, Subject
 from semesterstat.database.models import Base
-from semesterstat.database import Department, BatchSchemeInfo, Student, Subject, Score
 
 
-@pytest.fixture(scope="module")
-def def_db():
-    engine = create_engine(
-        "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
-    )
-    session_create: Callable[[], Session] = sessionmaker(
-        bind=engine, autocommit=False, autoflush=False
-    )
-
-    Base.metadata.create_all(bind=engine)
-
-    _db: Session = session_create()
+def input_data(_db: Session):
     depts = [
         {"Code": code, "Name": name}
         for (code, name) in [
@@ -85,18 +74,43 @@ def def_db():
     _db.bulk_insert_mappings(Score, scores)
 
     _db.commit()
-    _db.close()
+
+
+@pytest.fixture(scope="session")
+def engine():
+    engine = create_engine(
+        "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
+    )
+
+    Base.metadata.create_all(bind=engine)
+
+    input_data(Session(bind=engine))
 
     # Return the Session Data.
-    yield session_create
+    yield engine
 
     engine.dispose()
 
 
 @pytest.fixture(scope="function")
-def db(def_db):
-    _db: Session = def_db()
-    _db.begin_nested()
-    yield _db
+def db(engine):
+    _engine = engine
 
-    _db.rollback()
+    # Make a new Connection.
+    conn = _engine.connect()
+
+    # OverArching Transaction, doesn't matter what happened before.
+    trans = conn.begin()
+
+    session = Session(bind=conn)
+
+    yield session
+
+    # Dispose the objects in memory, we don't need them.
+    session.close()
+
+    # Rollback all Commits.
+    trans.rollback()
+
+    # Close the connection
+    conn.close()
