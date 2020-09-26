@@ -13,6 +13,7 @@ from semesterstat.crud import (
     get_scheme,
     is_batch_exists,
     get_batch_detained_students,
+    get_all_batch,
 )
 
 
@@ -119,3 +120,9 @@ def test_batch_detained(
 
     assert res[0].Usn == op[0][0]
     assert res[0].Scores[0].SubjectCode == op[0][1]
+
+
+def test_all_batch(db: Session):
+    res = get_all_batch(db)
+
+    assert Counter(res) == Counter([2015, 2016, 2017])

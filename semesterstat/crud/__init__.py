@@ -6,6 +6,7 @@ from .batch import (
     get_batch_students,
     get_batch_students_usn,
     is_batch_exists,
+    get_all_batch,
 )
 from .bulk import (
     put_department_bulk,
@@ -53,6 +54,7 @@ __all__ = [
     "get_batch_students_usn",
     "get_batch_detained_students",
     "get_scheme",
+    "get_all_batch",
     "is_batch_exists",
     "get_dept_by_code",
     "get_dept_by_name",

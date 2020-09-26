@@ -59,6 +59,12 @@ def _adjoin_student_scores(students: Any, scores: Any) -> List[StudentReport]:
     return [student for student in students if len(student.Scores) > 0]
 
 
+def get_all_batch(db: Session) -> List[int]:
+    res = db.query(BatchSchemeInfo.Batch).all()
+
+    return [x.Batch for x in res]
+
+
 def is_batch_exists(db: Session, batch: int):
     sb = db.query(BatchSchemeInfo).filter(BatchSchemeInfo.Batch == batch).exists()
 
