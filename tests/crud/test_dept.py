@@ -10,6 +10,7 @@ from semesterstat.crud import (
     get_dept_by_name,
     get_dept_students,
     get_dept_subjects,
+    get_all_dept,
     is_dept_exist,
     put_department,
     update_department,
@@ -102,3 +103,8 @@ def test_update_department(db: Session):
     )
     assert is_dept_exist(db, "XC")
 
+
+def test_all_dept(db: Session):
+    res = get_all_dept(db)
+
+    assert Counter(["CS", "IS", "TE", "ME", "AE"]) == Counter(res)

@@ -12,6 +12,12 @@ from ..common import DepartmentReport, SubjectReport, StudentReport
 from ..database import Department, Subject, Student
 
 
+def get_all_dept(db: Session):
+    res = db.query(Department.Code).all()
+
+    return [x.Code for x in res]
+
+
 def get_dept_by_code(db: Session, code: str) -> DepartmentReport:
     return DepartmentReport.from_orm(
         db.query(Department)
