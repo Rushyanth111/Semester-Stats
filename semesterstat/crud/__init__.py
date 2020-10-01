@@ -44,6 +44,7 @@ from .subject import (
     is_subjects_exists,
     put_subject,
     update_subject,
+    get_subject_batch_sem_list,
 )
 
 
@@ -85,4 +86,5 @@ __all__ = [
     "get_student_cgpa",
     "get_student_score_credits",
     "get_student_sgpa",
+    "get_subject_batch_sem_list",
 ]
