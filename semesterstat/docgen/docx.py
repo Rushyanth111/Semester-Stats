@@ -55,20 +55,22 @@ from .fillmain import __fill_main
 from .fillsub import __fill_subject
 
 
-def get_docx(db: Session, batch: int, dept: str, sem: int):
+def get_docx(db: Session, batch: int, dept: str, sem: int, ret_file=TemporaryFile()):
     # Steps:
     # 1. Get the Subjects for that year.
     # 2. Get the Main Information For that year, Mail Merge.
     subjects = get_subject_batch_sem_list(db, batch, sem)
     main_info = __fill_main(db, batch, dept, sem)
     sub_info = [__fill_subject(db, subcode, batch, dept) for subcode in subjects]
-
-    ret_file = TemporaryFile()
+    last_sub = {}
+    for (k, v) in sub_info[-1].items():
+        last_sub[k + "F"] = v
+    last_sub_info = [last_sub]
 
     with MailMerge(resources_template_path) as document:
         document.merge(**main_info)
         document.merge_rows("SubjectCodeT", sub_info[: len(sub_info) - 1])
-        document.merge_rows("SubjectCodeTF", sub_info[-1])
+        document.merge_rows("SubjectCodeTF", last_sub_info)
 
         document.write(ret_file)
 

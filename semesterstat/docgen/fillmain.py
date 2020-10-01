@@ -38,3 +38,5 @@ def __fill_main(db: Session, batch: int, dept: str, sem: int):
     res["PassP"] = str(data.get_pass_percent())
     res["BYear"] = byear
     res["ODEV"] = odev
+
+    return res
