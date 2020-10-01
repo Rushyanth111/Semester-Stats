@@ -71,6 +71,7 @@ class SubjectReport(ReportBaseModel):
     Department: Optional[str]
     MinExt: Optional[int]
     MinTotal: Optional[int]
+    MaxTotal: Optional[int]
     Credits: Optional[int]
 
     @validator("Semester", pre=True, always=True)

@@ -53,6 +53,7 @@ class Subject(Base):
     )
     MinExt = Column(Integer)
     MinTotal = Column(Integer)
+    MaxTotal = Column(Integer)
     Credits = Column(Integer)
 
     __table_args__ = (Index("Subject_IDX", "Scheme", "Department", "Code"),)
