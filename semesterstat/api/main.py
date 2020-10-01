@@ -12,6 +12,7 @@ from .bulk import bulk
 from .dept import dept
 from .student import student
 from .subject import subject
+from .document import docs
 
 app = FastAPI()
 app.add_middleware(
@@ -62,6 +63,7 @@ app.include_router(dept, prefix="/dept", tags=["Department"])
 app.include_router(student, prefix="/student", tags=["Student"])
 app.include_router(subject, prefix="/subject", tags=["Subject"])
 app.include_router(bulk, prefix="/bulk", tags=["Private API"])
+app.include_router(docs, prefix="/docs", tags=["Documents"])
 
 
 @app.get("/", include_in_schema=False)
