@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, HTTPException, Response, status
+from fastapi import APIRouter, HTTPException, status
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
 
@@ -35,7 +35,7 @@ def department_get(
 
 @dept.post("/")
 def department_add(
-    dept: DepartmentReport, resp: Response, db: Session = Depends(get_db),
+    dept: DepartmentReport, db: Session = Depends(get_db),
 ):
     put_department(db, dept)
 

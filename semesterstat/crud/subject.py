@@ -5,9 +5,12 @@ Purpose: Get Subject, Update Subject, And Put Subject, Nothing More.
 
 """
 from typing import List
+
 from sqlalchemy.orm import Session
-from ..database import Subject
+
 from ..common import SubjectReport
+from ..database import Subject
+from .common import get_scheme
 
 
 def get_subject(db: Session, subcode: str):
@@ -58,3 +61,13 @@ def is_subjects_exists(db: Session, subcodes: List[str]) -> bool:
             return False
 
     return True
+
+
+def get_subject_batch_sem_list(db: Session, batch: int, sem: int = None) -> List[str]:
+    scheme = get_scheme(db, batch)
+    res = db.query(Subject).filter(Subject.Scheme == scheme)
+
+    if sem is not None:
+        res = res.filter(Subject.Semester == sem)
+
+    return [sub.Code for sub in res]
