@@ -3,6 +3,8 @@ from ..database import BatchSchemeInfo
 
 
 def get_scheme(db: Session, batch: int) -> int:
-    return (
+    res = (
         db.query(BatchSchemeInfo.Scheme).filter(BatchSchemeInfo.Batch == batch).scalar()
     )
+
+    return res

@@ -17,14 +17,6 @@ from semesterstat.crud import (
 )
 
 
-@pytest.mark.parametrize(
-    ["batch", "scheme"], [(2015, 2015), (2016, 2015), (2017, 2017)]
-)
-def test_get_scheme(db: Session, batch: int, scheme: int):
-    res = get_scheme(db, batch)
-    assert res == scheme
-
-
 @pytest.mark.parametrize(["batch", "op"], [(2015, True), (2016, True), (2014, False)])
 def test_batch_exists(db: Session, batch: int, op: int):
     assert is_batch_exists(db, batch) == op
