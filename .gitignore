@@ -12,4 +12,3 @@ FormattedData/*
 .python-version
 .gitignore
 .venv
-tests/data/*.json
