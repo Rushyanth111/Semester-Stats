@@ -1,18 +1,18 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from uvicorn.config import logger
-
 from semesterstat.database.models import BatchSchemeInfo
+from uvicorn.config import logger
 
 from ..constants import batch_dict, dept_dict
 from ..database import Department, session_create
 from .batch import batch
 from .bulk import bulk
 from .dept import dept
+from .document import docs
 from .student import student
 from .subject import subject
-from .document import docs
+from .info import info
 
 app = FastAPI()
 app.add_middleware(
@@ -58,6 +58,7 @@ async def startup_event():
     db.close()
 
 
+app.include_router(info, prefix="/info", tags=["Information"])
 app.include_router(batch, prefix="/batch", tags=["Batch"])
 app.include_router(dept, prefix="/dept", tags=["Department"])
 app.include_router(student, prefix="/student", tags=["Student"])

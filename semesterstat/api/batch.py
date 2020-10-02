@@ -27,21 +27,24 @@ POST {batch}/search
 """
 
 
-from semesterstat.crud.batch import get_batch_scores
 from typing import List, Tuple
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from semesterstat.common import (
+    BatchListReciept,
+    StudentReciept,
+    StudentScoreReciept,
+    UsnListReciept,
+)
+from semesterstat.crud.batch import get_batch_scores
 from sqlalchemy.orm import Session
 
-from semesterstat.common import StudentReciept, StudentScoreReciept
-
 from ..crud import (
+    get_all_batch,
     get_batch_aggregate,
     get_batch_detained_students,
     get_batch_students,
     get_batch_students_usn,
-    get_all_batch,
-    get_scheme,
     is_batch_exists,
 )
 from ..database import get_db
@@ -57,7 +60,7 @@ def common_batch_verify(batch: int, db: Session = Depends(get_db)) -> int:
     return batch
 
 
-@batch.get("/", response_model=List[str])
+@batch.get("/", response_model=BatchListReciept)
 async def batch_get_all(db: Session = Depends(get_db)):
     return get_all_batch(db)
 
@@ -81,20 +84,13 @@ async def batch_get_scores(
     return get_batch_scores(db, batch, dept, sem)
 
 
-@batch.get("/{batch}/usns", response_model=List[str])
+@batch.get("/{batch}/usns", response_model=UsnListReciept)
 async def batch_get_student_usns(
     batch: int = Depends(common_batch_verify),
     dept: str = None,
     db: Session = Depends(get_db),
 ):
     return get_batch_students_usn(db, batch, dept)
-
-
-@batch.get("/{batch}/scheme", response_model=int)
-async def batch_get_scheme(
-    batch: int = Depends(common_batch_verify), db: Session = Depends(get_db)
-):
-    return get_scheme(db, batch)
 
 
 @batch.get("/{batch}/detained", response_model=List[StudentReciept])
