@@ -1,10 +1,23 @@
-from pydantic import BaseModel
 from typing import List, Optional
+
+from pydantic import BaseModel
 
 
 class RecieptBaseModel(BaseModel):
     class Config:
         orm_mode = True
+
+
+class BatchListReciept(RecieptBaseModel):
+    class Config:
+        schema_extra = {"example": [2015, 2016, 2017]}
+
+
+class UsnListReciept(RecieptBaseModel):
+    class Config:
+        schema_extra = {
+            "example": ["1CR15CS001", "1CR15CS002", "1CR15CS003", "1CR15CS004"]
+        }
 
 
 class DepartmentReciept(RecieptBaseModel):

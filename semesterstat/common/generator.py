@@ -1,4 +1,3 @@
-from .reports import DepartmentReport, ScoreReport, StudentReport, SubjectReport
 from .reciepts import (
     DepartmentReciept,
     ScoreMinimalReciept,
@@ -6,6 +5,7 @@ from .reciepts import (
     StudentReciept,
     SubjectReciept,
 )
+from .reports import DepartmentReport, ScoreReport, StudentReport, SubjectReport
 
 
 def convert_dept(report: DepartmentReport) -> DepartmentReciept:

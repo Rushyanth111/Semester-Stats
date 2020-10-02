@@ -1,6 +1,8 @@
-from sqlalchemy.orm import Session
-from .subjectqueries import SubjectFill
 from typing import Dict
+
+from sqlalchemy.orm import Session
+
+from .subjectqueries import SubjectFill
 
 __subject_dict = {
     "SubjectCodeT": "",

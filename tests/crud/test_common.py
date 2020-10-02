@@ -1,6 +1,7 @@
 import pytest
 from sqlalchemy.orm.session import Session
-from semesterstat.crud import get_scheme
+
+from semesterstat.crud.common import get_scheme
 
 
 @pytest.mark.parametrize(

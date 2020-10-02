@@ -1,8 +1,10 @@
-from ..database import Department, Score, Student, Subject
-from sqlalchemy.orm import Session
-from sqlalchemy import tuple_
 from typing import List
-from ..common import DepartmentReport, ScoreReport, StudentReport, SubjectReport
+
+from sqlalchemy import tuple_
+from sqlalchemy.orm import Session
+
+from ..common.reports import DepartmentReport, ScoreReport, StudentReport, SubjectReport
+from ..database.models import Department, Score, Student, Subject
 
 
 def put_department_bulk(db: Session, dept_list: List[DepartmentReport]):

@@ -43,14 +43,14 @@ PPT: Pass Percentage for Subject i, Full, Int, 20
 
 Please follow the above Keys for Mail Merge.
 """
-from typing import IO
 from tempfile import TemporaryFile
+from typing import IO
 
 from mailmerge import MailMerge
 from sqlalchemy.orm import Session
 
 from ..Config import resources_template_path
-from ..crud import get_subject_batch_sem_list
+from ..crud.subject import get_subject_batch_sem_list
 from .fillmain import __fill_main
 from .fillsub import __fill_subject
 

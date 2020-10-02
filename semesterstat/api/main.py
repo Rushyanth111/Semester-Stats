@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from semesterstat.database.models import BatchSchemeInfo
 from uvicorn.config import logger
+
+from semesterstat.database.models import BatchSchemeInfo
 
 from ..constants import batch_dict, dept_dict
 from ..database import Department, session_create
@@ -10,9 +11,9 @@ from .batch import batch
 from .bulk import bulk
 from .dept import dept
 from .document import docs
+from .info import info
 from .student import student
 from .subject import subject
-from .info import info
 
 app = FastAPI()
 app.add_middleware(

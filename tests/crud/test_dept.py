@@ -4,13 +4,13 @@ from typing import List
 import pytest
 from sqlalchemy.orm import Session
 
-from semesterstat.common import DepartmentReport
-from semesterstat.crud import (
+from semesterstat.common.reports import DepartmentReport
+from semesterstat.crud.dept import (
+    get_all_dept,
     get_dept_by_code,
     get_dept_by_name,
     get_dept_students,
     get_dept_subjects,
-    get_all_dept,
     is_dept_exist,
     put_department,
     update_department,

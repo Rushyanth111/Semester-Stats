@@ -6,10 +6,11 @@ get_dept -> Get Details of a Department.
 """
 
 from typing import List
+
 from sqlalchemy.orm import Session, noload
 
-from ..common import DepartmentReport, SubjectReport, StudentReport
-from ..database import Department, Subject, Student
+from ..common.reports import DepartmentReport, StudentReport, SubjectReport
+from ..database.models import Department, Student, Subject
 
 
 def get_all_dept(db: Session):

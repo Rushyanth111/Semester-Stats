@@ -1,24 +1,24 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from semesterstat.common import (
+from semesterstat.common.reciepts import (
     ScoreReciept,
     StudentReciept,
-    StudentReport,
     StudentScoreReciept,
 )
+from semesterstat.common.reports import StudentReport
 
-from ..crud import (
+from ..crud.student import (
     get_student,
     get_student_backlogs,
     get_student_scores,
     get_student_scores_by_semester,
     get_student_subject,
     is_student_exists,
-    is_subject_exist,
     put_student,
     update_student,
 )
+from ..crud.subject import is_subject_exist
 from ..database import get_db
 
 student = APIRouter()

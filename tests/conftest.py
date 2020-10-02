@@ -3,8 +3,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
+from semesterstat.database import BatchSchemeInfo, Department
 from semesterstat.database.models import Base
-from semesterstat.database import Department, BatchSchemeInfo
 
 
 def __input_data(db: Session):

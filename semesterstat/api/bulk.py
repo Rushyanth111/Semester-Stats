@@ -3,8 +3,8 @@ from typing import List
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from ..common import ScoreReport, DepartmentReport, StudentReport, SubjectReport
-from ..crud import (
+from ..common.reports import DepartmentReport, ScoreReport, StudentReport, SubjectReport
+from ..crud.bulk import (
     put_department_bulk,
     put_score_bulk,
     put_student_bulk,

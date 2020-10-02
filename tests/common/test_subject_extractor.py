@@ -1,6 +1,6 @@
 import pytest
 
-from semesterstat.common import (
+from semesterstat.common.subject_extractor import (
     get_subject_dept,
     get_subject_scheme,
     get_subject_semester,

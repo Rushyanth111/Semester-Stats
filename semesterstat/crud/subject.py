@@ -8,8 +8,8 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from ..common import SubjectReport
-from ..database import Subject
+from ..common.reports import SubjectReport
+from ..database.models import Subject
 from .common import get_scheme
 
 
@@ -71,3 +71,27 @@ def get_subject_batch_sem_list(db: Session, batch: int, sem: int = None) -> List
         res = res.filter(Subject.Semester == sem)
 
     return [sub.Code for sub in res]
+
+
+def get_subjects(
+    db: Session, batch: int = None, dept: str = None, sem: int = None
+) -> List[str]:
+
+    res = db.query(Subject)
+
+    if batch is not None:
+        scheme = get_scheme(db, batch)
+
+        if scheme is None:
+            return []
+        res = res.filter(Subject.Scheme == scheme)
+
+    if dept is not None:
+        res = res.filter(Subject.Department == dept)
+
+    if sem is not None:
+        res = res.filter(Subject.Semester == sem)
+
+    subcodes = [sub.Code for sub in res]
+
+    return subcodes

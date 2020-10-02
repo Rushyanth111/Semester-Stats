@@ -6,7 +6,7 @@ Information Route, To get a lot of the Information Required.
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from ..crud import get_scheme
+from ..crud.common import get_scheme
 from ..database import get_db
 
 info = APIRouter()

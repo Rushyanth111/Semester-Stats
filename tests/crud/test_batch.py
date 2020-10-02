@@ -5,12 +5,12 @@ import pytest
 from sqlalchemy.orm.session import Session
 
 from semesterstat.crud.batch import (
-    get_batch_aggregate,
-    get_batch_scores,
-    get_batch_backlog,
-    is_batch_exists,
-    get_batch_detained,
     get_all_batch,
+    get_batch_aggregate,
+    get_batch_backlog,
+    get_batch_detained,
+    get_batch_scores,
+    is_batch_exists,
 )
 
 

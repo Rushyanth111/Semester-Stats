@@ -3,8 +3,8 @@ from typing import List
 import pytest
 from sqlalchemy.orm import Session
 
-from semesterstat.common import SubjectReport
-from semesterstat.crud import (
+from semesterstat.common.reports import SubjectReport
+from semesterstat.crud.subject import (
     get_subject,
     is_subject_exist,
     is_subjects_exists,

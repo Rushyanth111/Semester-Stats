@@ -1,9 +1,10 @@
-from semesterstat.common import (
+import pytest
+
+from semesterstat.common.usn_extractor import (
     get_usn_batch,
     get_usn_dept,
     is_usn_diploma,
 )
-import pytest
 
 
 @pytest.mark.parametrize(

@@ -1,5 +1,6 @@
-from semesterstat.docgen import get_docx
 import os
+
+from semesterstat.docgen import get_docx
 
 
 def test_genned(db):

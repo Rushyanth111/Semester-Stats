@@ -1,7 +1,8 @@
 from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 
-from ..crud import get_scheme, get_subject_batch_sem_list
+from ..crud.common import get_scheme
+from ..crud.subject import get_subject_batch_sem_list
 from ..database import Score, Student, Subject
 from ..plugins import fc, fcd
 

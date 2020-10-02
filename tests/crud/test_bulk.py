@@ -1,20 +1,24 @@
-from semesterstat.crud.subject import get_subject, is_subject_exist
-from semesterstat.crud.student import get_student, is_student_exists
-from semesterstat.crud.bulk import put_student_bulk, put_subject_bulk
+from sqlalchemy.orm import Session
+
 from semesterstat.common.reports import (
     DepartmentReport,
     ScoreReport,
     StudentReport,
     SubjectReport,
 )
-from semesterstat.crud import (
-    put_score_bulk,
-    get_student_subject,
+from semesterstat.crud.bulk import (
     put_department_bulk,
-    is_dept_exist,
-    get_dept_by_code,
+    put_score_bulk,
+    put_student_bulk,
+    put_subject_bulk,
 )
-from sqlalchemy.orm import Session
+from semesterstat.crud.dept import get_dept_by_code, is_dept_exist
+from semesterstat.crud.student import (
+    get_student,
+    get_student_subject,
+    is_student_exists,
+)
+from semesterstat.crud.subject import get_subject, is_subject_exist
 
 
 def test_put_score_bulk(db: Session):
@@ -89,4 +93,3 @@ def test_put_subject_bulk(db: Session):
 
     res = get_subject(db, "15CS64")
     assert res.Name == "X"
-

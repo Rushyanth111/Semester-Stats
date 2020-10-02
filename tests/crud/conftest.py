@@ -1,7 +1,8 @@
 import pytest
+from sqlalchemy.orm import Session
+
 from semesterstat.common.reports import ScoreReport, StudentReport, SubjectReport
 from semesterstat.database import Score, Student, Subject
-from sqlalchemy.orm import Session
 
 
 @pytest.fixture(scope="package", autouse=True)

@@ -1,8 +1,9 @@
 import json
 
 import pytest
-from semesterstat.docgen.mainqueries import MainFill
 from sqlalchemy.orm import Session
+
+from semesterstat.docgen.mainqueries import MainFill
 
 with open("tests/data/data.json") as f:
     data = json.load(f)

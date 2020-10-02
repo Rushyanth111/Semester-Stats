@@ -1,9 +1,10 @@
-from sqlalchemy.pool import NullPool
 from typing import Callable
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-from sqlalchemy.pool import StaticPool
+from sqlalchemy.pool import NullPool, StaticPool
+
 from ..Config import database_store_path
 
 # Configuration of SQLAlchemy.

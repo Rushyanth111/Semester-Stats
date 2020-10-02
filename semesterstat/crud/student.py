@@ -10,11 +10,13 @@ Purpose: Student Details Only:
 
     - Backlogs
 """
+from sqlalchemy import func
 from sqlalchemy.orm import Session, noload
-from ..database import Student, Score, Subject
-from ..common import StudentReport, ScoreReport, get_usn_batch
+
+from ..common.reports import ScoreReport, StudentReport
+from ..common.usn_extractor import get_usn_batch
+from ..database.models import Score, Student, Subject
 from .common import get_scheme
-from sqlalchemy import func, cast, Integer
 
 
 def get_student(db: Session, usn: str):
@@ -24,6 +26,20 @@ def get_student(db: Session, usn: str):
         .filter(Student.Usn == usn)
         .first()
     )
+
+
+def get_students(db: Session, batch: int = None, dept: str = None):
+    res = db.query(Student.Usn)
+
+    if batch is not None:
+        res = res.query(Student.Batch == batch)
+
+    if dept is not None:
+        res = res.query(Student.Department == dept)
+
+    usns = [student.usn for student in res]
+
+    return usns
 
 
 def get_student_scores(db: Session, usn: str):

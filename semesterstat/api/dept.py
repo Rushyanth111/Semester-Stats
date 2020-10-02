@@ -6,8 +6,15 @@ from sqlalchemy.orm import Session
 
 from semesterstat.crud.dept import get_all_dept
 
-from ..common import DepartmentReciept, DepartmentReport, convert_dept
-from ..crud import get_dept_by_code, is_dept_exist, put_department, update_department
+from ..common.generator import convert_dept
+from ..common.reciepts import DepartmentReciept
+from ..common.reports import DepartmentReport
+from ..crud.dept import (
+    get_dept_by_code,
+    is_dept_exist,
+    put_department,
+    update_department,
+)
 from ..database import get_db
 
 dept = APIRouter()

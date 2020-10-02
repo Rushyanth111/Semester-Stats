@@ -1,7 +1,4 @@
-from semesterstat.common import (
-    StudentReport,
-    SubjectReport,
-)
+from semesterstat.common.reports import StudentReport, SubjectReport
 
 
 def test_student_report():

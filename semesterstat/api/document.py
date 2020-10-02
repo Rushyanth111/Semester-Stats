@@ -7,7 +7,8 @@ from fastapi.params import Depends
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
-from ..crud import is_batch_exists, is_dept_exist
+from ..crud.batch import is_batch_exists
+from ..crud.dept import is_dept_exist
 from ..database import get_db
 from ..docgen import get_docx
 
