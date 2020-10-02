@@ -6,8 +6,8 @@ from sqlalchemy import func, tuple_
 
 from semesterstat.common.reports import ScoreReport, StudentReport
 
-from ..database import BatchSchemeInfo, Score, Student, Subject
-from .common import get_scheme
+from ...database import BatchSchemeInfo, Score, Student, Subject
+from ..common import get_scheme
 
 
 """
@@ -72,19 +72,6 @@ def is_batch_exists(db: Session, batch: int):
         return False
 
     return True
-
-
-def get_batch_students(
-    db: Session, batch: int, dept: str = None
-) -> List[StudentReport]:
-    res = _get_students_batch(db, batch, dept)
-
-    return [StudentReport.from_orm(x) for x in res]
-
-
-def get_batch_students_usn(db: Session, batch: int, dept: str = None) -> List[str]:
-    res = _get_students_batch(db, batch, dept).with_entities(Student.Usn)
-    return [x.Usn for x in res]
 
 
 def _get_scores(
