@@ -2,7 +2,7 @@ from typing import Dict
 
 from sqlalchemy.orm import Session
 
-from .subjectqueries import SubjectFill
+from ..crud.summary import SubjectSummary
 
 __subject_dict = {
     "SubjectCodeT": "",
@@ -17,7 +17,7 @@ __subject_dict = {
 
 
 def __fill_subject(db: Session, subcode: str, batch: int, dept: str) -> Dict[str, str]:
-    data = SubjectFill(db, subcode, batch, dept)
+    data = SubjectSummary(db, subcode, batch, dept)
 
     res = __subject_dict.copy()
 

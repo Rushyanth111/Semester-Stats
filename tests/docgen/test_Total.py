@@ -3,7 +3,7 @@ import json
 import pytest
 from sqlalchemy.orm import Session
 
-from semesterstat.docgen.mainqueries import MainFill
+from semesterstat.crud.summary import MainSummary
 
 with open("tests/data/data.json") as f:
     data = json.load(f)
@@ -21,7 +21,7 @@ with open("tests/data/data.json") as f:
     ],
 )
 def test_appeared(db: Session, batch: int, dept: str, sem: int, count: int):
-    res = MainFill(db, batch, dept, sem)
+    res = MainSummary(db, batch, dept, sem)
 
     assert res.get_appeared() == count
 
@@ -38,7 +38,7 @@ def test_appeared(db: Session, batch: int, dept: str, sem: int, count: int):
     ],
 )
 def test_fail(db: Session, batch: int, dept: str, sem: int, count: int):
-    res = MainFill(db, batch, dept, sem)
+    res = MainSummary(db, batch, dept, sem)
 
     assert res.get_fail() == count
 
@@ -55,7 +55,7 @@ def test_fail(db: Session, batch: int, dept: str, sem: int, count: int):
     ],
 )
 def test_fcd(db: Session, batch: int, dept: str, sem: int, count: int):
-    res = MainFill(db, batch, dept, sem)
+    res = MainSummary(db, batch, dept, sem)
 
     assert res.get_fcd() == count
 
@@ -72,7 +72,7 @@ def test_fcd(db: Session, batch: int, dept: str, sem: int, count: int):
     ],
 )
 def test_fc(db: Session, batch: int, dept: str, sem: int, count: int):
-    res = MainFill(db, batch, dept, sem)
+    res = MainSummary(db, batch, dept, sem)
     assert res.get_fc() == count
 
 
@@ -88,5 +88,5 @@ def test_fc(db: Session, batch: int, dept: str, sem: int, count: int):
     ],
 )
 def test_sc(db: Session, batch: int, dept: str, sem: int, count: int):
-    res = MainFill(db, batch, dept, sem)
+    res = MainSummary(db, batch, dept, sem)
     assert res.get_sc() == count

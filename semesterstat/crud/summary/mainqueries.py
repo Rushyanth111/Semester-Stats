@@ -1,13 +1,13 @@
 from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 
-from ..crud.common import get_scheme
-from ..crud.subject import get_subject_batch_sem_list
-from ..database import Score, Student, Subject
-from ..plugins import fc, fcd
+from ...crud.common import get_scheme
+from ...crud.subject import get_subject_batch_sem_list
+from ...database import Score, Student, Subject
+from ...plugins import fc, fcd
 
 
-class MainFill:
+class MainSummary:
     def __init__(self, db: Session, batch: int, dept: str, sem: int):
 
         scheme = get_scheme(db, batch)

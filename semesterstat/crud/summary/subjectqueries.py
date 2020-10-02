@@ -15,12 +15,12 @@ Pass Percentage -> Percentage of Pass.
 from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
 
-from ..crud.common import get_scheme
-from ..database import Score, Student, Subject
-from ..plugins import fc, fcd, sc
+from ...crud.common import get_scheme
+from ...database import Score, Student, Subject
+from ...plugins import fc, fcd, sc
 
 
-class SubjectFill:
+class SubjectSummary:
     def __init__(self, db: Session, subcode: str, batch: int, dept: str) -> None:
         scheme = get_scheme(db, batch)
 
