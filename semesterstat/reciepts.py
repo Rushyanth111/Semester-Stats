@@ -8,11 +8,6 @@ class RecieptBaseModel(BaseModel):
         orm_mode = True
 
 
-class BatchListReciept(RecieptBaseModel):
-    class Config:
-        schema_extra = {"example": [2015, 2016, 2017]}
-
-
 class UsnListReciept(RecieptBaseModel):
     class Config:
         schema_extra = {

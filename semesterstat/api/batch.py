@@ -53,7 +53,24 @@ def common_batch_verify(batch: int, db: Session = Depends(get_db)) -> int:
     return batch
 
 
-@batch.get("/", response_model=BatchListReciept)
+@batch.get(
+    "/",
+    responses={
+        200: {
+            "content": {
+                "application/json": {
+                    "example": [2015, 2016, 2017, 2018],
+                    "schema": {
+                        "title": "BatchListReciept",
+                        "type": "array",
+                        "items": {"type": "integer"},
+                    },
+                }
+            }
+        },
+        404: {"description": "Resources Not Found."},
+    },
+)
 async def batch_get_all(db: Session = Depends(get_db)):
     return get_all_batch(db)
 
