@@ -8,13 +8,6 @@ class RecieptBaseModel(BaseModel):
         orm_mode = True
 
 
-class UsnListReciept(RecieptBaseModel):
-    class Config:
-        schema_extra = {
-            "example": ["1CR15CS001", "1CR15CS002", "1CR15CS003", "1CR15CS004"]
-        }
-
-
 class DepartmentReciept(RecieptBaseModel):
     Code: str
     Name: str

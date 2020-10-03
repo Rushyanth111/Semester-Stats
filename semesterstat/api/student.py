@@ -13,7 +13,7 @@ from ..crud.student import (
 )
 from ..crud.subject import is_subject_exist
 from ..database import get_db
-from ..reciepts import ScoreReciept, StudentReciept, StudentScoreReciept
+from ..reciepts import ScoreReciept, StudentScoreReciept
 from ..reports import StudentReport
 
 student = APIRouter()
@@ -27,7 +27,24 @@ def common_student_verify(usn: str, db: Session = Depends(get_db)) -> str:
     return usn
 
 
-@student.get("/{usn}", response_model=StudentReciept)
+@student.get(
+    "/{usn}",
+    responses={
+        200: {
+            "content": {
+                "application/json": {
+                    "example": ["1CX15CX001", "1CX15CX002", "1CX15CX003"],
+                    "schema": {
+                        "title": "DeptListReciept",
+                        "type": "array",
+                        "items": {"type": "string"},
+                    },
+                }
+            }
+        },
+        404: {"description": "Resources Not Found."},
+    },
+)
 def student_get(
     usn: str = Depends(common_student_verify), db: Session = Depends(get_db)
 ):
