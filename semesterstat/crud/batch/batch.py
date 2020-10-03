@@ -51,4 +51,4 @@ def get_batch_aggregate(
 
     if dept is not None:
         res_score = res_score.filter(Student.Department == dept)
-    return [(x, y) for (x, y,) in res_score]
+    return [(x, y) for (x, y) in res_score]
