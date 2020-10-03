@@ -49,7 +49,7 @@ from typing import IO
 from mailmerge import MailMerge
 from sqlalchemy.orm import Session
 
-from ..Config import resources_template_path
+from ..config import resources_template_path
 from ..crud.subject import get_subject_batch_sem_list
 from .fillmain import __fill_main
 from .fillsub import __fill_subject

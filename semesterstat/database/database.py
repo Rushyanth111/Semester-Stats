@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.pool import NullPool, StaticPool
 
-from ..Config import database_store_path
+from ..config import database_store_path
 
 # Configuration of SQLAlchemy.
 
