@@ -40,7 +40,7 @@ from ..crud.batch import (
     is_batch_exists,
 )
 from ..database import get_db
-from ..reciepts import BatchListReciept, StudentReciept, StudentScoreReciept
+from ..reciepts import StudentReciept, StudentScoreReciept
 
 batch = APIRouter()
 
