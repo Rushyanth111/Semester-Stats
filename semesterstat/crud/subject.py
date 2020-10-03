@@ -63,16 +63,6 @@ def is_subjects_exists(db: Session, subcodes: List[str]) -> bool:
     return True
 
 
-def get_subject_batch_sem_list(db: Session, batch: int, sem: int = None) -> List[str]:
-    scheme = get_scheme(db, batch)
-    res = db.query(Subject).filter(Subject.Scheme == scheme)
-
-    if sem is not None:
-        res = res.filter(Subject.Semester == sem)
-
-    return [sub.Code for sub in res]
-
-
 def get_subjects(
     db: Session, batch: int = None, dept: str = None, sem: int = None
 ) -> List[str]:

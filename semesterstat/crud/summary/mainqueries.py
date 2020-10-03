@@ -2,7 +2,7 @@ from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 
 from ...crud.common import get_scheme
-from ...crud.subject import get_subject_batch_sem_list
+from ...crud.subject import get_subjects
 from ...database import Score, Student, Subject
 from ...plugins import fc, fcd
 
@@ -16,7 +16,7 @@ class MainSummary:
             Student.Batch == batch, Student.Department == dept
         )
 
-        __subject_codes = get_subject_batch_sem_list(db, batch, sem)
+        __subject_codes = get_subjects(db, batch=batch, dept=dept, sem=sem)
 
         self.__appeared = (
             db.query(Score.Usn)

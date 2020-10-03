@@ -50,7 +50,7 @@ from mailmerge import MailMerge
 from sqlalchemy.orm import Session
 
 from ..config import resources_template_path
-from ..crud.subject import get_subject_batch_sem_list
+from ..crud.subject import get_subjects
 from .fillmain import __fill_main
 from .fillsub import __fill_subject
 
@@ -61,7 +61,7 @@ def get_docx(
     # Steps:
     # 1. Get the Subjects for that year.
     # 2. Get the Main Information For that year, Mail Merge.
-    subjects = get_subject_batch_sem_list(db, batch, sem)
+    subjects = get_subjects(db, batch, dept, sem)
     main_info = __fill_main(db, batch, dept, sem)
     sub_info = [__fill_subject(db, subcode, batch, dept) for subcode in subjects]
     last_sub = {}
