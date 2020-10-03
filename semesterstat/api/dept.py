@@ -1,5 +1,3 @@
-from typing import List
-
 from fastapi import APIRouter, HTTPException, status
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
@@ -28,7 +26,24 @@ def common_department_verify(dept: str, db: Session = Depends(get_db)) -> str:
     return dept
 
 
-@dept.get("/", response_model=List[str])
+@dept.get(
+    "/",
+    responses={
+        200: {
+            "content": {
+                "application/json": {
+                    "example": ["CS", "TE", "MBA", "TE"],
+                    "schema": {
+                        "title": "DeptListReciept",
+                        "type": "array",
+                        "items": {"type": "string"},
+                    },
+                }
+            }
+        },
+        404: {"description": "Resources Not Found."},
+    },
+)
 def dept_get_all(db: Session = Depends(get_db)):
     return get_all_dept(db)
 
