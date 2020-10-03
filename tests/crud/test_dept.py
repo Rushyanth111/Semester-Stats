@@ -4,7 +4,6 @@ from typing import List
 import pytest
 from sqlalchemy.orm import Session
 
-from semesterstat.common.reports import DepartmentReport
 from semesterstat.crud.dept import (
     get_all_dept,
     get_dept_by_code,
@@ -15,6 +14,7 @@ from semesterstat.crud.dept import (
     put_department,
     update_department,
 )
+from semesterstat.reports import DepartmentReport
 
 
 @pytest.mark.parametrize(
@@ -98,9 +98,7 @@ def test_put_dept(db: Session):
 
 
 def test_update_department(db: Session):
-    update_department(
-        db, "CS", DepartmentReport(Code="XC", Name="OSD"),
-    )
+    update_department(db, "CS", DepartmentReport(Code="XC", Name="OSD"))
     assert is_dept_exist(db, "XC")
 
 

@@ -4,7 +4,6 @@ from typing import List
 import pytest
 from sqlalchemy.orm import Session
 
-from semesterstat.common.reports import StudentReport
 from semesterstat.crud.student import (
     get_student,
     get_student_cgpa,
@@ -18,6 +17,7 @@ from semesterstat.crud.student import (
     put_student,
     update_student,
 )
+from semesterstat.reports import StudentReport
 
 
 @pytest.mark.parametrize(
@@ -128,9 +128,7 @@ def test_put_student(db: Session):
 
 
 def test_update_student(db: Session):
-    update_student(
-        db, "1CR15CS101", StudentReport(Usn="1CR10CS102", Name="XX"),
-    )
+    update_student(db, "1CR15CS101", StudentReport(Usn="1CR10CS102", Name="XX"))
     assert is_student_exists(db, "1CR10CS102")
 
 

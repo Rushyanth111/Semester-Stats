@@ -3,8 +3,8 @@ from typing import List
 from sqlalchemy import tuple_
 from sqlalchemy.orm import Session
 
-from ..common.reports import DepartmentReport, ScoreReport, StudentReport, SubjectReport
 from ..database.models import Department, Score, Student, Subject
+from ..reports import DepartmentReport, ScoreReport, StudentReport, SubjectReport
 
 
 def put_department_bulk(db: Session, dept_list: List[DepartmentReport]):

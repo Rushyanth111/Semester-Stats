@@ -1,11 +1,5 @@
 from sqlalchemy.orm import Session
 
-from semesterstat.common.reports import (
-    DepartmentReport,
-    ScoreReport,
-    StudentReport,
-    SubjectReport,
-)
 from semesterstat.crud.bulk import (
     put_department_bulk,
     put_score_bulk,
@@ -19,6 +13,12 @@ from semesterstat.crud.student import (
     is_student_exists,
 )
 from semesterstat.crud.subject import get_subject, is_subject_exist
+from semesterstat.reports import (
+    DepartmentReport,
+    ScoreReport,
+    StudentReport,
+    SubjectReport,
+)
 
 
 def test_put_score_bulk(db: Session):

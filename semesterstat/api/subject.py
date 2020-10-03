@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from ..common.generator import convert_subject
-from ..common.reciepts import SubjectReciept
-from ..common.reports import SubjectReport
 from ..crud.subject import get_subject, is_subject_exist, put_subject, update_subject
 from ..database import get_db
+from ..generator import convert_subject
+from ..reciepts import SubjectReciept
+from ..reports import SubjectReport
 
 subject = APIRouter()
 

@@ -8,8 +8,8 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from ..common.reports import SubjectReport
 from ..database.models import Subject
+from ..reports import SubjectReport
 from .common import get_scheme
 
 

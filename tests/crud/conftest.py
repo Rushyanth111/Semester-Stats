@@ -1,8 +1,8 @@
 import pytest
 from sqlalchemy.orm import Session
 
-from semesterstat.common.reports import ScoreReport, StudentReport, SubjectReport
 from semesterstat.database import Score, Student, Subject
+from semesterstat.reports import ScoreReport, StudentReport, SubjectReport
 
 
 @pytest.fixture(scope="package", autouse=True)
@@ -40,7 +40,7 @@ def input_data(engine):
 
     score_data = [
         ScoreReport(
-            Usn=usn, SubjectCode=subcode, Internals=internals, Externals=externals,
+            Usn=usn, SubjectCode=subcode, Internals=internals, Externals=externals
         )
         for (usn, subcode, internals, externals) in [
             ("1CR15CS101", "15CS65", 12, 42),

@@ -9,8 +9,8 @@ from typing import List
 
 from sqlalchemy.orm import Session, noload
 
-from ..common.reports import DepartmentReport, StudentReport, SubjectReport
 from ..database.models import Department, Student, Subject
+from ..reports import DepartmentReport, StudentReport, SubjectReport
 
 
 def get_all_dept(db: Session):

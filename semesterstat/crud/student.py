@@ -13,9 +13,9 @@ Purpose: Student Details Only:
 from sqlalchemy import func
 from sqlalchemy.orm import Session, noload
 
-from ..common.reports import ScoreReport, StudentReport
 from ..common.usn_extractor import get_usn_batch
 from ..database.models import Score, Student, Subject
+from ..reports import ScoreReport, StudentReport
 from .common import get_scheme
 
 

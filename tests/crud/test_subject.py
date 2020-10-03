@@ -4,7 +4,6 @@ from typing import List
 import pytest
 from sqlalchemy.orm import Session
 
-from semesterstat.common.reports import SubjectReport
 from semesterstat.crud.subject import (
     get_subject,
     get_subjects,
@@ -13,6 +12,7 @@ from semesterstat.crud.subject import (
     put_subject,
     update_subject,
 )
+from semesterstat.reports import SubjectReport
 
 
 @pytest.mark.parametrize(
@@ -67,9 +67,7 @@ def test_put_student(db: Session) -> None:
 
 
 def test_update_student(db: Session) -> None:
-    update_subject(
-        db, "15CS64", SubjectReport(Code="10CS11", Name="EM11"),
-    )
+    update_subject(db, "15CS64", SubjectReport(Code="10CS11", Name="EM11"))
     assert is_subject_exist(db, "10CS11")
 
 

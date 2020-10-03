@@ -10,8 +10,8 @@ from typing import Any, List
 from sqlalchemy import func, or_
 from sqlalchemy.orm import Session, noload
 
-from ...common.reports import ScoreReport, StudentReport
 from ...database.models import Score, Student, Subject
+from ...reports import ScoreReport, StudentReport
 from ..common import get_scheme
 
 

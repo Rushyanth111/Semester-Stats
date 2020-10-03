@@ -32,7 +32,6 @@ from typing import List, Tuple
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from ..common.reciepts import BatchListReciept, StudentReciept, StudentScoreReciept
 from ..crud.batch import (
     get_all_batch,
     get_batch_aggregate,
@@ -41,6 +40,7 @@ from ..crud.batch import (
     is_batch_exists,
 )
 from ..database import get_db
+from ..reciepts import BatchListReciept, StudentReciept, StudentScoreReciept
 
 batch = APIRouter()
 
@@ -96,6 +96,6 @@ async def batch_get_aggregate(
 
 @batch.post("/{batch}/search", deprecated=True)
 async def batch_search(
-    batch: int = Depends(common_batch_verify), db: Session = Depends(get_db),
+    batch: int = Depends(common_batch_verify), db: Session = Depends(get_db)
 ):
     pass
