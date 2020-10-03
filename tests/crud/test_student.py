@@ -1,5 +1,5 @@
-from typing import List
 from collections import Counter
+from typing import List
 
 import pytest
 from sqlalchemy.orm import Session
@@ -7,13 +7,13 @@ from sqlalchemy.orm import Session
 from semesterstat.common.reports import StudentReport
 from semesterstat.crud.student import (
     get_student,
-    get_students,
     get_student_cgpa,
     get_student_score_credits,
     get_student_scores,
     get_student_scores_by_semester,
     get_student_sgpa,
     get_student_subject,
+    get_students,
     is_student_exists,
     put_student,
     update_student,

@@ -1,3 +1,4 @@
+from collections import Counter
 from typing import List
 
 import pytest
@@ -6,6 +7,7 @@ from sqlalchemy.orm import Session
 from semesterstat.common.reports import SubjectReport
 from semesterstat.crud.subject import (
     get_subject,
+    get_subjects,
     is_subject_exist,
     is_subjects_exists,
     put_subject,
@@ -69,3 +71,27 @@ def test_update_student(db: Session) -> None:
         db, "15CS64", SubjectReport(Code="10CS11", Name="EM11"),
     )
     assert is_subject_exist(db, "10CS11")
+
+
+@pytest.mark.parametrize(
+    ["batch", "dept", "sem", "op"],
+    [
+        (
+            None,
+            None,
+            None,
+            ["15CS65", "15CS64", "15CS54", "17MAT11", "17CSL76", "17CS55"],
+        ),
+        (2015, None, None, ["15CS65", "15CS64", "15CS54"]),
+        (None, "CS", None, ["15CS65", "15CS64", "15CS54", "17CSL76", "17CS55"]),
+        (None, None, 6, ["15CS65", "15CS64"]),
+        (None, "XX", None, ["17MAT11"]),
+        (None, None, 1, ["17MAT11"]),
+    ],
+)
+def test_get_subjects(
+    db: Session, batch: int, dept: str, sem: int, op: List[str]
+) -> None:
+    res = get_subjects(db, batch, dept, sem)
+
+    assert Counter(res) == Counter(op)
