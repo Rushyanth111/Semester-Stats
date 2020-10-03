@@ -1,4 +1,5 @@
-from typing import Counter, List
+from typing import List
+from collections import Counter
 
 import pytest
 from sqlalchemy.orm import Session
@@ -6,6 +7,7 @@ from sqlalchemy.orm import Session
 from semesterstat.common.reports import StudentReport
 from semesterstat.crud.student import (
     get_student,
+    get_students,
     get_student_cgpa,
     get_student_score_credits,
     get_student_scores,
@@ -31,6 +33,24 @@ from semesterstat.crud.student import (
 )
 def test_get_student(db: Session, usn: str, op: str):
     assert get_student(db, usn).Name == op
+
+
+@pytest.mark.parametrize(
+    ["batch", "dept", "op"],
+    [
+        (None, None, ["1CR15CS101", "1CR15CS102", "1CR17TE102", "1CR17CS102"]),
+        (2015, None, ["1CR15CS101", "1CR15CS102"]),
+        (2015, "TE", []),
+        (None, "CS", ["1CR15CS101", "1CR15CS102", "1CR17CS102"]),
+        (2015, "CS", ["1CR15CS101", "1CR15CS102"]),
+        (2017, "CS", ["1CR17CS102"]),
+        (2014, "XE", []),
+        (None, "TE", ["1CR17TE102"]),
+    ],
+)
+def test_get_students(db: Session, batch: int, dept: str, op: List[str]):
+    res = get_students(db, batch, dept)
+    assert Counter(res) == Counter(op)
 
 
 @pytest.mark.parametrize(
