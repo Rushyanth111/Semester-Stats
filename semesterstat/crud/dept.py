@@ -7,70 +7,86 @@ get_dept -> Get Details of a Department.
 
 from typing import List
 
-from sqlalchemy.orm import Session, noload
+from sqlalchemy.orm import Session
 
-from ..database.models import Department, Student, Subject
-from ..reports import DepartmentReport, StudentReport, SubjectReport
+from ..database.models import Department
+from ..reports import DepartmentReport
 
 
-def get_all_dept(db: Session):
+def get_all_dept(db: Session) -> List[str]:
+    """Obtain all Departments Code.
+
+    Args:
+        db (Session): [description]
+
+    Returns:
+        List[str]: List of String of Subject Codes.
+    """
     res = db.query(Department.Code).all()
+    deptcodes = [x.Code for x in res]
 
-    return [x.Code for x in res]
+    return deptcodes
 
 
 def get_dept_by_code(db: Session, code: str) -> DepartmentReport:
-    return DepartmentReport.from_orm(
-        db.query(Department)
-        .filter(Department.Code == code)
-        .options(noload(Department.Students), noload(Department.Subjects))
-        .first()
-    )
+    """Obtain Department By Department Code.
 
+    Args:
+        db (Session): SQLAlchemy Session
+        code (str): Department Code.
 
-def get_dept_by_name(db: Session, name: str) -> DepartmentReport:
-    return DepartmentReport.from_orm(
-        db.query(Department)
-        .filter(Department.Name.like(name))
-        .options(noload(Department.Students), noload(Department.Subjects))
-        .first()
-    )
+    Raises:
+        NoResultFound: No Result of the Type Found.
 
-
-def get_dept_subjects(
-    db: Session, code: str, scheme: int = None
-) -> List[SubjectReport]:
-    res = db.query(Subject).filter(Subject.Department == code)
-
-    if scheme is not None:
-        res = res.filter(Subject.Scheme == scheme)
-
-    return [SubjectReport.from_orm(x) for x in res]
+    Returns:
+        DepartmentReport: Department Report.
+    """
+    res = db.query(Department).filter(Department.Code == code).one()
+    rep = DepartmentReport.from_orm(res)
+    return rep
 
 
 def is_dept_exist(db: Session, code: str) -> bool:
-    res = db.query(Department).filter(Department.Code == code).one_or_none()
+    """Does the Department Exist.
 
-    if res is not None:
-        return True
+    Args:
+        db (Session): SQLAlchemy Session
+        code (str): Department String
 
-    return False
-
-
-def get_dept_students(db: Session, code: str) -> List[StudentReport]:
-    res = db.query(Student).filter(Student.Department == code)
-
-    return [StudentReport.from_orm(x) for x in res]
+    Returns:
+        bool: True if the Department exists, else False.
+    """
+    equery = db.query(Department.Code).filter(Department.Code == code)
+    res = db.query(equery.exists()).scalar()
+    return res
 
 
 def put_department(db: Session, obj: DepartmentReport) -> None:
+    """Insert a Given Department
+
+    Args:
+        db (Session): SQLAlchemy Session
+        obj (DepartmentReport): Department Report with the New Department Details.
+
+    Raises:
+        IntegrityError
+    """
     ins = Department(Code=obj.Code, Name=obj.Name)
     db.add(ins)
     db.commit()
 
 
-def update_department(db: Session, dept: str, new_obj: DepartmentReport) -> bool:
+def update_department(db: Session, dept: str, new_obj: DepartmentReport) -> None:
+    """Update a Given Department
 
+    Args:
+        db (Session): SQLAlchemy Session
+        dept (str): Department Code To Change.
+        new_obj (DepartmentReport): Department Report with the New Department Details.
+
+    Raises:
+        IntegrityError
+    """
     upd = db.query(Department).filter(Department.Code == dept).first()
 
     upd.Code = new_obj.Code
