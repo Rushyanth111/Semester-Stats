@@ -1,7 +1,9 @@
 from collections import Counter
+from contextlib import nullcontext as does_not_raise
 from typing import List
 
 import pytest
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from semesterstat.crud.student import (
@@ -122,14 +124,26 @@ def test_is_student(db: Session, usn: str, op: bool):
     assert is_student_exists(db, usn) == op
 
 
-def test_put_student(db: Session):
-    put_student(db, StudentReport(Usn="1CR10CS102", Name="XX"))
-    assert is_student_exists(db, "1CR10CS102")
+@pytest.mark.parametrize(
+    ["usn", "expectation"],
+    [("1CR15CS001", does_not_raise()), ("1CR15CS101", pytest.raises(IntegrityError))],
+)
+def test_put_student(db: Session, usn: str, expectation):
+    with expectation:
+        put_student(db, StudentReport(Usn=usn, Name="XX"))
 
 
-def test_update_student(db: Session):
-    update_student(db, "1CR15CS101", StudentReport(Usn="1CR10CS102", Name="XX"))
-    assert is_student_exists(db, "1CR10CS102")
+@pytest.mark.parametrize(
+    ["usn", "newusn", "expectation"],
+    [
+        ("1CR15CS101", "1CR15CS001", does_not_raise()),
+        ("1CR15CS101", "1CR15CS102", pytest.raises(IntegrityError)),
+        (None, "1CR15CS101", pytest.raises(AttributeError)),
+    ],
+)
+def test_update_student(db: Session, usn: str, newusn: str, expectation):
+    with expectation:
+        update_student(db, usn, StudentReport(Usn=newusn, Name="XX"))
 
 
 @pytest.mark.parametrize(

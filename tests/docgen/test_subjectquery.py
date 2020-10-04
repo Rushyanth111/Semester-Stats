@@ -12,7 +12,7 @@ with open("tests/data/data.json") as f:
 @pytest.mark.parametrize(
     ["subcode", "batch", "dept", "count"],
     [
-        (k, data["static"]["Batch"], data["static"]["Dept"], v["Appeared"],)
+        (k, data["static"]["Batch"], data["static"]["Dept"], v["Appeared"])
         for (k, v) in data["data"]["SubData"].items()
     ],
 )
@@ -24,7 +24,7 @@ def test_appeared(db: Session, subcode: str, batch: int, dept: str, count: int):
 @pytest.mark.parametrize(
     ["subcode", "batch", "dept", "count"],
     [
-        (k, data["static"]["Batch"], data["static"]["Dept"], v["Fail"],)
+        (k, data["static"]["Batch"], data["static"]["Dept"], v["Fail"])
         for (k, v) in data["data"]["SubData"].items()
     ],
 )
@@ -36,7 +36,7 @@ def test_failed(db: Session, subcode: str, batch: int, dept: str, count: int):
 @pytest.mark.parametrize(
     ["subcode", "batch", "dept", "count"],
     [
-        (k, data["static"]["Batch"], data["static"]["Dept"], v["FCD"],)
+        (k, data["static"]["Batch"], data["static"]["Dept"], v["FCD"])
         for (k, v) in data["data"]["SubData"].items()
     ],
 )
@@ -48,7 +48,7 @@ def test_fcd(db: Session, subcode: str, batch: int, dept: str, count: int):
 @pytest.mark.parametrize(
     ["subcode", "batch", "dept", "count"],
     [
-        (k, data["static"]["Batch"], data["static"]["Dept"], v["FC"],)
+        (k, data["static"]["Batch"], data["static"]["Dept"], v["FC"])
         for (k, v) in data["data"]["SubData"].items()
     ],
 )
@@ -60,7 +60,7 @@ def test_fc(db: Session, subcode: str, batch: int, dept: str, count: int):
 @pytest.mark.parametrize(
     ["subcode", "batch", "dept", "count"],
     [
-        (k, data["static"]["Batch"], data["static"]["Dept"], v["SC"],)
+        (k, data["static"]["Batch"], data["static"]["Dept"], v["SC"])
         for (k, v) in data["data"]["SubData"].items()
     ],
 )
