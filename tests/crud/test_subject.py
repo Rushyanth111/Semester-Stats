@@ -5,12 +5,12 @@ from typing import List
 import pytest
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.exc import NoResultFound
 
 from semesterstat.crud.subject import (
     get_subject,
     get_subjects,
     is_subject_exist,
-    is_subjects_exists,
     put_subject,
     update_subject,
 )
@@ -18,49 +18,24 @@ from semesterstat.reports import SubjectReport
 
 
 @pytest.mark.parametrize(
-    ["subcode", "op"],
+    ["subcode", "op", "expectation"],
     [
-        ("15CS65", "X"),
-        ("15CS64", "X"),
-        ("15CS54", "X"),
-        ("17MAT11", "X"),
-        ("17CSL76", "X"),
-        ("17CS55", "X"),
+        ("15CS65", "X", does_not_raise()),
+        ("15CS64", "X", does_not_raise()),
+        ("XXX", None, pytest.raises(NoResultFound)),
     ],
 )
-def test_get_subject(db: Session, subcode: str, op: str) -> None:
-    assert get_subject(db, subcode).Name == op
+def test_get_subject(db: Session, subcode: str, op: str, expectation) -> None:
+    with expectation:
+        assert get_subject(db, subcode).Name == op
 
 
 @pytest.mark.parametrize(
     ["subcode", "op"],
-    [
-        ("15CS65", True),
-        ("15CS65", True),
-        ("15CS54", True),
-        ("17MAT11", True),
-        ("17CSL76", True),
-        ("17CS55", True),
-        ("17MAT21", False),
-        ("17CSL66", False),
-        ("17CS45", False),
-    ],
+    [("15CS65", True), ("17MAT21", False), ("None", False)],
 )
 def test_is_subject_exists(db: Session, subcode: str, op: bool):
     assert is_subject_exist(db, subcode) == op
-
-
-@pytest.mark.parametrize(
-    ["subcodes", "op"],
-    [
-        (["15CS65", "15CS64"], True),
-        (["15CS65", "15CS64", "15CS54"], True),
-        (["15CS65", "15CS64", "15CS54", "19MAT23"], False),
-        (["15CS65", "15CS64", "18MAT22"], False),
-    ],
-)
-def test_is_subjects_exist(db: Session, subcodes: List[str], op: bool):
-    assert is_subjects_exists(db, subcodes) == op
 
 
 @pytest.mark.parametrize(
