@@ -24,9 +24,6 @@ class DepartmentReport(ReportBaseModel):
     Code: str
     Name: str
 
-    Subjects: Optional[List["SubjectReport"]]
-    Students: Optional[List["StudentReport"]]
-
     def __eq__(self, o: "DepartmentReport") -> bool:
         return self.Code == o.Code
 
