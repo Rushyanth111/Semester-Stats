@@ -19,6 +19,10 @@ def get_subject(db: Session, subcode: str):
 
 
 def put_subject(db: Session, sub: SubjectReport):
+    """
+    If the Insert took place -> Return None
+    If the Insert Failed, then the Exception is Bubbled to the Top.
+    """
     ipt = Subject(
         Code=sub.Code,
         Name=sub.Name,
@@ -30,8 +34,11 @@ def put_subject(db: Session, sub: SubjectReport):
     db.commit()
 
 
-def update_subject(db: Session, old_sub: str, new_sub: SubjectReport):
-
+def update_subject(db: Session, old_sub: str, new_sub: SubjectReport) -> None:
+    """
+    If the Update took place -> Return None
+    If the Update Failed, then the Exception is Bubbled to the Top.
+    """
     upd = db.query(Subject).filter(Subject.Code == old_sub).first()
 
     upd.Code = new_sub.Code

@@ -1,7 +1,9 @@
 from collections import Counter
+from contextlib import nullcontext as does_not_raise
 from typing import List
 
 import pytest
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from semesterstat.crud.subject import (
@@ -61,14 +63,32 @@ def test_is_subjects_exist(db: Session, subcodes: List[str], op: bool):
     assert is_subjects_exists(db, subcodes) == op
 
 
-def test_put_student(db: Session) -> None:
-    put_subject(db, SubjectReport(Code="10CS11", Name="EM11"))
-    assert is_subject_exist(db, "10CS11")
+@pytest.mark.parametrize(
+    ["subcode", "expectation"],
+    [
+        ("10CS11", does_not_raise()),
+        ("15CS65", pytest.raises(IntegrityError)),
+        ("None", pytest.raises(AttributeError)),
+    ],
+)
+def test_put_student(db: Session, subcode: str, expectation) -> None:
+    with expectation:
+        put_subject(db, SubjectReport(Code=subcode, Name="EM11"))
 
 
-def test_update_student(db: Session) -> None:
-    update_subject(db, "15CS64", SubjectReport(Code="10CS11", Name="EM11"))
-    assert is_subject_exist(db, "10CS11")
+@pytest.mark.parametrize(
+    ["subcode", "newsubcode", "expectation"],
+    [
+        ("15CS54", "15CS11", does_not_raise()),
+        ("15CS54", "15CS65", pytest.raises(IntegrityError)),
+        (None, "15CS65", pytest.raises(AttributeError)),
+    ],
+)
+def test_update_student(
+    db: Session, subcode: str, newsubcode: str, expectation
+) -> None:
+    with expectation:
+        update_subject(db, subcode, SubjectReport(Code=newsubcode, Name="EM11"))
 
 
 @pytest.mark.parametrize(
