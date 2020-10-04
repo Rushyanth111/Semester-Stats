@@ -24,9 +24,7 @@ def put_department_bulk(db: Session, dept_list: List[DepartmentReport]):
     not_present = in_dept_codes - db_dept_codes
 
     # Insert The ones not Present.
-    db.bulk_insert_mappings(
-        Department, [obj.dict(exclude={"Subjects", "Students"}) for obj in not_present]
-    )
+    db.bulk_insert_mappings(Department, [obj.dict() for obj in not_present])
     db.commit()
 
 
