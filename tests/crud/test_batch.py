@@ -1,7 +1,9 @@
 from collections import Counter
+from contextlib import nullcontext as does_not_raise
 from typing import List, Tuple
 
 import pytest
+from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.session import Session
 
 from semesterstat.crud.batch import (
@@ -20,7 +22,7 @@ def test_batch_exists(db: Session, batch: int, op: int):
 
 
 @pytest.mark.parametrize(
-    ["batch", "dept", "sem", "opusn", "opsubcode"],
+    ["batch", "dept", "sem", "opusn", "opsubcode", "expectation"],
     [
         (
             2015,
@@ -28,17 +30,27 @@ def test_batch_exists(db: Session, batch: int, op: int):
             None,
             ["1CR15CS101", "1CR15CS102"],
             ["15CS65", "15CS64", "15CS54"],
+            does_not_raise(),
         ),
-        (2014, None, None, [], []),
-        (2015, "CS", 6, ["1CR15CS101"], ["15CS65", "15CS64"]),
+        (2014, None, None, [], [], pytest.raises(NoResultFound)),
+        (2015, "CS", 6, ["1CR15CS101"], ["15CS65", "15CS64"], does_not_raise()),
     ],
 )
 def test_batch_scores(
-    db: Session, batch: int, dept: str, sem: int, opusn: List[str], opsubcode: List[str]
+    db: Session,
+    batch: int,
+    dept: str,
+    sem: int,
+    opusn: List[str],
+    opsubcode: List[str],
+    expectation,
 ):
-    res = get_batch_scores(db, batch, dept, sem)
-    assert Counter(opusn) == Counter([x.Usn for x in res])
-    assert Counter(opsubcode) == Counter([y.SubjectCode for x in res for y in x.Scores])
+    with expectation:
+        res = get_batch_scores(db, batch, dept, sem)
+        assert Counter(opusn) == Counter([x.Usn for x in res])
+        assert Counter(opsubcode) == Counter(
+            [y.SubjectCode for x in res for y in x.Scores]
+        )
 
 
 @pytest.mark.parametrize(

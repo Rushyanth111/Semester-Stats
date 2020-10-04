@@ -5,7 +5,6 @@ from ..crud.student import (
     get_student,
     get_student_backlogs,
     get_student_scores,
-    get_student_scores_by_semester,
     get_student_subject,
     is_student_exists,
     put_student,
@@ -51,18 +50,11 @@ def student_get(
     return get_student(db, usn)
 
 
-@student.get("/{usn}/scores", response_model=StudentScoreReciept)
-def student_get_scores(
-    usn: str = Depends(common_student_verify), db: Session = Depends(get_db)
-):
-    return get_student_scores(db, usn)
-
-
 @student.get("/{usn}/{semester}", response_model=StudentScoreReciept)
 def student_get_semester_scores(
     sem: int, usn: str = Depends(common_student_verify), db: Session = Depends(get_db)
 ):
-    return get_student_scores_by_semester(db, usn, sem)
+    return get_student_scores(db, usn, sem)
 
 
 @student.get("/{usn}/backlogs", response_model=StudentScoreReciept)

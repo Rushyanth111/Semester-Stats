@@ -5,13 +5,14 @@ from typing import List
 import pytest
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.exc import NoResultFound
 
 from semesterstat.crud.student import (
     get_student,
+    get_student_backlogs,
     get_student_cgpa,
     get_student_score_credits,
     get_student_scores,
-    get_student_scores_by_semester,
     get_student_sgpa,
     get_student_subject,
     get_students,
@@ -23,18 +24,15 @@ from semesterstat.reports import StudentReport
 
 
 @pytest.mark.parametrize(
-    ["usn", "op"],
+    ["usn", "op", "expectation"],
     [
-        ("1CR15CS101", "X"),
-        ("1CR15CS101", "X"),
-        ("1CR15CS102", "X"),
-        ("1CR17TE102", "X"),
-        ("1CR17TE102", "X"),
-        ("1CR17CS102", "X"),
+        ("1CR15CS101", "X", does_not_raise()),
+        ("1CR19CS102", "X", pytest.raises(NoResultFound)),
     ],
 )
-def test_get_student(db: Session, usn: str, op: str):
-    assert get_student(db, usn).Name == op
+def test_get_student(db: Session, usn: str, op: str, expectation):
+    with expectation:
+        assert get_student(db, usn).Name == op
 
 
 @pytest.mark.parametrize(
@@ -56,23 +54,13 @@ def test_get_students(db: Session, batch: int, dept: str, op: List[str]):
 
 
 @pytest.mark.parametrize(
-    ["usn", "ssb"],
-    [
-        ("1CR15CS101", ["15CS65", "15CS64"]),
-        ("1CR15CS102", ["15CS54"]),
-        ("1CR17TE102", ["17MAT11", "17CSL76"]),
-        ("1CR17CS102", ["17CS55"]),
-        ("1CR17CS120", []),
-    ],
-)
-def test_get_student_scores(db: Session, usn: str, ssb: List[str]):
-    res = get_student_scores(db, usn)
-    assert Counter([x.SubjectCode for x in res]) == Counter(ssb)
-
-
-@pytest.mark.parametrize(
     ["usn", "sem", "ssb"],
     [
+        ("1CR15CS101", None, ["15CS65", "15CS64"]),
+        ("1CR15CS102", None, ["15CS54"]),
+        ("1CR17TE102", None, ["17MAT11", "17CSL76"]),
+        ("1CR17CS102", None, ["17CS55"]),
+        ("1CR17CS120", None, []),
         ("1CR15CS101", 6, ["15CS65", "15CS64"]),
         ("1CR15CS101", 5, []),
         ("1CR15CS102", 5, ["15CS54"]),
@@ -85,7 +73,7 @@ def test_get_student_scores(db: Session, usn: str, ssb: List[str]):
 def test_get_student_scores_by_semester(
     db: Session, usn: str, sem: int, ssb: List[str]
 ):
-    res = get_student_scores_by_semester(db, usn, sem)
+    res = get_student_scores(db, usn, sem)
     assert Counter([x.SubjectCode for x in res]) == Counter(ssb)
 
 
@@ -107,8 +95,20 @@ def test_student_subject(
     assert (res.Internals, res.Externals) == (internal, external)
 
 
-def test_get_student_backlogs(db: Session):
-    pass
+@pytest.mark.parametrize(
+    ["usn", "sem", "op"],
+    [
+        ("1CR15CS101", None, ["15CS64"]),
+        ("1CR15CS101", 6, ["15CS64"]),
+        ("1CR15CS101", 5, []),
+        ("1CR14CS101", 6, []),
+    ],
+)
+def test_get_student_backlogs(db: Session, usn: str, sem: int, op: List[str]):
+    res = get_student_backlogs(db, usn, sem)
+    res_scores = [x.SubjectCode for x in res]
+
+    assert Counter(res_scores) == Counter(op)
 
 
 @pytest.mark.parametrize(
@@ -138,7 +138,6 @@ def test_put_student(db: Session, usn: str, expectation):
     [
         ("1CR15CS101", "1CR15CS001", does_not_raise()),
         ("1CR15CS101", "1CR15CS102", pytest.raises(IntegrityError)),
-        (None, "1CR15CS101", pytest.raises(AttributeError)),
     ],
 )
 def test_update_student(db: Session, usn: str, newusn: str, expectation):
