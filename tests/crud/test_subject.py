@@ -101,7 +101,12 @@ def test_update_student(
             ["15CS65", "15CS64", "15CS54", "17MAT11", "17CSL76", "17CS55"],
         ),
         (2015, None, None, ["15CS65", "15CS64", "15CS54"]),
-        (None, "CS", None, ["15CS65", "15CS64", "15CS54", "17CSL76", "17CS55"]),
+        (
+            None,
+            "CS",
+            None,
+            ["15CS65", "15CS64", "15CS54", "17CSL76", "17CS55", "17MAT11"],
+        ),
         (None, None, 6, ["15CS65", "15CS64"]),
         (None, "XX", None, ["17MAT11"]),
         (None, None, 1, ["17MAT11"]),

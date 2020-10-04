@@ -6,6 +6,7 @@ Purpose: Get Subject, Update Subject, And Put Subject, Nothing More.
 """
 from typing import List
 
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from ..database.models import Subject
@@ -84,7 +85,13 @@ def get_subjects(
         res = res.filter(Subject.Scheme == scheme)
 
     if dept is not None:
-        res = res.filter(Subject.Department == dept)
+        # Fixing Fetch From Common Department Bug:
+        if dept != "XX":
+            res = res.filter(
+                or_(Subject.Department == dept, Subject.Department == "XX")
+            )
+        else:
+            res = res.filter(Subject.Department == "XX")
 
     if sem is not None:
         res = res.filter(Subject.Semester == sem)
