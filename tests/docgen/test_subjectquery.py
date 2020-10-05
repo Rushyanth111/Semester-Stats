@@ -9,6 +9,7 @@ with open("tests/data/data.json") as f:
     data = json.load(f)
 
 
+@pytest.mark.dependency(name="Subject.Summary.Appeared")
 @pytest.mark.parametrize(
     ["subcode", "batch", "dept", "count"],
     [
@@ -21,6 +22,7 @@ def test_appeared(db: Session, subcode: str, batch: int, dept: str, count: int):
     assert res.get_appeared() == count
 
 
+@pytest.mark.dependency(name="Subject.Summary.Failed")
 @pytest.mark.parametrize(
     ["subcode", "batch", "dept", "count"],
     [
@@ -33,6 +35,7 @@ def test_failed(db: Session, subcode: str, batch: int, dept: str, count: int):
     assert res.get_failed() == count
 
 
+@pytest.mark.dependency(name="Subject.Summary.FCD")
 @pytest.mark.parametrize(
     ["subcode", "batch", "dept", "count"],
     [
@@ -45,6 +48,7 @@ def test_fcd(db: Session, subcode: str, batch: int, dept: str, count: int):
     assert res.get_fcd() == count
 
 
+@pytest.mark.dependency(name="Subject.Summary.FC")
 @pytest.mark.parametrize(
     ["subcode", "batch", "dept", "count"],
     [
@@ -57,6 +61,7 @@ def test_fc(db: Session, subcode: str, batch: int, dept: str, count: int):
     assert res.get_fc() == count
 
 
+@pytest.mark.dependency(name="Subject.Summary.SC")
 @pytest.mark.parametrize(
     ["subcode", "batch", "dept", "count"],
     [

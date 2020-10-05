@@ -1,3 +1,5 @@
+from typing import List
+
 from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 
@@ -16,11 +18,11 @@ class MainSummary:
             Student.Batch == batch, Student.Department == dept
         )
 
-        __subject_codes = get_subjects(db, batch=batch, dept=dept, sem=sem)
+        self.__subject_codes = get_subjects(db, batch=batch, dept=dept, sem=sem)
 
         self.__appeared = (
             db.query(Score.Usn)
-            .filter(Score.Usn.in_(__usns), Score.SubjectCode.in_(__subject_codes))
+            .filter(Score.Usn.in_(__usns), Score.SubjectCode.in_(self.__subject_codes))
             .distinct()
         )
 
@@ -29,7 +31,7 @@ class MainSummary:
             .join(Subject)
             .filter(
                 Score.Usn.in_(__usns),
-                Score.SubjectCode.in_(__subject_codes),
+                Score.SubjectCode.in_(self.__subject_codes),
                 or_(
                     Score.Externals < Subject.MinExt,
                     (Score.Externals + Score.Internals) < (Subject.MinTotal),
@@ -51,14 +53,15 @@ class MainSummary:
         __base_pass = (
             db.query(Score.Usn)
             .filter(
-                Score.Usn.in_(__usns_pass_list), Score.SubjectCode.in_(__subject_codes)
+                Score.Usn.in_(__usns_pass_list),
+                Score.SubjectCode.in_(self.__subject_codes),
             )
             .group_by(Score.Usn)
         )
 
         __subject_sum = (
             db.query(func.sum(Subject.MaxTotal))
-            .filter(Subject.Code.in_(__subject_codes))
+            .filter(Subject.Code.in_(self.__subject_codes))
             .scalar()
         )
 
@@ -72,7 +75,10 @@ class MainSummary:
 
         self.__sc = self.__pass - self.__fcd - self.__fc
 
-        self.__pass_percent = self.__pass / self.__appeared
+        try:
+            self.__pass_percent = self.__pass / self.__appeared
+        except ZeroDivisionError:
+            self.__pass_percent = 0.0
 
     def get_appeared(self) -> int:
         return self.__appeared
@@ -92,5 +98,16 @@ class MainSummary:
     def get_fail(self) -> int:
         return self.__fail
 
-    def get_pass_percent(self) -> int:
-        return self.__pass_percent
+    def get_pass_percent(self) -> float:
+        return float("{:.2f}".format(self.__pass_percent))
+
+    def get_subjects(self) -> List[str]:
+        return self.__subject_codes
+
+    Appeared = property(get_appeared)
+    Fcd = property(get_fcd)
+    Fc = property(get_fc)
+    Sc = property(get_sc)
+    Pass = property(get_pass)
+    Fail = property(get_fail)
+    PassPercent = property(get_pass_percent)

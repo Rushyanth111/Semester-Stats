@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel
 
@@ -115,3 +115,24 @@ class SubjectReciept(RecieptBaseModel):
                 "Department": "CS",
             }
         }
+
+
+class SubjectSummaryReciept(RecieptBaseModel):
+    Appeared: int
+    Failed: int
+    Fcd: int
+    Fc: int
+    Sc: int
+    PassPercent: float
+    Pass: int
+
+
+class SummaryReciept(RecieptBaseModel):
+    Appeared: int
+    Fcd: int
+    Fc: int
+    Sc: int
+    Pass: int
+    Fail: int
+    PassPercent: float
+    Subjects: Optional[Dict[str, SubjectSummaryReciept]]

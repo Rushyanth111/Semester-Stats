@@ -81,5 +81,16 @@ class SubjectSummary:
     def get_sc(self) -> int:
         return self.__sc
 
-    def get_pass_percent(self) -> int:
-        return self.__pass_percentage
+    def get_pass_percent(self) -> float:
+        return float("{:.2f}".format(self.__pass_percentage))
+
+    def get_pass(self) -> int:
+        return self.__fcd + self.__fc + self.__sc
+
+    Appeared = property(get_appeared)
+    Failed = property(get_failed)
+    Fcd = property(get_fcd)
+    Fc = property(get_fc)
+    Sc = property(get_sc)
+    PassPercent = property(get_pass_percent)
+    Pass = property(get_pass)
