@@ -1,21 +1,25 @@
-from fastapi.testclient import TestClient
-from semesterstat.api import app
-from shutil import copy2
-from distutils.dir_util import copy_tree
-import pytest
 import os
+from distutils.dir_util import copy_tree
+from shutil import copy2
+
+import pytest
+from fastapi.testclient import TestClient
+
+from semesterstat.api import app
 
 
-@pytest.fixture(scope="package")
-def create_env(tmpdir_factory):
-    respath = tmpdir_factory.mktemp("Resources", False)
-    basepath = tmpdir_factory.getbasetemp()
+@pytest.fixture(scope="package", autouse=True)
+def create_env(rootdir, tmp_path_factory):
+    respath = tmp_path_factory.mktemp("Resources", False)
+    basepath = tmp_path_factory.getbasetemp()
     copy_tree("Resources", str(respath))
     copy2("config.ini", str(basepath))
     os.chdir(basepath)
+    yield
+    os.chdir(rootdir)
 
 
-@pytest.fixture(scope="package")
+@pytest.fixture(scope="module")
 def client(create_env):
     with TestClient(app) as cl:
         yield cl

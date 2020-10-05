@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
@@ -69,3 +71,8 @@ def db(engine):
 
     # Close the connection
     conn.close()
+
+
+@pytest.fixture(scope="session")
+def rootdir():
+    return os.path.abspath(os.getcwd())
