@@ -1,5 +1,5 @@
-from .models import Score, Student, Subject, Department, BatchSchemeInfo
-from .database import session_create, get_db
+from .database import get_db, session_create
+from .models import BatchSchemeInfo, Department, Score, Student, Subject
 
 __all__ = [
     "Score",

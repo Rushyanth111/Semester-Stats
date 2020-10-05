@@ -15,9 +15,6 @@ class Department(Base):
     Code = Column(String, unique=True, index=True)
     Name = Column(String)
 
-    Subjects = relationship("Subject")
-    Students = relationship("Student")
-
 
 class BatchSchemeInfo(Base):
     __tablename__ = "batchschemeinfo"

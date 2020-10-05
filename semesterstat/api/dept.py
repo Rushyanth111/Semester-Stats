@@ -1,14 +1,19 @@
-from typing import List
-
 from fastapi import APIRouter, HTTPException, status
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
 
 from semesterstat.crud.dept import get_all_dept
 
-from ..common import DepartmentReciept, DepartmentReport, convert_dept
-from ..crud import get_dept_by_code, is_dept_exist, put_department, update_department
+from ..crud.dept import (
+    get_dept_by_code,
+    is_dept_exist,
+    put_department,
+    update_department,
+)
 from ..database import get_db
+from ..generator import convert_dept
+from ..reciepts import DepartmentReciept
+from ..reports import DepartmentReport
 
 dept = APIRouter()
 
@@ -21,7 +26,24 @@ def common_department_verify(dept: str, db: Session = Depends(get_db)) -> str:
     return dept
 
 
-@dept.get("/", response_model=List[str])
+@dept.get(
+    "/",
+    responses={
+        200: {
+            "content": {
+                "application/json": {
+                    "example": ["CS", "TE", "MBA", "TE"],
+                    "schema": {
+                        "title": "DeptListReciept",
+                        "type": "array",
+                        "items": {"type": "string"},
+                    },
+                }
+            }
+        },
+        404: {"description": "Resources Not Found."},
+    },
+)
 def dept_get_all(db: Session = Depends(get_db)):
     return get_all_dept(db)
 
@@ -34,9 +56,7 @@ def department_get(
 
 
 @dept.post("/")
-def department_add(
-    dept: DepartmentReport, db: Session = Depends(get_db),
-):
+def department_add(dept: DepartmentReport, db: Session = Depends(get_db)):
     put_department(db, dept)
 
 

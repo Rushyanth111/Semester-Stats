@@ -2,12 +2,12 @@ from typing import List, Optional
 
 from pydantic import BaseModel, validator
 
-from .subject_extractor import (
+from .common.subject_extractor import (
     get_subject_dept,
     get_subject_scheme,
     get_subject_semester,
 )
-from .usn_extractor import get_usn_batch, get_usn_dept
+from .common.usn_extractor import get_usn_batch, get_usn_dept
 
 # https://pydantic-docs.helpmanual.io/usage/validators/#validate-always
 
@@ -23,9 +23,6 @@ class ReportBaseModel(BaseModel):
 class DepartmentReport(ReportBaseModel):
     Code: str
     Name: str
-
-    Subjects: Optional[List["SubjectReport"]]
-    Students: Optional[List["StudentReport"]]
 
     def __eq__(self, o: "DepartmentReport") -> bool:
         return self.Code == o.Code

@@ -14,14 +14,26 @@ Pass Percentage -> Percentage of Pass.
 
 from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.exc import NoResultFound
 
-from ..database import Score, Student, Subject
-from ..plugins import fc, fcd, sc
-from ..crud import get_scheme
+from ...database import Score, Student, Subject
+from ...plugins import fc, fcd, sc
+from ..batch import is_batch_exists
+from ..common import get_scheme
+from ..dept import is_dept_exist
+from ..subject import is_subject_exist
 
 
-class SubjectFill:
+class SubjectSummary:
     def __init__(self, db: Session, subcode: str, batch: int, dept: str) -> None:
+
+        if (
+            not is_subject_exist(db, subcode)
+            or not is_batch_exists(db, batch)
+            or not is_dept_exist(db, dept)
+        ):
+            raise NoResultFound
+
         scheme = get_scheme(db, batch)
 
         __usns = db.query(Student.Usn).filter(
@@ -81,5 +93,16 @@ class SubjectFill:
     def get_sc(self) -> int:
         return self.__sc
 
-    def get_pass_percent(self) -> int:
-        return self.__pass_percentage
+    def get_pass_percent(self) -> float:
+        return float("{:.2f}".format(self.__pass_percentage))
+
+    def get_pass(self) -> int:
+        return self.__fcd + self.__fc + self.__sc
+
+    Appeared = property(get_appeared)
+    Failed = property(get_failed)
+    Fcd = property(get_fcd)
+    Fc = property(get_fc)
+    Sc = property(get_sc)
+    PassPercent = property(get_pass_percent)
+    Pass = property(get_pass)

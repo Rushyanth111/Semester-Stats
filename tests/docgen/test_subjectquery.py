@@ -1,68 +1,66 @@
 import json
 
 import pytest
-from semesterstat.docgen.subjectqueries import SubjectFill
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.exc import NoResultFound
+
+from semesterstat.crud.summary import SubjectSummary
+from tests.docgen.test_summary import does_not_raise
 
 with open("tests/data/data.json") as f:
     data = json.load(f)
 
 
 @pytest.mark.parametrize(
-    ["subcode", "batch", "dept", "count"],
+    ["batch", "dept", "subcode", "countdata", "expectation"],
     [
-        (k, data["static"]["Batch"], data["static"]["Dept"], v["Appeared"],)
-        for (k, v) in data["data"]["SubData"].items()
+        (
+            data["static"]["Batch"],
+            data["static"]["Dept"],
+            subcode,
+            data["data"]["SubData"][subcode],
+            does_not_raise(),
+        )
+        for subcode in data["subcode"]
+    ]
+    + [
+        (0, None, None, None, pytest.raises(NoResultFound)),
+        (None, "XXX", None, None, pytest.raises(NoResultFound)),
+        (None, None, "SOMESD", None, pytest.raises(NoResultFound)),
     ],
 )
-def test_appeared(db: Session, subcode: str, batch: int, dept: str, count: int):
-    res = SubjectFill(db, subcode, batch, dept)
-    assert res.get_appeared() == count
+class TestSubjectSummary:
+    def test_appeared(
+        self, db: Session, subcode: str, batch: int, dept: str, countdata, expectation
+    ):
+        with expectation:
+            res = SubjectSummary(db, subcode, batch, dept)
+            assert res.get_appeared() == countdata["Appeared"]
 
+    def test_failed(
+        self, db: Session, subcode: str, batch: int, dept: str, countdata, expectation
+    ):
+        with expectation:
+            res = SubjectSummary(db, subcode, batch, dept)
+            assert res.get_failed() == countdata["Fail"]
 
-@pytest.mark.parametrize(
-    ["subcode", "batch", "dept", "count"],
-    [
-        (k, data["static"]["Batch"], data["static"]["Dept"], v["Fail"],)
-        for (k, v) in data["data"]["SubData"].items()
-    ],
-)
-def test_failed(db: Session, subcode: str, batch: int, dept: str, count: int):
-    res = SubjectFill(db, subcode, batch, dept)
-    assert res.get_failed() == count
+    def test_fcd(
+        self, db: Session, subcode: str, batch: int, dept: str, countdata, expectation
+    ):
+        with expectation:
+            res = SubjectSummary(db, subcode, batch, dept)
+            assert res.get_fcd() == countdata["FCD"]
 
+    def test_fc(
+        self, db: Session, subcode: str, batch: int, dept: str, countdata, expectation
+    ):
+        with expectation:
+            res = SubjectSummary(db, subcode, batch, dept)
+            assert res.get_fc() == countdata["FC"]
 
-@pytest.mark.parametrize(
-    ["subcode", "batch", "dept", "count"],
-    [
-        (k, data["static"]["Batch"], data["static"]["Dept"], v["FCD"],)
-        for (k, v) in data["data"]["SubData"].items()
-    ],
-)
-def test_fcd(db: Session, subcode: str, batch: int, dept: str, count: int):
-    res = SubjectFill(db, subcode, batch, dept)
-    assert res.get_fcd() == count
-
-
-@pytest.mark.parametrize(
-    ["subcode", "batch", "dept", "count"],
-    [
-        (k, data["static"]["Batch"], data["static"]["Dept"], v["FC"],)
-        for (k, v) in data["data"]["SubData"].items()
-    ],
-)
-def test_fc(db: Session, subcode: str, batch: int, dept: str, count: int):
-    res = SubjectFill(db, subcode, batch, dept)
-    assert res.get_fc() == count
-
-
-@pytest.mark.parametrize(
-    ["subcode", "batch", "dept", "count"],
-    [
-        (k, data["static"]["Batch"], data["static"]["Dept"], v["SC"],)
-        for (k, v) in data["data"]["SubData"].items()
-    ],
-)
-def test_sc(db: Session, subcode: str, batch: int, dept: str, count: int):
-    res = SubjectFill(db, subcode, batch, dept)
-    assert res.get_sc() == count
+    def test_sc(
+        self, db: Session, subcode: str, batch: int, dept: str, countdata, expectation
+    ):
+        with expectation:
+            res = SubjectSummary(db, subcode, batch, dept)
+            assert res.get_sc() == countdata["SC"]

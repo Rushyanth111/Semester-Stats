@@ -3,14 +3,14 @@ from typing import List
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from ..common import ScoreReport, DepartmentReport, StudentReport, SubjectReport
-from ..crud import (
+from ..crud.bulk import (
     put_department_bulk,
     put_score_bulk,
     put_student_bulk,
     put_subject_bulk,
 )
 from ..database import get_db
+from ..reports import DepartmentReport, ScoreReport, StudentReport, SubjectReport
 
 bulk = APIRouter()
 

@@ -52,8 +52,8 @@ For Each USN:
 
 """
 
-import random
 import json
+import random
 
 # Constants for Generation:
 

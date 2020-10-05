@@ -10,9 +10,10 @@ from ..database import Department, session_create
 from .batch import batch
 from .bulk import bulk
 from .dept import dept
+from .document import docs
+from .info import info
 from .student import student
 from .subject import subject
-from .document import docs
 
 app = FastAPI()
 app.add_middleware(
@@ -58,6 +59,7 @@ async def startup_event():
     db.close()
 
 
+app.include_router(info, prefix="/info", tags=["Information"])
 app.include_router(batch, prefix="/batch", tags=["Batch"])
 app.include_router(dept, prefix="/dept", tags=["Department"])
 app.include_router(student, prefix="/student", tags=["Student"])

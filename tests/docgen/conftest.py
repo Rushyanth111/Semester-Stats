@@ -1,9 +1,10 @@
 import json
 
 import pytest
-from semesterstat.common.reports import ScoreReport, StudentReport, SubjectReport
-from semesterstat.database import Score, Student, Subject
 from sqlalchemy.orm import Session
+
+from semesterstat.database import Score, Student, Subject
+from semesterstat.reports import ScoreReport, StudentReport, SubjectReport
 
 
 @pytest.fixture(scope="package", autouse=True)

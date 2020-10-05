@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
-from .mainqueries import MainFill
+
+from ..crud.summary import MainSummary
 
 __main_dict = {
     "Batch": "",
@@ -18,7 +19,7 @@ __main_dict = {
 
 
 def __fill_main(db: Session, batch: int, dept: str, sem: int):
-    data = MainFill(db, batch, dept, sem)
+    data = MainSummary(db, batch, dept, sem)
 
     res = __main_dict.copy()
 

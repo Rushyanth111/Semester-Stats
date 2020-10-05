@@ -6,19 +6,42 @@ Purpose: Get Subject, Update Subject, And Put Subject, Nothing More.
 """
 from typing import List
 
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
-from ..common import SubjectReport
-from ..database import Subject
+from ..database.models import Subject
+from ..reports import SubjectReport
 from .common import get_scheme
 
 
-def get_subject(db: Session, subcode: str):
-    res = db.query(Subject).filter(Subject.Code == subcode).first()
-    return SubjectReport.from_orm(res)
+def get_subject(db: Session, subcode: str) -> SubjectReport:
+    """Get Subject From Code
+
+    Args:
+        db (Session): SQLAlchemy Session.
+        subcode (str): Subject Code.
+
+    Raises:
+        NoResultFound
+
+    Returns:
+        SubjectReport: Details Of the Requested Subject.
+    """
+    res = db.query(Subject).filter(Subject.Code == subcode).one()
+    rep = SubjectReport.from_orm(res)
+    return rep
 
 
-def put_subject(db: Session, sub: SubjectReport):
+def put_subject(db: Session, sub: SubjectReport) -> None:
+    """Add a Subject to the Database
+
+    Args:
+        db (Session): SQLAlchemy Session.
+        sub (SubjectReport): Subject Report Object.
+
+    Raises:
+        IntegrityError
+    """
     ipt = Subject(
         Code=sub.Code,
         Name=sub.Name,
@@ -30,8 +53,17 @@ def put_subject(db: Session, sub: SubjectReport):
     db.commit()
 
 
-def update_subject(db: Session, old_sub: str, new_sub: SubjectReport):
+def update_subject(db: Session, old_sub: str, new_sub: SubjectReport) -> None:
+    """Update a Subject
 
+    Args:
+        db (Session): SQLAlchemy Session.
+        old_sub (str): Old Subject Code.
+        new_sub (SubjectReport): Subject Details to Change
+
+    Raises:
+        IntegrityError
+    """
     upd = db.query(Subject).filter(Subject.Code == old_sub).first()
 
     upd.Code = new_sub.Code
@@ -44,30 +76,58 @@ def update_subject(db: Session, old_sub: str, new_sub: SubjectReport):
 
 
 def is_subject_exist(db: Session, subcode: str) -> bool:
+    """Checks if Subject Exists.
 
-    res = db.query(Subject).filter(Subject.Code == subcode).one_or_none()
+    Args:
+        db (Session): SQLAlchemy Session.
+        subcode (str): Subject Code.
 
-    if res is not None:
-        return True
-    return False
+    Returns:
+        bool: True if Present, Else False.
+    """
+    equery = db.query(Subject).filter(Subject.Code == subcode)
+    res = db.query(equery.exists()).scalar()
 
-
-def is_subjects_exists(db: Session, subcodes: List[str]) -> bool:
-    for subcode in subcodes:
-        sub_res = db.query(Subject).filter(Subject.Code == subcode).exists()
-        res = db.query(sub_res).scalar()
-
-        if res is False:
-            return False
-
-    return True
+    return res
 
 
-def get_subject_batch_sem_list(db: Session, batch: int, sem: int = None) -> List[str]:
-    scheme = get_scheme(db, batch)
-    res = db.query(Subject).filter(Subject.Scheme == scheme)
+def get_subjects(
+    db: Session, batch: int = None, dept: str = None, sem: int = None
+) -> List[str]:
+    """Obtains a List of Subjects According to Optional Params
+
+    Args:
+        db (Session): SQLAlchemy Session.
+        batch (int, optional): Batch that Attended That Subject. Defaults to None.
+        dept (str, optional): Department of the Subject(Includes "XX" By default).
+             Defaults to None.
+        sem (int, optional): Semester Of the Subject. Defaults to None.
+
+    Returns:
+        List[str]: List of the Subject Codes Searched.
+    """
+
+    res = db.query(Subject)
+
+    if batch is not None:
+        scheme = get_scheme(db, batch)
+
+        if scheme is None:
+            return []
+        res = res.filter(Subject.Scheme == scheme)
+
+    if dept is not None:
+        # Fixing Fetch From Common Department Bug:
+        if dept != "XX":
+            res = res.filter(
+                or_(Subject.Department == dept, Subject.Department == "XX")
+            )
+        else:
+            res = res.filter(Subject.Department == "XX")
 
     if sem is not None:
         res = res.filter(Subject.Semester == sem)
 
-    return [sub.Code for sub in res]
+    subcodes = [sub.Code for sub in res]
+
+    return subcodes

@@ -43,14 +43,14 @@ PPT: Pass Percentage for Subject i, Full, Int, 20
 
 Please follow the above Keys for Mail Merge.
 """
-from typing import IO
 from tempfile import TemporaryFile
+from typing import IO
 
 from mailmerge import MailMerge
 from sqlalchemy.orm import Session
 
-from ..Config import resources_template_path
-from ..crud import get_subject_batch_sem_list
+from ..config import resources_template_path
+from ..crud.subject import get_subjects
 from .fillmain import __fill_main
 from .fillsub import __fill_subject
 
@@ -61,7 +61,7 @@ def get_docx(
     # Steps:
     # 1. Get the Subjects for that year.
     # 2. Get the Main Information For that year, Mail Merge.
-    subjects = get_subject_batch_sem_list(db, batch, sem)
+    subjects = get_subjects(db, batch, dept, sem)
     main_info = __fill_main(db, batch, dept, sem)
     sub_info = [__fill_subject(db, subcode, batch, dept) for subcode in subjects]
     last_sub = {}
