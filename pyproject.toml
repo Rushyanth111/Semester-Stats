@@ -25,7 +25,6 @@ sqlalchemy-stubs = "^0.3"
 isort = "^5.5.4"
 pytest = "^6.0.1"
 mccabe = "^0.6.1"
-pytest-dependency = "^0.5.1"
 mkdocstrings = "^0.13.1"
 pytest-cov = "^2.10.1"
 

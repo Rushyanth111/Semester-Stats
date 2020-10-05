@@ -7,20 +7,6 @@ from sqlalchemy.orm.exc import NoResultFound
 from semesterstat.crud.summary import get_summary
 
 
-@pytest.mark.dependency(
-    depends=[
-        "Subject.Summary.Appeared",
-        "Subject.Summary.Failed",
-        "Subject.Summary.FCD",
-        "Subject.Summary.FC",
-        "Subject.Summary.SC",
-        "Subject.Appeared",
-        "Subject.Failed",
-        "Subject.FCD",
-        "Subject.FC",
-        "Subject.SC",
-    ]
-)
 @pytest.mark.parametrize(
     ["batch", "dept", "sem", "expectation"],
     [
