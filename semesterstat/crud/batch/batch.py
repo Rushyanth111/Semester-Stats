@@ -25,23 +25,47 @@ Output:
 
 
 def get_all_batch(db: Session) -> List[int]:
+    """Get all Batches
+
+    Args:
+        db (Session): SQLAlchemy Session
+
+    Returns:
+        List[int]: List of Batches
+    """
     res = db.query(BatchSchemeInfo.Batch).all()
+    batches = [x.Batch for x in res]
+    return batches
 
-    return [x.Batch for x in res]
 
+def is_batch_exists(db: Session, batch: int) -> bool:
+    """Check if Batch Exists
 
-def is_batch_exists(db: Session, batch: int):
-    sb = db.query(BatchSchemeInfo).filter(BatchSchemeInfo.Batch == batch).exists()
+    Args:
+        db (Session): SQLAlchemy Session
+        batch (int): Batch Filter
 
-    if db.query(sb).scalar() is False:
-        return False
-
-    return True
+    Returns:
+        bool: True if Batch exists else False
+    """
+    equery = db.query(BatchSchemeInfo).filter(BatchSchemeInfo.Batch == batch)
+    res = db.query(equery.exists()).scalar()
+    return res
 
 
 def get_batch_aggregate(
     db: Session, batch: int, dept: str = None
 ) -> List[Tuple[str, int]]:
+    """Get Batch Complete Aggregate
+
+    Args:
+        db (Session): SQLAlchemy Session
+        batch (int): Batch filter.
+        dept (str, optional): Department Filter. Defaults to None.
+
+    Returns:
+        List[Tuple[str, int]]: List of Tuples that contain USN and their Aggregate.
+    """
     res_score = (
         db.query(Score.Usn, func.sum(Score.Internals + Score.Externals))
         .join(Student)

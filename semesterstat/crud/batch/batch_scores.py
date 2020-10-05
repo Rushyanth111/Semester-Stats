@@ -51,13 +51,45 @@ def _score_base(db: Session, batch: int, dept: str = None, sem: int = None):
     return (students, scores)
 
 
-def get_batch_scores(db: Session, batch: int, dept: str = None, sem: int = None):
+def get_batch_scores(
+    db: Session, batch: int, dept: str = None, sem: int = None
+) -> List[StudentReport]:
+    """Get Batch Scores
+
+    Args:
+        db (Session): SQLAlchemy Session
+        batch (int): Batch
+        dept (str, optional): Department Filter. Defaults to None.
+        sem (int, optional): Semester Filter. Defaults to None.
+
+    Raises:
+        IntegrityError
+
+    Returns:
+        List[StudentReport]: List of Student Reports with Scores.
+    """
     students, scores = _score_base(db, batch, dept, sem)
 
     return _adjoin_student_scores(students, scores)
 
 
-def get_batch_backlog(db: Session, batch: int, dept: str = None, sem: int = None):
+def get_batch_backlog(
+    db: Session, batch: int, dept: str = None, sem: int = None
+) -> List[StudentReport]:
+    """Get Batch Backlog
+
+    Args:
+        db (Session): SQLAlchemy Session
+        batch (int): Batch
+        dept (str, optional): Department Filter. Defaults to None.
+        sem (int, optional): Semester Filter. Defaults to None.
+
+    Raises:
+        IntegrityError
+
+    Returns:
+        List[StudentReport]: List of Student Reports with Scores.
+    """
     students, scores = _score_base(db, batch, dept, sem)
 
     scores = scores.join(Subject).filter(
@@ -72,7 +104,22 @@ def get_batch_backlog(db: Session, batch: int, dept: str = None, sem: int = None
 
 def get_batch_detained(
     db: Session, batch: int, dept: str = None, sem: int = None, thresh: int = 4
-):
+) -> List[StudentReport]:
+    """Get Batch Detaine
+
+    Args:
+        db (Session): SQLAlchemy Session
+        batch (int): Batch Filter
+        dept (str, optional): Department Filter. Defaults to None.
+        sem (int, optional): Semester Filter. Defaults to None.
+        thresh (int, optional): Threshold for Detained. Defaults to 4.
+
+    Raises:
+        IntegrityError
+
+    Returns:
+        List[StudentReport]: List of Student Reports with Scores.
+    """
     students, scores = _score_base(db, batch, dept, sem)
 
     scores = (

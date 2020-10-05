@@ -66,35 +66,39 @@ def test_batch_aggregate(db: Session, batch: int, dept: str, op: List[Tuple[str,
 
 
 @pytest.mark.parametrize(
-    ["batch", "dept", "sem", "op"],
+    ["batch", "dept", "sem", "op", "expectation"],
     [
-        (2015, "CS", None, [("1CR15CS101", "15CS64")]),
-        (2017, "CS", None, [("1CR17CS102", "17CS55")]),
+        (2015, "CS", None, [("1CR15CS101", "15CS64")], does_not_raise()),
+        (2017, "CS", None, [("1CR17CS102", "17CS55")], does_not_raise()),
+        (2014, None, None, None, pytest.raises(NoResultFound)),
     ],
 )
 def test_batch_backlog(
-    db: Session, batch: int, dept: str, sem: int, op: List[Tuple[str, int]]
+    db: Session, batch: int, dept: str, sem: int, op: List[Tuple[str, int]], expectation
 ):
-    res = get_batch_backlog(db, batch, dept, sem)
+    with expectation:
+        res = get_batch_backlog(db, batch, dept, sem)
 
-    assert res[0].Usn == op[0][0]
-    assert res[0].Scores[0].SubjectCode == op[0][1]
+        assert res[0].Usn == op[0][0]
+        assert res[0].Scores[0].SubjectCode == op[0][1]
 
 
 @pytest.mark.parametrize(
-    ["batch", "dept", "sem", "op"],
+    ["batch", "dept", "sem", "op", "expectation"],
     [
-        (2015, "CS", None, [("1CR15CS101", "15CS64")]),
-        (2017, "CS", None, [("1CR17CS102", "17CS55")]),
+        (2015, "CS", None, [("1CR15CS101", "15CS64")], does_not_raise()),
+        (2017, "CS", None, [("1CR17CS102", "17CS55")], does_not_raise()),
+        (2014, None, None, None, pytest.raises(NoResultFound)),
     ],
 )
 def test_batch_detained(
-    db: Session, batch: int, dept: str, sem: int, op: List[Tuple[str, int]]
+    db: Session, batch: int, dept: str, sem: int, op: List[Tuple[str, int]], expectation
 ):
-    res = get_batch_detained(db, batch, dept, thresh=0)
+    with expectation:
+        res = get_batch_detained(db, batch, dept, thresh=0)
 
-    assert res[0].Usn == op[0][0]
-    assert res[0].Scores[0].SubjectCode == op[0][1]
+        assert res[0].Usn == op[0][0]
+        assert res[0].Scores[0].SubjectCode == op[0][1]
 
 
 def test_all_batch(db: Session):
