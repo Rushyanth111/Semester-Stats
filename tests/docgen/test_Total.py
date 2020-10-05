@@ -1,7 +1,9 @@
 import json
+from contextlib import nullcontext as does_not_raise
 
 import pytest
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.exc import NoResultFound
 
 from semesterstat.crud.summary import MainSummary
 
@@ -10,83 +12,55 @@ with open("tests/data/data.json") as f:
 
 
 @pytest.mark.parametrize(
-    ["batch", "dept", "sem", "count"],
+    ["batch", "dept", "sem", "countdata", "expectation"],
     [
         (
             data["static"]["Batch"],
             data["static"]["Dept"],
             data["static"]["Semester"],
-            data["data"]["Appeared"],
+            data["data"],
+            does_not_raise(),
         )
+    ]
+    + [
+        (None, None, None, None, pytest.raises(NoResultFound)),
+        (2014, None, None, None, pytest.raises(NoResultFound)),
+        (None, "None", None, None, pytest.raises(NoResultFound)),
+        (None, None, 9, None, pytest.raises(NoResultFound)),
     ],
 )
-def test_appeared(db: Session, batch: int, dept: str, sem: int, count: int):
-    res = MainSummary(db, batch, dept, sem)
+class TestSummary:
+    def test_appeared(
+        self, db: Session, batch: int, dept: str, sem: int, countdata: int, expectation
+    ):
+        with expectation:
+            res = MainSummary(db, batch, dept, sem)
+            assert res.get_appeared() == countdata["Appeared"]
 
-    assert res.get_appeared() == count
+    def test_fail(
+        self, db: Session, batch: int, dept: str, sem: int, countdata: int, expectation
+    ):
+        with expectation:
+            res = MainSummary(db, batch, dept, sem)
+            assert res.get_fail() == countdata["Fail"]
 
+    def test_fcd(
+        self, db: Session, batch: int, dept: str, sem: int, countdata: int, expectation
+    ):
+        with expectation:
+            res = MainSummary(db, batch, dept, sem)
+            assert res.get_fcd() == countdata["FCD"]
 
-@pytest.mark.parametrize(
-    ["batch", "dept", "sem", "count"],
-    [
-        (
-            data["static"]["Batch"],
-            data["static"]["Dept"],
-            data["static"]["Semester"],
-            data["data"]["Fail"],
-        )
-    ],
-)
-def test_fail(db: Session, batch: int, dept: str, sem: int, count: int):
-    res = MainSummary(db, batch, dept, sem)
+    def test_fc(
+        self, db: Session, batch: int, dept: str, sem: int, countdata: int, expectation
+    ):
+        with expectation:
+            res = MainSummary(db, batch, dept, sem)
+            assert res.get_fc() == countdata["FC"]
 
-    assert res.get_fail() == count
-
-
-@pytest.mark.parametrize(
-    ["batch", "dept", "sem", "count"],
-    [
-        (
-            data["static"]["Batch"],
-            data["static"]["Dept"],
-            data["static"]["Semester"],
-            data["data"]["FCD"],
-        )
-    ],
-)
-def test_fcd(db: Session, batch: int, dept: str, sem: int, count: int):
-    res = MainSummary(db, batch, dept, sem)
-
-    assert res.get_fcd() == count
-
-
-@pytest.mark.parametrize(
-    ["batch", "dept", "sem", "count"],
-    [
-        (
-            data["static"]["Batch"],
-            data["static"]["Dept"],
-            data["static"]["Semester"],
-            data["data"]["FC"],
-        )
-    ],
-)
-def test_fc(db: Session, batch: int, dept: str, sem: int, count: int):
-    res = MainSummary(db, batch, dept, sem)
-    assert res.get_fc() == count
-
-
-@pytest.mark.parametrize(
-    ["batch", "dept", "sem", "count"],
-    [
-        (
-            data["static"]["Batch"],
-            data["static"]["Dept"],
-            data["static"]["Semester"],
-            data["data"]["SC"],
-        )
-    ],
-)
-def test_sc(db: Session, batch: int, dept: str, sem: int, count: int):
-    res = MainSummary(db, batch, dept, sem)
-    assert res.get_sc() == count
+    def test_sc(
+        self, db: Session, batch: int, dept: str, sem: int, countdata: int, expectation
+    ):
+        with expectation:
+            res = MainSummary(db, batch, dept, sem)
+            assert res.get_sc() == countdata["SC"]
