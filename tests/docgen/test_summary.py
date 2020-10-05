@@ -7,7 +7,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from semesterstat.crud.summary import get_summary
 
 
-@pytest.mark.depedency(
+@pytest.mark.dependency(
     depends=[
         "Subject.Summary.Appeared",
         "Subject.Summary.Failed",
