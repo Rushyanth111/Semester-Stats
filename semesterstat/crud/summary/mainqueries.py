@@ -2,15 +2,20 @@ from typing import List
 
 from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.exc import NoResultFound
 
-from ...crud.common import get_scheme
-from ...crud.subject import get_subjects
 from ...database import Score, Student, Subject
 from ...plugins import fc, fcd
+from ..batch import is_batch_exists
+from ..common import get_scheme
+from ..dept import is_dept_exist
+from ..subject import get_subjects
 
 
 class MainSummary:
     def __init__(self, db: Session, batch: int, dept: str, sem: int):
+        if not is_batch_exists(db, batch) or not is_dept_exist(db, dept):
+            raise NoResultFound
 
         scheme = get_scheme(db, batch)
 
