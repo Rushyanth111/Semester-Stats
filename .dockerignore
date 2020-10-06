@@ -2,6 +2,7 @@ __pycache__
 .git/*
 .tox/*
 .vscode/*
+.venv/*
 csvData/*
 docs
 site
