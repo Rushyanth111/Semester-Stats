@@ -12,3 +12,4 @@ FormattedData/*
 .python-version
 .gitignore
 .venv
+config.override.ini
