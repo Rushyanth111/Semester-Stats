@@ -1,4 +1,7 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from ..crud.student import (
@@ -12,7 +15,7 @@ from ..crud.student import (
 )
 from ..crud.subject import is_subject_exist
 from ..database import get_db
-from ..reciepts import ScoreReciept, StudentScoreReciept
+from ..reciepts import ScoreReciept, StudentReciept, StudentScoreReciept
 from ..reports import StudentReport
 
 student = APIRouter()
@@ -21,47 +24,40 @@ student = APIRouter()
 def common_student_verify(usn: str, db: Session = Depends(get_db)) -> str:
     if not is_student_exists(db, usn):
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Student Not found!"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Student does not Exist"
         )
     return usn
 
 
-@student.get(
-    "/{usn}",
-    responses={
-        200: {
-            "content": {
-                "application/json": {
-                    "example": ["1CX15CX001", "1CX15CX002", "1CX15CX003"],
-                    "schema": {
-                        "title": "DeptListReciept",
-                        "type": "array",
-                        "items": {"type": "string"},
-                    },
-                }
-            }
-        },
-        404: {"description": "Resources Not Found."},
-    },
-)
+@student.get("/{usn}", response_model=StudentReciept, status_code=status.HTTP_200_OK)
 def student_get(
     usn: str = Depends(common_student_verify), db: Session = Depends(get_db)
 ):
     return get_student(db, usn)
 
 
-@student.get("/{usn}/{semester}", response_model=StudentScoreReciept)
-def student_get_semester_scores(
-    sem: int, usn: str = Depends(common_student_verify), db: Session = Depends(get_db)
+@student.get(
+    "/{usn}/scores", response_model=List[ScoreReciept], status_code=status.HTTP_200_OK
+)
+def student_get_scores(
+    sem: int = None,
+    usn: str = Depends(common_student_verify),
+    db: Session = Depends(get_db),
 ):
-    return get_student_scores(db, usn, sem)
+    res = get_student_scores(db, usn, sem)
+    ret = [ScoreReciept.from_orm(x) for x in res]
+    return ret
 
 
-@student.get("/{usn}/backlogs", response_model=StudentScoreReciept)
+@student.get("/{usn}/backlogs", response_model=List[ScoreReciept])
 def student_get_backlog(
-    sem: int, usn: str = Depends(common_student_verify), db: Session = Depends(get_db)
+    sem: int = None,
+    usn: str = Depends(common_student_verify),
+    db: Session = Depends(get_db),
 ):
-    return get_student_backlogs(db, usn, sem)
+    res = get_student_backlogs(db, usn, sem)
+    ret = [ScoreReciept.from_orm(x) for x in res]
+    return ret
 
 
 @student.get("/{usn}/subject/{subcode}", response_model=ScoreReciept)
@@ -70,22 +66,33 @@ def student_get_subject_score(
     usn: str = Depends(common_student_verify),
     db: Session = Depends(get_db),
 ):
-    if not is_subject_exist(subcode):
+    if not is_subject_exist(db, subcode):
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Subject Not Found."
+            status_code=status.HTTP_404_NOT_FOUND, detail="Subject Not Found"
         )
     return get_student_subject(db, usn, subcode)
 
 
-@student.post("/")
+@student.post("/", status_code=status.HTTP_204_NO_CONTENT)
 def student_insert(obj: StudentReport, db: Session = Depends(get_db)):
-    put_student(db, obj)
+    try:
+        put_student(db, obj)
+    except IntegrityError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="Student Already Exists"
+        )
 
 
-@student.put("/{usn}")
+@student.put("/{usn}", status_code=status.HTTP_204_NO_CONTENT)
 def student_update(
     obj: StudentReport,
     usn: str = Depends(common_student_verify),
     db: Session = Depends(get_db),
 ):
-    update_student(db, usn, obj)
+    try:
+        update_student(db, usn, obj)
+    except IntegrityError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="{} Already Exists".format(obj.Usn),
+        )
