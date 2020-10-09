@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional
+from typing import Counter, Dict, List, Optional
 
 from pydantic import BaseModel
 
@@ -20,6 +20,12 @@ class DepartmentReciept(RecieptBaseModel):
             }
         }
 
+    def __hash__(self) -> int:
+        return hash((self.Code))
+
+    def __eq__(self, o: "DepartmentReciept") -> bool:
+        return self.Usn
+
 
 class ScoreReciept(RecieptBaseModel):
     Usn: str
@@ -37,6 +43,12 @@ class ScoreReciept(RecieptBaseModel):
             }
         }
 
+    def __hash__(self) -> int:
+        return hash((self.Usn, self.SubjectCode))
+
+    def __eq__(self, o: "ScoreReciept") -> bool:
+        return self.Usn == o.Usn and self.SubjectCode == o.SubjectCode
+
 
 class ScoreMinimalReciept(RecieptBaseModel):
     SubjectCode: str
@@ -47,6 +59,12 @@ class ScoreMinimalReciept(RecieptBaseModel):
         schema_extra = {
             "example": {"SubjectCode": "15CS71", "Internals": 40, "Externals": 60}
         }
+
+    def __hash__(self) -> int:
+        return hash(self.SubjectCode)
+
+    def __eq__(self, o: "ScoreMinimalReciept") -> bool:
+        return self.SubjectCode == o.SubjectCode
 
 
 class StudentReciept(RecieptBaseModel):
@@ -64,6 +82,12 @@ class StudentReciept(RecieptBaseModel):
                 "Department": "CS",
             }
         }
+
+    def __hash__(self) -> int:
+        return hash(self.Usn)
+
+    def __eq__(self, o: "StudentReciept") -> bool:
+        return self.Usn == o.Usn
 
 
 class UsnStudentReciept(RecieptBaseModel):
@@ -94,6 +118,12 @@ class StudentScoreReciept(RecieptBaseModel):
             }
         }
 
+    def __hash__(self) -> int:
+        return hash((self.Usn, tuple(sorted(self.Scores, key=lambda x: x.SubjectCode))))
+
+    def __eq__(self, o: "StudentScoreReciept") -> bool:
+        return self.Usn == o.Usn and Counter(self.Scores) == Counter(o.Scores)
+
 
 class SubjectReciept(RecieptBaseModel):
     Code: str
@@ -115,6 +145,12 @@ class SubjectReciept(RecieptBaseModel):
                 "Department": "CS",
             }
         }
+
+    def __hash__(self) -> int:
+        return hash(self.Code)
+
+    def __eq__(self, o: "SubjectReciept") -> bool:
+        return self.Code == o.Code
 
 
 class SubjectSummaryReciept(RecieptBaseModel):
