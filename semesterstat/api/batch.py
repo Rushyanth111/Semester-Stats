@@ -31,7 +31,6 @@ from typing import List, Tuple
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from sqlalchemy.orm.exc import NoResultFound
 
 from ..crud.batch import (
     get_all_batch,
@@ -43,7 +42,7 @@ from ..crud.batch import (
 )
 from ..database import get_db
 from ..reciepts import StudentReciept, StudentScoreReciept
-from .exceptions import BatchDoesNotExist, NoResultFoundForQuery
+from .exceptions import BatchDoesNotExist
 
 batch = APIRouter()
 
@@ -94,6 +93,8 @@ async def batch_get_detained(
     thresh: int = None,
     db: Session = Depends(get_db),
 ):
+    if thresh is None:
+        thresh = 4
     res = get_batch_detained(db, batch, dept, thresh)
     ret = [StudentReciept.from_orm(x) for x in res]
     return ret

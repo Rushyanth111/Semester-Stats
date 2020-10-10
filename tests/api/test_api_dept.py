@@ -1,7 +1,8 @@
 from collections import Counter
-from jsonschema import validate
+
 import pytest
 from fastapi.testclient import TestClient
+from jsonschema import validate
 
 from semesterstat.reciepts import DepartmentReciept
 from semesterstat.reports import DepartmentReport
