@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -15,17 +15,20 @@ from ..crud.student import (
 )
 from ..crud.subject import is_subject_exist
 from ..database import get_db
-from ..reciepts import ScoreReciept, StudentReciept, StudentScoreReciept
+from ..reciepts import ScoreReciept, StudentReciept
 from ..reports import StudentReport
+from .exceptions import (
+    StudentConflictException,
+    StudentDoesNotExist,
+    SubjectDoesNotExist,
+)
 
 student = APIRouter()
 
 
 def common_student_verify(usn: str, db: Session = Depends(get_db)) -> str:
     if not is_student_exists(db, usn):
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Student does not Exist"
-        )
+        raise StudentDoesNotExist
     return usn
 
 
@@ -67,9 +70,7 @@ def student_get_subject_score(
     db: Session = Depends(get_db),
 ):
     if not is_subject_exist(db, subcode):
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Subject Not Found"
-        )
+        raise SubjectDoesNotExist
     return get_student_subject(db, usn, subcode)
 
 
@@ -78,9 +79,7 @@ def student_insert(obj: StudentReport, db: Session = Depends(get_db)):
     try:
         put_student(db, obj)
     except IntegrityError:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT, detail="Student Already Exists"
-        )
+        raise StudentConflictException(obj.Usn)
 
 
 @student.put("/{usn}", status_code=status.HTTP_204_NO_CONTENT)
@@ -92,7 +91,4 @@ def student_update(
     try:
         update_student(db, usn, obj)
     except IntegrityError:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="{} Already Exists".format(obj.Usn),
-        )
+        raise StudentConflictException(obj.Usn)
