@@ -63,7 +63,7 @@ def get_batch_scores(
         sem (int, optional): Semester Filter. Defaults to None.
 
     Raises:
-        IntegrityError
+        NoResultFound
 
     Returns:
         List[StudentReport]: List of Student Reports with Scores.
@@ -85,7 +85,7 @@ def get_batch_backlog(
         sem (int, optional): Semester Filter. Defaults to None.
 
     Raises:
-        IntegrityError
+        NoResultFound
 
     Returns:
         List[StudentReport]: List of Student Reports with Scores.
@@ -103,7 +103,7 @@ def get_batch_backlog(
 
 
 def get_batch_detained(
-    db: Session, batch: int, dept: str = None, sem: int = None, thresh: int = 4
+    db: Session, batch: int, dept: str = None, thresh: int = 4
 ) -> List[StudentReport]:
     """Get Batch Detaine
 
@@ -115,12 +115,12 @@ def get_batch_detained(
         thresh (int, optional): Threshold for Detained. Defaults to 4.
 
     Raises:
-        IntegrityError
+        NoResultFound
 
     Returns:
         List[StudentReport]: List of Student Reports with Scores.
     """
-    students, scores = _score_base(db, batch, dept, sem)
+    students, scores = _score_base(db, batch, dept)
 
     scores = (
         scores.join(Subject)
