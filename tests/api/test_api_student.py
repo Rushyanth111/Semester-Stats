@@ -105,6 +105,7 @@ def test_student_post(client: TestClient, rescode: int, iptobj: StudentReport):
     [
         ("1CR15CS101", 204, StudentReport(Usn="1CR17CS999", Name="Rush")),
         ("1CR15CS101", 409, StudentReport(Usn="1CR15CS102", Name="Heck")),
+        ("1CR17CS101", 404, StudentReport(Usn="1CR15CS102", Name="Heck")),
     ],
 )
 def test_student_put(client: TestClient, usn: str, rescode: int, iptobj: StudentReport):
@@ -113,3 +114,5 @@ def test_student_put(client: TestClient, usn: str, rescode: int, iptobj: Student
     assert res.status_code == rescode
     if rescode == 409:
         assert data == {"detail": "{} Already Exists".format(iptobj.Usn)}
+    if rescode == 404:
+        assert data == {"detail": "Student Does Not Exist"}

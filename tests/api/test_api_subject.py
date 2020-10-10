@@ -31,7 +31,7 @@ def test_subject_insert(client: TestClient, subcode: str, rescode: int):
 
 @pytest.mark.parametrize(
     ["subcode", "subcodenew", "rescode"],
-    [("15CS65", "15CS66", 201), ("15CS65", "15CS64", 409)],
+    [("15CS65", "15CS66", 201), ("15CS65", "15CS64", 409), ("15CS66", "15CS64", 404)],
 )
 def test_subject_update(
     client: TestClient, subcode: str, subcodenew: str, rescode: int
@@ -43,3 +43,8 @@ def test_subject_update(
     res = client.put("/subject/{}".format(subcode), json=data)
 
     assert res.status_code == rescode
+
+    if rescode == 409:
+        data = {"detail": "{} Already Exists".format(subcodenew)}
+    if rescode == 404:
+        data = {"detail": "Subject Does Not Exist"}
