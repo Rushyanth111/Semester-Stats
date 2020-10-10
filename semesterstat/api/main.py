@@ -14,6 +14,7 @@ from .document import docs
 from .info import info
 from .student import student
 from .subject import subject
+from .summary import summary
 
 app = FastAPI()
 app.add_middleware(
@@ -66,6 +67,7 @@ app.include_router(student, prefix="/student", tags=["Student"])
 app.include_router(subject, prefix="/subject", tags=["Subject"])
 app.include_router(bulk, prefix="/bulk", tags=["Private API"])
 app.include_router(docs, prefix="/docs", tags=["Documents"])
+app.include_router(summary, prefix="/summary", tags=["Summary API"])
 
 
 @app.get("/", include_in_schema=False)
