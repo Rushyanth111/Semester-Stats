@@ -25,8 +25,6 @@ Their Internal Workings are Subject to Change and the Output to Each May Also ch
 - /batch/
   - GET​ /batch​/{batch}
   - GET /batch​/{batch}​/scores
-  - GET /batch​/{batch}​/usns
-  - GET /batch​/{batch}​/scheme
   - GET /batch​/{batch}​/detained
   - GET /batch​/{batch}​/backlogs
   - GET /batch​/{batch}​/aggregate
@@ -37,7 +35,6 @@ Their Internal Workings are Subject to Change and the Output to Each May Also ch
 - /student/
   - GET /student​/{usn}
   - GET /student​/{usn}​/scores
-  - GET /student​/{usn}​/semester
   - GET /student​/{usn}​/backlogs
   - GET /student​/{usn}​/subject​/{subcode}
   - PUT /student​/{usn}
