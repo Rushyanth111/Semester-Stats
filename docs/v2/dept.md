@@ -10,11 +10,32 @@
 
     Note: ALL Of the Query Parameters are Optional.
 
+## General Error Codes;
+
+| Code | Desc           |
+| ---- | -------------- |
+| 404  | Dept Not Found |
+
+## Department Get All
+
+- Endpoint: `GET /dept/`
+- Function: Gets all of the Available Batches.
+- Query Params: None
+
+```py
+/dept/
+```
+
+Example Response:
+
+```json
+["CS", "TE", "XE", "XS", "SS"]
+```
+
 ## Department Get
 
--Endpoint: `GET /dept​/{dept}`
-
-- Function:
+- Endpoint: `GET /dept​/{dept}`
+- Function: Get the Details of a Single Department.
 - Query Params: None
 
 Example Request:
@@ -34,16 +55,12 @@ Example Response:
 
 ## Department Update
 
-!!! warning
+- Endpoint: `PUT /dept​/{dept}`
+- Function: Update a Given Department.
 
-    Do Not Use
-
--Endpoint: `PUT /dept​/{dept}`
+Documentation Unavailable.
 
 ## Department Add
 
-!!! warning
-
-    Do Not Use
-
--Endpoint: `POST /dept​/`
+- Endpoint: `POST /dept​/`
+- Function: Add a Given Department.

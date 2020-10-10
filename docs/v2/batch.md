@@ -12,40 +12,19 @@
 
 ## Batch Get Students
 
-- Endpoint: `GET ​/batch​/{batch}`
-- Function: Get the Students of a Particular batch.
-
-- Query Params:
-
-  | Param  | Description            |
-  | ------ | ---------------------- |
-  | `dept` | 2 Digit Deparment Code |
+- Endpoint: `GET ​/batch​/`
+- Function: Get all of the Batches Available.
 
 Example Request:
 
 ```py
-/batch/2017
+/batch/
 ```
 
 Example Response:
 
 ```json
-[
-  {
-    "Usn": "Some USN",
-    "Name": "XVX",
-    "Batch": 2017,
-    "Department": "DEPTCODE",
-    "Scores": [] //Note that this will be Empty.
-  },
-  {
-    "Usn": "Some USN",
-    "Name": "XVX",
-    "Batch": 2017,
-    "Department": "DEPTCODE",
-    "Scores": [] //Note that this will be Empty.
-  }
-]
+[2015, 2016, 2017, 2018]
 ```
 
 ## Batch Get Scores
@@ -60,94 +39,110 @@ Example Response:
 | `dept` | 2 Digit Deparment Code |
 | `sem`  | Integer: Semester      |
 
+- Error Codes:
+
+| Code | Desc            |
+| ---- | --------------- |
+| 404  | Batch Not Found |
+
 Example Request:
 
 ```py
-/batch/2017/scores?dept=CS&sem=6
+/batch/2017/scores?dept=CS&sem=7
 ```
 
 Example Response:
 
-```py
+```jsonc
 [
   {
-    "Usn": "SOMEUSN",
-    "Name": "SOME NAME",
-    "Batch": 2017,
+    "Usn": "1CR16CS001",
+    "Name": "Roy Harris",
+    "Batch": 2016,
     "Department": "CS",
     "Scores": [
-      {
-        "Usn": "SOME USN",
-        "SubjectCode": "SOME CODE",
-        "Internals": 50,
-        "Externals": 60
-      },
-      ...
+      { "SubjectCode": "15CS71", "Internals": 40, "Externals": 60 },
+      { "SubjectCode": "15CS72", "Internals": 40, "Externals": 60 }
     ]
-  },
-  ...
+  }
 ]
-```
-
-## Batch Get Student Usns
-
-- Endpoint: `GET batch​/{batch}​/usns`
-- Function: Only Retrives Usn as a List
-- Query Params:
-
-| Param  | Description            |
-| ------ | ---------------------- |
-| `dept` | 2 Digit Deparment Code |
-
-Example Request:
-
-```py
-/batch/2017/usns
-```
-
-Example Response:
-
-```py
-[
-    "USN1",
-    "USN2",
-    "USN3",
-]
-```
-
-## Batch Get Scheme
-
-- Endpoint: `GET /batch​/{batch}​/scheme`
-- Function: Get the Scheme of a Batch
-- Query Params: None
-
-Example Request:
-
-```py
-/batch/2016/scheme
-```
-
-Example Response:
-
-```py
-2015
 ```
 
 ## Batch Get Detained
 
 - Endpoint: `GET /batch​/{batch}​/detained`
+- Function: Get the Detained Students _and_ their Scores.
 
-!!! warning
+- Query Params:
 
-      Deprecated. DO NOT USE.
+| Param    | Description                           |
+| -------- | ------------------------------------- |
+| `dept`   | 2 Digit Deparment Code                |
+| `thresh` | Threshold for Detained, Defaults to 4 |
+
+- Error Codes:
+
+| Code | Desc            |
+| ---- | --------------- |
+| 404  | Batch Not Found |
+
+Example Request:
+
+```py
+/batch/2017/detained?dept=CS&thresh=3
+```
+
+Example Response:
+
+```jsonc
+[
+  {
+    "Usn": "1CR16CS001",
+    "Name": "Roy Harris",
+    "Batch": 2016,
+    "Department": "CS",
+    "Scores": [{ "SubjectCode": "15CS71", "Internals": 1, "Externals": 2 }]
+  }
+]
+```
 
 ## Batch Get Backlogs
 
 - Endpoint: `GET /batch​/{batch}​/backlogs`
+- Function: Get the Backlog Scores.
 
-!!! warning
+- Query Params:
 
-      Deprecated. DO NOT USE.
+| Param  | Description            |
+| ------ | ---------------------- |
+| `dept` | 2 Digit Deparment Code |
+| `sem`  | Integer: Semester      |
+
+- Error Codes:
+
+| Code | Desc            |
+| ---- | --------------- |
+| 404  | Batch Not Found |
+
+Example Request:
+
+```py
+/batch/2017/backlogs?dept=CS&sem=6
+```
+
+Example Response:
+
+```jsonc
+[
+  {
+    "Usn": "1CR16CS001",
+    "Name": "Roy Harris",
+    "Batch": 2016,
+    "Department": "CS",
+    "Scores": [{ "SubjectCode": "15CS71", "Internals": 1, "Externals": 2 }]
+  }
+]
+```
 
 ## Batch Get Aggregate
 

@@ -10,6 +10,12 @@
 
     Note: ALL Of the Query Parameters are Optional.
 
+## General Error Codes
+
+| Code | Desc              |
+| ---- | ----------------- |
+| 404  | Subject Not Found |
+
 ## Subject Get
 
 - Endpoint: `GET ​/subject​/{subcode}`
@@ -36,11 +42,10 @@ Example Response:
 
 ## Subject Update
 
-!!! warning
-
-    Do Not Use Yet.
-
 - Endpoint: `PUT ​/subject​/{subcode}`
+- Function: Update a Subject Record in the Database.
+
+No Documentation Available.
 
 ## Subject Insert
 
@@ -49,3 +54,6 @@ Example Response:
     Do Not Use Yet.
 
 - Endpoint: `POST ​/subject​/`
+- Function: Add a Subject into the Database.
+
+No Documentation Available.
