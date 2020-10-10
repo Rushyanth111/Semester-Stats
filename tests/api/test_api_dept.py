@@ -1,5 +1,5 @@
 from collections import Counter
-
+from jsonschema import validate
 import pytest
 from fastapi.testclient import TestClient
 
@@ -8,60 +8,59 @@ from semesterstat.reports import DepartmentReport
 
 
 @pytest.mark.parametrize(
-    ["dept", "statuscode", "object"],
+    ["dept", "rescode"],
     [
-        ("CS", 200, DepartmentReciept(Code="CS", Name="Computer Science").dict()),
-        (
-            "XX",
-            404,
-            {"detail": "No Such Department"},
-        ),
+        ("CS", 200),
+        ("XX", 404),
     ],
 )
-def test_api_get_dept(client: TestClient, dept: str, statuscode: int, object):
+def test_api_get_dept(client: TestClient, dept: str, rescode: int):
     res = client.get("/dept/{}".format(dept))
+    assert res.status_code == rescode
     data = res.json()
-    assert res.status_code == statuscode
-    assert data == object
+    if rescode == 200:
+        validate(data, DepartmentReciept.schema())
+    elif rescode == 404:
+        assert data == {"detail": "Dept Does Not Exist"}
 
 
-@pytest.mark.parametrize(
-    ["statuscode", "object"], [(200, ["CS", "IS", "TE", "ME", "AE"])]
-)
-def test_api_get_all(client: TestClient, statuscode: int, object):
+@pytest.mark.parametrize(["rescode", "object"], [(200, ["CS", "IS", "TE", "ME", "AE"])])
+def test_api_get_all(client: TestClient, rescode: int, object):
     res = client.get("/dept/")
-
-    assert res.status_code == statuscode
+    assert res.status_code == rescode
     assert Counter(res.json()) == Counter(object)
 
 
-@pytest.mark.parametrize(
-    ["deptcode", "statuscode", "object"],
-    [("XX", 204, None), ("CS", 409, {"detail": "Exists Already"})],
-)
-def test_api_post_dept(client: TestClient, deptcode: str, statuscode: int, object):
+@pytest.mark.parametrize(["deptcode", "rescode"], [("XX", 204), ("CS", 409)])
+def test_api_post_dept(client: TestClient, deptcode: str, rescode: int):
     iptobj = DepartmentReport(Code=deptcode, Name="X")
 
     res = client.post("/dept/", json=iptobj.dict())
 
-    assert res.status_code == statuscode
-    assert res.json() == object
+    assert res.status_code == rescode
+    data = res.json()
+    if rescode == 409:
+        assert data == {"detail": "{} Already Exists".format(deptcode)}
 
 
 @pytest.mark.parametrize(
-    ["deptcode", "deptcodenew", "statuscode", "object"],
+    ["deptcode", "deptcodenew", "rescode"],
     [
-        ("XX", "XV", 404, {"detail": "No Such Department"}),
-        ("CS", "XV", 204, None),
-        ("CS", "TE", 409, {"detail": "Dept with TE Exists"}),
+        ("XX", "XV", 404),
+        ("CS", "XV", 204),
+        ("CS", "TE", 409),
     ],
 )
 def test_api_put_dept(
-    client: TestClient, deptcode: str, deptcodenew: str, statuscode: int, object
+    client: TestClient, deptcode: str, deptcodenew: str, rescode: int
 ):
     iptobj = DepartmentReport(Code=deptcodenew, Name="X")
 
     res = client.put("/dept/{}".format(deptcode), json=iptobj.dict())
 
-    assert res.status_code == statuscode
-    assert res.json() == object
+    assert res.status_code == rescode
+    data = res.json()
+    if rescode == 409:
+        assert data == {"detail": "{} Already Exists".format(deptcodenew)}
+    if rescode == 404:
+        assert data == {"detail": "Dept Does Not Exist"}

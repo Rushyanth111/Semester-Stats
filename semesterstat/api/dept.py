@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
 from fastapi.params import Depends
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -12,18 +12,16 @@ from ..crud.dept import (
     update_department,
 )
 from ..database.database import get_db
-from ..generator import convert_dept
 from ..reciepts import DepartmentReciept
 from ..reports import DepartmentReport
+from .exceptions import DeptConflictException, DeptDoesNotExist
 
 dept = APIRouter()
 
 
 def common_department_verify(dept: str, db: Session = Depends(get_db)) -> str:
     if not is_dept_exist(db, dept):
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="No Such Department"
-        )
+        raise DeptDoesNotExist
     return dept
 
 
@@ -56,13 +54,11 @@ def department_get(
 
 
 @dept.post("/", status_code=status.HTTP_204_NO_CONTENT)
-def department_add(dept: DepartmentReport, db: Session = Depends(get_db)):
+def department_add(obj: DepartmentReport, db: Session = Depends(get_db)):
     try:
-        put_department(db, dept)
+        put_department(db, obj)
     except IntegrityError:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT, detail="Exists Already"
-        )
+        raise DeptConflictException(obj.Code)
 
 
 @dept.put("/{dept}", status_code=status.HTTP_204_NO_CONTENT)
@@ -74,7 +70,4 @@ def department_update(
     try:
         update_department(db, dept, obj)
     except IntegrityError:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Dept with {} Exists".format(obj.Code),
-        )
+        raise DeptConflictException(obj.Code)
