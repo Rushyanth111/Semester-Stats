@@ -1,31 +1,12 @@
+import os
+
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from semesterstat.database import BatchSchemeInfo, Department
 from semesterstat.database.models import Base
-
-
-def __input_data(db: Session):
-    depts = [
-        {"Code": code, "Name": name}
-        for (code, name) in [
-            ("CS", "Computer Science"),
-            ("IS", "Information Science"),
-            ("TE", "Telecommunication"),
-            ("ME", "Mechanical Engineering"),
-            ("AE", "Aeronautical Engineering"),
-        ]
-    ]
-
-    db.bulk_insert_mappings(Department, depts)
-
-    batch_scheme = [
-        {"Batch": batch, "Scheme": scheme}
-        for (batch, scheme) in [(2015, 2015), (2016, 2015), (2017, 2017)]
-    ]
-    db.bulk_insert_mappings(BatchSchemeInfo, batch_scheme)
+from tests.dbdata import __input_data
 
 
 @pytest.fixture(scope="package")
@@ -69,3 +50,8 @@ def db(engine):
 
     # Close the connection
     conn.close()
+
+
+@pytest.fixture(scope="session")
+def rootdir():
+    return os.path.abspath(os.getcwd())

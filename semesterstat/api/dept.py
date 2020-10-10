@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
 from fastapi.params import Depends
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from semesterstat.crud.dept import get_all_dept
@@ -10,19 +11,17 @@ from ..crud.dept import (
     put_department,
     update_department,
 )
-from ..database import get_db
-from ..generator import convert_dept
+from ..database.database import get_db
 from ..reciepts import DepartmentReciept
 from ..reports import DepartmentReport
+from .exceptions import DeptConflictException, DeptDoesNotExist
 
 dept = APIRouter()
 
 
 def common_department_verify(dept: str, db: Session = Depends(get_db)) -> str:
     if not is_dept_exist(db, dept):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="No Such Department"
-        )
+        raise DeptDoesNotExist
     return dept
 
 
@@ -40,8 +39,7 @@ def common_department_verify(dept: str, db: Session = Depends(get_db)) -> str:
                     },
                 }
             }
-        },
-        404: {"description": "Resources Not Found."},
+        }
     },
 )
 def dept_get_all(db: Session = Depends(get_db)):
@@ -52,18 +50,24 @@ def dept_get_all(db: Session = Depends(get_db)):
 def department_get(
     dept: str = Depends(common_department_verify), db: Session = Depends(get_db)
 ):
-    return convert_dept(get_dept_by_code(db, dept))
+    return get_dept_by_code(db, dept)
 
 
-@dept.post("/")
-def department_add(dept: DepartmentReport, db: Session = Depends(get_db)):
-    put_department(db, dept)
+@dept.post("/", status_code=status.HTTP_204_NO_CONTENT)
+def department_add(obj: DepartmentReport, db: Session = Depends(get_db)):
+    try:
+        put_department(db, obj)
+    except IntegrityError:
+        raise DeptConflictException(obj.Code)
 
 
-@dept.put("/{dept}")
+@dept.put("/{dept}", status_code=status.HTTP_204_NO_CONTENT)
 def department_update(
     dept: str = Depends(common_department_verify),
     obj: DepartmentReport = None,
     db: Session = Depends(get_db),
 ):
-    update_department(db, dept, obj)
+    try:
+        update_department(db, dept, obj)
+    except IntegrityError:
+        raise DeptConflictException(obj.Code)

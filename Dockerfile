@@ -1,17 +1,21 @@
-FROM python:3.7-slim
-RUN mkdir -p /project/imported
-WORKDIR /project
+FROM python:3.7-alpine as base
 
-# COPY STATIC FILES
+RUN mkdir /install
+WORKDIR /install
+
 COPY requirements.txt ./
 
-#ENSURE THAT ALL DEPS ARE INSTALLED
-RUN pip install -r requirements.txt && rm -rf /var/lib/apt/lists/*
+RUN apk add --update --no-cache --virtual .build-deps \
+    libxml2-dev libxslt-dev g++ gcc
 
-#COPY PROJECT
-COPY semesterstat ./semesterstat
+RUN pip install --no-cache --prefix="/install" -r requirements.txt
 
-#COPY Config
-COPY config.ini ./
+FROM python:3.7-alpine
+
+RUN apk add libxml2-dev libxslt-dev
+COPY --from=base /install /usr/local
+RUN mkdir -p /app/imported
+WORKDIR /app
+COPY . .
 
 CMD ["uvicorn", "semesterstat:app", "--host", "0.0.0.0","--port", "9000"]

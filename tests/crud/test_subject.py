@@ -67,29 +67,32 @@ def test_update_student(
 
 
 @pytest.mark.parametrize(
-    ["batch", "dept", "sem", "op"],
+    ["batch", "dept", "sem", "op", "expectation"],
     [
         (
             None,
             None,
             None,
             ["15CS65", "15CS64", "15CS54", "17MAT11", "17CSL76", "17CS55"],
+            does_not_raise(),
         ),
-        (2015, None, None, ["15CS65", "15CS64", "15CS54"]),
+        (2015, None, None, ["15CS65", "15CS64", "15CS54"], does_not_raise()),
         (
             None,
             "CS",
             None,
             ["15CS65", "15CS64", "15CS54", "17CSL76", "17CS55", "17MAT11"],
+            does_not_raise(),
         ),
-        (None, None, 6, ["15CS65", "15CS64"]),
-        (None, "XX", None, ["17MAT11"]),
-        (None, None, 1, ["17MAT11"]),
+        (None, None, 6, ["15CS65", "15CS64"], does_not_raise()),
+        (None, "XX", None, ["17MAT11"], does_not_raise()),
+        (None, None, 1, ["17MAT11"], does_not_raise()),
+        (2014, None, None, None, pytest.raises(NoResultFound)),
     ],
 )
 def test_get_subjects(
-    db: Session, batch: int, dept: str, sem: int, op: List[str]
+    db: Session, batch: int, dept: str, sem: int, op: List[str], expectation
 ) -> None:
-    res = get_subjects(db, batch, dept, sem)
-
-    assert Counter(res) == Counter(op)
+    with expectation:
+        res = get_subjects(db, batch, dept, sem)
+        assert Counter(res) == Counter(op)

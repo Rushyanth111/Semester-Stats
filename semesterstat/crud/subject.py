@@ -103,6 +103,9 @@ def get_subjects(
              Defaults to None.
         sem (int, optional): Semester Of the Subject. Defaults to None.
 
+    Raises:
+        NoResultFound
+
     Returns:
         List[str]: List of the Subject Codes Searched.
     """
@@ -129,5 +132,4 @@ def get_subjects(
         res = res.filter(Subject.Semester == sem)
 
     subcodes = [sub.Code for sub in res]
-
     return subcodes

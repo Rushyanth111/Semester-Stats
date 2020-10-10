@@ -1,4 +1,5 @@
 import json
+import os
 
 import pytest
 from sqlalchemy.orm import Session
@@ -8,11 +9,11 @@ from semesterstat.reports import ScoreReport, StudentReport, SubjectReport
 
 
 @pytest.fixture(scope="package", autouse=True)
-def input_data1(engine):
+def input_data1(rootdir, engine):
     # Batches: 2015 - CS
     # Semester: 1
 
-    with open("tests/data/data.json") as f:
+    with open(os.path.join(rootdir, "tests/data/data.json")) as f:
         obj = json.load(f)
 
     db = Session(bind=engine)

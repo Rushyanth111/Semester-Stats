@@ -5,17 +5,16 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.pool import NullPool, StaticPool
 
-from ..config import database_store_path
+from ..config import database_store_path, is_dev
 
 # Configuration of SQLAlchemy.
 
-DATABASE_PATH = "sqlite://{}".format(database_store_path)
-
-if database_store_path == "":
+if is_dev:
     engine = create_engine(
-        DATABASE_PATH, connect_args={"check_same_thread": False}, poolclass=StaticPool
+        "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
     )
 else:
+    DATABASE_PATH = "sqlite://{}".format(database_store_path)
     engine = create_engine(
         DATABASE_PATH,
         poolclass=NullPool,
