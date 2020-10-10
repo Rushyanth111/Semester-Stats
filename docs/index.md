@@ -6,11 +6,11 @@ This was started off as a Project to maintain all existing Scores recieved from 
 
 This is a Flexible Data Project that does not require Special Functions as dictated by any college.
 
-Please note that there will be many Changes That can happen Before. 
+Please note that there will be many Changes That can happen Before.
 
 # Table of Contents
 
-- [Api](api.md)
+- [Api](v2/home.md)
 - [Caclulations](Calculations.md)
 - [Database](Database.md)
 - [CsvFormat](CsvFormat.md)
@@ -42,17 +42,16 @@ Additional Things Needed to be implemented.
 - camelCase for `functions`
 - CapitalCase for `class`
 
-
 # Problems:
 
 USNs that change.
-Diploma? 
+Diploma?
 Arrears -- Designed, Data? Inconsistent.
-Missing Data? 
+Missing Data?
 
--> Data: 
-If USN + Code In new? 
-    OldTable <= Previous
+-> Data:
+If USN + Code In new?
+OldTable <= Previous
 
 Else Insert.
 

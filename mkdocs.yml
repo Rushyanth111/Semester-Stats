@@ -37,3 +37,6 @@ nav:
       - Student: "v2/student.md"
       - Deptartment: "v2/dept.md"
       - Subject: "v2/subject.md"
+      - Document: "v2/document.md"
+      - Summary: "v2/summary.md"
+      - info: "v2/info.md"
