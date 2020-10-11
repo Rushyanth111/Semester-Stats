@@ -1,10 +1,12 @@
 version: "3.3"
 services:
   semesterstats:
-    image: semester:0.3
+    image: semesterstat:1.0.1
     build: .
     ports:
-      - "9001:9000"
+      - "9000:9000"
+    volumes:
+      - "./imported:/app/imported"
     stop_signal: SIGINT
     tty: true
     restart: unless-stopped
