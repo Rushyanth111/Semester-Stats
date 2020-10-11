@@ -4,7 +4,7 @@ This Module contains Funtions for the Document Generation Routes.
 
 from fastapi import APIRouter
 from fastapi.params import Depends
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from ..crud.batch import is_batch_exists
@@ -27,9 +27,11 @@ def docgen(batch: int, dept: str, sem: int, db: Session = Depends(get_db)):
     if not is_scores_exist(db, batch, sem, dept):
         raise NoResultFoundForQuery
 
-    return StreamingResponse(
-        get_docx(db, batch, dept, sem),
+    res = get_docx(db, batch, dept, sem)
+    return FileResponse(
+        path=res.name,
         media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",  # noqa
+        filename="Report-{}-{}-{}.docx".format(batch, dept, sem),
     )
 
 

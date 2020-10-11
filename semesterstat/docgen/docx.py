@@ -43,7 +43,7 @@ PPT: Pass Percentage for Subject i, Full, Int, 20
 
 Please follow the above Keys for Mail Merge.
 """
-from tempfile import TemporaryFile
+from tempfile import NamedTemporaryFile
 from typing import IO
 
 from mailmerge import MailMerge
@@ -56,7 +56,7 @@ from .fillsub import __fill_subject
 
 
 def get_docx(
-    db: Session, batch: int, dept: str, sem: int, ret_file: IO = TemporaryFile()
+    db: Session, batch: int, dept: str, sem: int, ret_file: IO = NamedTemporaryFile()
 ):
     # Steps:
     # 1. Get the Subjects for that year.
