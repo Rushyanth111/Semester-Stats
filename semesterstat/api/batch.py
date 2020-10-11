@@ -41,7 +41,7 @@ from ..crud.batch import (
     is_batch_exists,
 )
 from ..database import get_db
-from ..reciepts import StudentReciept, StudentScoreReciept
+from ..reciepts import StudentScoreReciept
 from .exceptions import BatchDoesNotExist
 
 batch = APIRouter()
@@ -86,7 +86,7 @@ async def batch_get_scores(
     return ret
 
 
-@batch.get("/{batch}/detained", response_model=List[StudentReciept])
+@batch.get("/{batch}/detained", response_model=List[StudentScoreReciept])
 async def batch_get_detained(
     batch: int = Depends(common_batch_verify),
     dept: str = None,
@@ -96,7 +96,7 @@ async def batch_get_detained(
     if thresh is None:
         thresh = 4
     res = get_batch_detained(db, batch, dept, thresh)
-    ret = [StudentReciept.from_orm(x) for x in res]
+    ret = [StudentScoreReciept.from_orm(x) for x in res]
     return ret
 
 

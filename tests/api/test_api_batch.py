@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from jsonschema import validate
 
-from semesterstat.reciepts import StudentReciept, StudentScoreReciept
+from semesterstat.reciepts import StudentScoreReciept
 
 
 def test_batch_get_all(client: TestClient):
@@ -68,7 +68,7 @@ def test_batch_detained(
 
     if rescode == 200:
         for item in data:
-            validate(item, StudentReciept.schema())
+            validate(item, StudentScoreReciept.schema())
     elif rescode == 404:
         assert data == {"detail": "Batch Does Not Exist"}
 
