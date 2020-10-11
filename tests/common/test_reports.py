@@ -3,7 +3,7 @@ from semesterstat.reports import StudentReport, SubjectReport
 
 def test_student_report():
     rep = StudentReport(Usn="1CR15CS401", Name="Some Random Name")
-    assert rep.Batch == 2015
+    assert rep.Batch == 2014
     assert rep.Department == "CS"
 
 
