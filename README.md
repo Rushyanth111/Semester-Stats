@@ -2,6 +2,8 @@
 
 Check the [documentation](https://rushyanth111.github.io/Semester-Stats/) for detailed Information.
 
+The API is [Live](https://semdata.rxav.pw)!
+
 This is a project designed to give all the required details of a given VTU-College.
 
 ## Assumptions:
