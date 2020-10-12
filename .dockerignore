@@ -21,3 +21,5 @@ pyproject.toml
 README.md
 setup.py
 tox.ini
+node_modules/*
+yarn.lock

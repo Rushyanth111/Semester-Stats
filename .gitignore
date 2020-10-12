@@ -13,3 +13,4 @@ FormattedData/*
 .gitignore
 .venv
 config.override.ini
+node_modules
