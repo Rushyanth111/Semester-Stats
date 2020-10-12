@@ -1,3 +1,0 @@
-include requirements.txt
-recursive-include Resources *
-recursive-include FormattedData *
