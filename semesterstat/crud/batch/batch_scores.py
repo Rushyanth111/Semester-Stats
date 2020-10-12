@@ -122,7 +122,7 @@ def get_batch_detained(
     """
     students, scores = _score_base(db, batch, dept)
 
-    scores = (
+    usn = (
         scores.join(Subject)
         .filter(
             or_(
@@ -132,6 +132,18 @@ def get_batch_detained(
         )
         .group_by(Score.Usn)
         .having(func.count(Score.Usn) > thresh)
+        .with_entities(Score.Usn)
+    )
+
+    scores = (
+        scores.join(Subject)
+        .filter(
+            or_(
+                Score.Internals + Score.Externals < Subject.MinTotal,
+                Score.Externals < Subject.MinExt,
+            )
+        )
+        .filter(Score.Usn.in_(usn))
     )
 
     return _adjoin_student_scores(students, scores)
