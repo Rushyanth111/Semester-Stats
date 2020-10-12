@@ -1,9 +1,10 @@
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
 module.exports = {
   mode: "development",
   context: path.resolve(__dirname),
-  entry: "./semesterweb/src/index.js",
+  entry: "./semesterweb/src/index.jsx",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "index.js",
@@ -17,6 +18,11 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./semesterweb/static/index.html",
+    }),
+  ],
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     compress: true,

@@ -1,4 +1,8 @@
 {
+  "env": {
+    "node": true,
+    "browser": true
+  },
   "plugins": ["babel"],
   "extends": ["airbnb", "prettier", "prettier/babel", "prettier/react"]
 }
