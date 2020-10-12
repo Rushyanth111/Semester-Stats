@@ -1,0 +1,24 @@
+{
+  "name": "semester-stats-web",
+  "version": "1.0.0",
+  "description": "Check the [documentation](https://rushyanth111.github.io/Semester-Stats/) for detailed Information.",
+  "main": "semesterweb/src/index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "semesterweb/tests"
+  },
+  "scripts": {
+    "test": "echo \" No Tests\" Yet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github-Rush.com:Rushyanth111/Semester-Stats"
+  },
+  "keywords": [
+    "react",
+    "fastapi",
+    "rest"
+  ],
+  "author": "Rushyanth S",
+  "license": "ISC"
+}
