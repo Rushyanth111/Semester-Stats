@@ -1,6 +1,6 @@
 import { DARK_MODE_TOGGLE, ToggleDarkModeAction } from "./Actions";
 
-export interface GlobalState {
+export interface SystemState {
   darkMode: boolean;
 }
 
@@ -8,10 +8,10 @@ const initialState = {
   darkMode: false,
 };
 
-function SemesterApp(
+function systemReducer(
   state = initialState,
   action: ToggleDarkModeAction
-): GlobalState {
+): SystemState {
   switch (action.type) {
     case DARK_MODE_TOGGLE:
       return { ...state, darkMode: !state.darkMode };
@@ -20,4 +20,4 @@ function SemesterApp(
   }
 }
 
-export default SemesterApp;
+export { systemReducer };

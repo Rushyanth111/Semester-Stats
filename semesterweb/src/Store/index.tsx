@@ -1,4 +1,9 @@
-import SemesterApp from "./Reducers";
-import { toggleDarkMode } from "./Actions";
+import { combineReducers } from "redux";
+import { systemReducer } from "./System";
 
-export { SemesterApp, toggleDarkMode };
+const rootReducer = combineReducers({
+  systemReducer,
+});
+
+export type RootState = ReturnType<typeof rootReducer>;
+export { rootReducer };

@@ -1,6 +1,5 @@
-import PropTypes from "prop-types";
 import * as React from "react";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,7 +10,19 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import InvertColors from "@material-ui/icons/InvertColors";
 import MenuIcon from "@material-ui/icons/Menu";
 
-import { toggleDarkMode } from "../../Store";
+import { Dispatch } from "redux";
+import { toggleDarkMode } from "../../Store/System";
+
+function mapStateToDispatch(dispatch: Dispatch) {
+  return {
+    setDarkMode: () => {
+      dispatch(toggleDarkMode());
+    },
+  };
+}
+
+const connector = connect(null, mapStateToDispatch);
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const useStyles = makeStyles({
   root: {},
@@ -24,7 +35,7 @@ const useStyles = makeStyles({
   },
 });
 
-function SemesterAppBar({ setDarkMode }): JSX.Element {
+function SemesterAppBar({ setDarkMode }: PropsFromRedux): JSX.Element {
   const styles = useStyles();
 
   const onColorHandle = () => {
@@ -51,16 +62,4 @@ function SemesterAppBar({ setDarkMode }): JSX.Element {
   );
 }
 
-SemesterAppBar.propTypes = {
-  setDarkMode: PropTypes.func.isRequired,
-};
-
-function mapStateToDispatch(dispatch) {
-  return {
-    setDarkMode: () => {
-      dispatch(toggleDarkMode());
-    },
-  };
-}
-
-export default connect(null, mapStateToDispatch)(SemesterAppBar);
+export default connector(SemesterAppBar);
