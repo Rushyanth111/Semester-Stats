@@ -24,16 +24,14 @@ function mapStateToDispatch(dispatch: Dispatch) {
 const connector = connect(null, mapStateToDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-const useStyles = makeStyles({
-  root: {},
+const useStyles = makeStyles((theme) => ({
   appbar: {
-    padding: 0,
+    zIndex: theme.zIndex.drawer + 1,
   },
   toolbar: {
-    display: "flex",
     justifyContent: "space-between",
   },
-});
+}));
 
 function SemesterAppBar({ setDarkMode }: PropsFromRedux): JSX.Element {
   const styles = useStyles();
@@ -43,7 +41,7 @@ function SemesterAppBar({ setDarkMode }: PropsFromRedux): JSX.Element {
   };
 
   return (
-    <AppBar position="static" className={styles.appbar}>
+    <AppBar position="fixed" className={styles.appbar}>
       <Toolbar className={styles.toolbar}>
         <IconButton edge="start">
           <MenuIcon />
