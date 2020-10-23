@@ -90,6 +90,21 @@ class StudentReciept(RecieptBaseModel):
         return self.Usn == o.Usn
 
 
+class StudentSummaryReciept(RecieptBaseModel):
+    Usn: str
+    CGPA: float
+    SGPA: Dict[int, float]
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "Usn": "1CR15CS001",
+                "CGPA": 7.66,
+                "SGPA": {1: 6.56, 2: 5.76, 3: 9.82},
+            }
+        }
+
+
 class UsnStudentReciept(RecieptBaseModel):
     Usn: str
 
