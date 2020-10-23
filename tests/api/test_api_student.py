@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from jsonschema import validate
 
-from semesterstat.reciepts import ScoreReciept, StudentReciept
+from semesterstat.reciepts import ScoreReciept, StudentReciept, StudentSummaryReciept
 from semesterstat.reports import StudentReport
 
 
@@ -116,3 +116,18 @@ def test_student_put(client: TestClient, usn: str, rescode: int, iptobj: Student
         assert data == {"detail": "{} Already Exists".format(iptobj.Usn)}
     if rescode == 404:
         assert data == {"detail": "Student Does Not Exist"}
+
+
+@pytest.mark.parametrize(
+    ["usn", "rescode"],
+    [("1CR15CS101", 200), ("1CR15CS001", 404)],
+)
+def test_student_summary(client: TestClient, usn: str, rescode: int):
+    res = client.get("/student/{}/summary".format(usn))
+    assert rescode == res.status_code
+    data = res.json()
+
+    if rescode == 200:
+        validate(data, StudentSummaryReciept.schema())
+    if rescode == 400:
+        assert data == {"detail": "Student Does not Exist"}

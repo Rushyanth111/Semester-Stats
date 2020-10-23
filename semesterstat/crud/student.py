@@ -19,6 +19,7 @@ from ..common.usn_extractor import get_usn_batch
 from ..database.models import Score, Student, Subject
 from ..reports import ScoreReport, StudentReport
 from .common import get_scheme
+from ..reciepts import StudentSummaryReciept
 
 
 def get_student(db: Session, usn: str) -> StudentReport:
@@ -255,7 +256,7 @@ def get_student_sgpa(db: Session, usn: str, semester: int) -> float:
     return score_total / total_credits
 
 
-def get_student_cgpa(db: Session, usn: str) -> None:
+def get_student_cgpa(db: Session, usn: str) -> float:
     """CGPA; Average of All CGPA of a Student
 
     Args:
@@ -271,3 +272,28 @@ def get_student_cgpa(db: Session, usn: str) -> None:
     if valid_count == 0:
         return 0
     return sum(sgpa_list) / valid_count
+
+
+def get_student_summary(db: Session, usn: str) -> None:
+    """Utility Function that Combines the CGPA and SGPA Results.
+
+    Args:
+        db(Session): SQLALchemy Session
+        usn (str): USN Code.
+
+    Returns:
+    """
+
+    sgpa_list = [get_student_sgpa(db, usn, sem) for sem in range(1, 9)]
+
+    valid_count = 8 - sgpa_list.count(0)
+    if valid_count == 0:
+        return 0
+
+    cgpa = sum(sgpa_list) / valid_count
+
+    res = StudentSummaryReciept(
+        Usn=usn, CGPA=cgpa, SGPA={k: v for k, v in zip(range(1, 9), sgpa_list)}
+    )
+
+    return res
