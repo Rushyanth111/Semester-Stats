@@ -1,4 +1,4 @@
-import { toggleDarkMode } from "./Actions";
+import { toggleDarkMode, openSideBar } from "./Actions";
 import { systemReducer } from "./Reducers";
 
-export { toggleDarkMode, systemReducer };
+export { toggleDarkMode, systemReducer, openSideBar };

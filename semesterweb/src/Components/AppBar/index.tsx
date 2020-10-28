@@ -11,12 +11,15 @@ import InvertColors from "@material-ui/icons/InvertColors";
 import MenuIcon from "@material-ui/icons/Menu";
 
 import { Dispatch } from "redux";
-import { toggleDarkMode } from "../../Store/System";
+import { toggleDarkMode, openSideBar } from "../../Store/System";
 
 function mapStateToDispatch(dispatch: Dispatch) {
   return {
     setDarkMode: () => {
       dispatch(toggleDarkMode());
+    },
+    setSideBar: () => {
+      dispatch(openSideBar());
     },
   };
 }
@@ -33,22 +36,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SemesterAppBar({ setDarkMode }: PropsFromRedux): JSX.Element {
+function SemesterAppBar({
+  setDarkMode,
+  setSideBar,
+}: PropsFromRedux): JSX.Element {
   const styles = useStyles();
 
-  const onColorHandle = () => {
+  const onColorHandleClick = () => {
     setDarkMode();
+  };
+
+  const onSideBarHandleClick = () => {
+    setSideBar();
   };
 
   return (
     <AppBar position="fixed" className={styles.appbar}>
       <Toolbar className={styles.toolbar}>
-        <IconButton edge="start">
+        <IconButton edge="start" onClick={onSideBarHandleClick}>
           <MenuIcon />
         </IconButton>
         <Typography variant="h5">Semester Statistics</Typography>
         <div>
-          <IconButton onClick={onColorHandle}>
+          <IconButton onClick={onColorHandleClick}>
             <InvertColors />
           </IconButton>
           <IconButton edge="end">

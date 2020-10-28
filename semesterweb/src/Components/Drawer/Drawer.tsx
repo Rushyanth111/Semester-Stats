@@ -1,11 +1,24 @@
-import * as React from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Button from "@material-ui/core/Button";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import * as React from "react";
+import { ConnectedProps, connect } from "react-redux";
+
 import { createStyles, Toolbar, Typography } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Drawer from "@material-ui/core/Drawer";
 import Fade from "@material-ui/core/Fade";
+import { makeStyles } from "@material-ui/core/styles";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+
+import { RootState } from "../../Store";
+
+function mapStateToProps(state: RootState) {
+  return {
+    sideBarOpen: state.systemReducer.sideBarOpen,
+  };
+}
+
+const connector = connect(mapStateToProps, null);
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -32,30 +45,29 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-function SemesterDrawer(): JSX.Element {
-  const [open, setOpen] = React.useState(false);
+function SemesterDrawer({ sideBarOpen }: PropsFromRedux): JSX.Element {
   const classes = useStyles();
 
-  const handleOpen = () => {
-    setOpen(!open);
-  };
   return (
     <Drawer
       variant="persistent"
       open
-      className={clsx({ [classes.root]: !open, [classes.rootOpen]: open })}
+      className={clsx({
+        [classes.root]: !sideBarOpen,
+        [classes.rootOpen]: sideBarOpen,
+      })}
       classes={{
         paper: clsx({
-          [classes.rootPaper]: !open,
-          [classes.rootOpenPaper]: open,
+          [classes.rootPaper]: !sideBarOpen,
+          [classes.rootOpenPaper]: sideBarOpen,
         }),
       }}
     >
       <Toolbar />
-      <Button onClick={handleOpen}>
+      <Button>
         <AccountCircle />
-        {open && (
-          <Fade in={open}>
+        {sideBarOpen && (
+          <Fade in={sideBarOpen}>
             <Typography variant="body1">Something Something</Typography>
           </Fade>
         )}
@@ -64,4 +76,4 @@ function SemesterDrawer(): JSX.Element {
   );
 }
 
-export default SemesterDrawer;
+export default connector(SemesterDrawer);
