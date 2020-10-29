@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "echo \" No Tests\" Yet",
-    "start": "webpack serve --config webpack.dev.config.js",
+    "start": "webpack serve --config webpack.dev.config.js --host 0.0.0.0",
     "build": "webpack --config webpack.prod.config.js"
   },
   "repository": {

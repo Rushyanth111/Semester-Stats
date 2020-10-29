@@ -1,14 +1,16 @@
+import clsx from "clsx";
 import * as React from "react";
 import { connect, ConnectedProps } from "react-redux";
 
+import { CssBaseline } from "@material-ui/core";
+import Container from "@material-ui/core/Container";
 import {
+  createStyles,
   makeStyles,
   MuiThemeProvider,
   Theme,
-  createStyles,
 } from "@material-ui/core/styles";
 
-import { CssBaseline } from "@material-ui/core";
 import SemesterAppBar from "./Components/AppBar";
 import SemesterDrawer from "./Components/Drawer";
 import RootGlobalTheme from "./Global/Theme";
@@ -18,6 +20,7 @@ import { RootState } from "./Store";
 function mapStateToProps(state: RootState) {
   return {
     darkMode: state.systemReducer.darkMode,
+    sideBarOpen: state.systemReducer.sideBarOpen,
   };
 }
 
@@ -28,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
+      width: "100%",
     },
     toolbar: {
       display: "flex",
@@ -38,13 +42,24 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flex: 1,
-      padding: theme.spacing(3),
-      zIndex: theme.zIndex.drawer,
+      marginLeft: theme.spacing(7),
+      transition: theme.transitions.create(["all"], {
+        duration: 600,
+        delay: 0,
+      }),
+    },
+    contentMoving: {
+      flex: 1,
+      marginLeft: theme.spacing(20),
+      transition: theme.transitions.create(["all"], {
+        duration: 600,
+        delay: 0,
+      }),
     },
   })
 );
 
-const App = ({ darkMode }: PropsFromRedux): JSX.Element => {
+const App = ({ darkMode, sideBarOpen }: PropsFromRedux): JSX.Element => {
   const styles = useStyles();
   return (
     <MuiThemeProvider theme={RootGlobalTheme(darkMode)}>
@@ -54,14 +69,26 @@ const App = ({ darkMode }: PropsFromRedux): JSX.Element => {
         <div
           style={{
             display: "flex",
+            flex: 1,
             flexDirection: "row",
           }}
         >
-          <SemesterDrawer />
-          <main className={styles.content}>
+          <div
+            className={clsx({
+              [styles.content]: !sideBarOpen,
+              [styles.contentMoving]: sideBarOpen,
+            })}
+          >
             <div className={styles.toolbar} />
-            <Routes />
-          </main>
+            <SemesterDrawer />
+            <Container
+              style={{
+                width: "100%",
+              }}
+            >
+              <Routes />
+            </Container>
+          </div>
         </div>
       </div>
     </MuiThemeProvider>
