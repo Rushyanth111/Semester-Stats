@@ -187,3 +187,8 @@ class SummaryReciept(RecieptBaseModel):
     Fail: int
     PassPercent: float
     Subjects: Optional[Dict[str, SubjectSummaryReciept]]
+
+
+class BatchScoreSumReciept(RecieptBaseModel):
+    Usn: str
+    ScoreSum: Dict[int, int]
