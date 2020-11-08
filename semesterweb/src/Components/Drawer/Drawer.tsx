@@ -15,6 +15,7 @@ import Summary from "@material-ui/icons/Pages";
 import Batch from "@material-ui/icons/People";
 import Student from "@material-ui/icons/Person";
 
+import { Link as RouterLink } from "react-router-dom";
 import { RootState } from "../../Store";
 
 function mapStateToProps(state: RootState) {
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme) =>
     },
     rootPaper: {
       width: theme.spacing(7),
+      overflowX: "hidden",
       transition: theme.transitions.create(["all"], {
         duration: 600,
         delay: 0,
@@ -43,6 +45,7 @@ const useStyles = makeStyles((theme) =>
     },
     rootOpenPaper: {
       width: theme.spacing(20),
+      overflowX: "hidden",
       transition: theme.transitions.create(["all"], {
         duration: 600,
         delay: 0,
@@ -75,7 +78,7 @@ function SemesterDrawer({ sideBarOpen }: PropsFromRedux): JSX.Element {
       }}
     >
       <Toolbar />
-      <ListItem button>
+      <ListItem button component={RouterLink} to="/">
         <ListItemIcon>
           <Home />
         </ListItemIcon>
@@ -83,7 +86,7 @@ function SemesterDrawer({ sideBarOpen }: PropsFromRedux): JSX.Element {
           <ListItemText primary="Home" />
         </Fade>
       </ListItem>
-      <ListItem button>
+      <ListItem button component={RouterLink} to="/Batch">
         <ListItemIcon>
           <Batch />
         </ListItemIcon>
@@ -91,7 +94,7 @@ function SemesterDrawer({ sideBarOpen }: PropsFromRedux): JSX.Element {
           <ListItemText primary="Batch" />
         </Fade>
       </ListItem>
-      <ListItem button>
+      <ListItem button component={RouterLink} to="/Student">
         <ListItemIcon>
           <Student />
         </ListItemIcon>
@@ -99,7 +102,7 @@ function SemesterDrawer({ sideBarOpen }: PropsFromRedux): JSX.Element {
           <ListItemText primary="Student" />
         </Fade>
       </ListItem>
-      <ListItem button>
+      <ListItem button component={RouterLink} to="/Subject">
         <ListItemIcon>
           <Subject />
         </ListItemIcon>
@@ -107,7 +110,7 @@ function SemesterDrawer({ sideBarOpen }: PropsFromRedux): JSX.Element {
           <ListItemText primary="Subject" />
         </Fade>
       </ListItem>
-      <ListItem button>
+      <ListItem button component={RouterLink} to="/Summary">
         <ListItemIcon>
           <Summary />
         </ListItemIcon>

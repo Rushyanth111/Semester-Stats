@@ -4,6 +4,7 @@ import { connect, ConnectedProps } from "react-redux";
 
 import { CssBaseline } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
 import {
   createStyles,
   makeStyles,
@@ -64,7 +65,7 @@ const App = ({ darkMode, sideBarOpen }: PropsFromRedux): JSX.Element => {
   return (
     <MuiThemeProvider theme={RootGlobalTheme(darkMode)}>
       <CssBaseline />
-      <div className={styles.root}>
+      <Grid className={styles.root}>
         <SemesterAppBar />
         <div
           style={{
@@ -90,7 +91,7 @@ const App = ({ darkMode, sideBarOpen }: PropsFromRedux): JSX.Element => {
             </Container>
           </div>
         </div>
-      </div>
+      </Grid>
     </MuiThemeProvider>
   );
 };
