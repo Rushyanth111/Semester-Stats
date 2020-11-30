@@ -32,7 +32,7 @@ def test_api_get_all(client: TestClient, rescode: int, object):
     assert Counter(res.json()) == Counter(object)
 
 
-@pytest.mark.parametrize(["deptcode", "rescode"], [("XX", 204), ("CS", 409)])
+@pytest.mark.parametrize(["deptcode", "rescode"], [("XX", 201), ("CS", 409)])
 def test_api_post_dept(client: TestClient, deptcode: str, rescode: int):
     iptobj = DepartmentReport(Code=deptcode, Name="X")
 
@@ -48,7 +48,7 @@ def test_api_post_dept(client: TestClient, deptcode: str, rescode: int):
     ["deptcode", "deptcodenew", "rescode"],
     [
         ("XX", "XV", 404),
-        ("CS", "XV", 204),
+        ("CS", "XV", 201),
         ("CS", "TE", 409),
     ],
 )
