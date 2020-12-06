@@ -88,7 +88,7 @@ def test_student_subjectcode(client: TestClient, usn: str, subcode: str, rescode
 @pytest.mark.parametrize(
     ["rescode", "iptobj"],
     [
-        (204, StudentReport(Usn="1CR17CS999", Name="Rush")),
+        (201, StudentReport(Usn="1CR17CS999", Name="Rush")),
         (409, StudentReport(Usn="1CR15CS101", Name="Heck")),
     ],
 )
@@ -103,7 +103,7 @@ def test_student_post(client: TestClient, rescode: int, iptobj: StudentReport):
 @pytest.mark.parametrize(
     ["usn", "rescode", "iptobj"],
     [
-        ("1CR15CS101", 204, StudentReport(Usn="1CR17CS999", Name="Rush")),
+        ("1CR15CS101", 201, StudentReport(Usn="1CR17CS999", Name="Rush")),
         ("1CR15CS101", 409, StudentReport(Usn="1CR15CS102", Name="Heck")),
         ("1CR17CS101", 404, StudentReport(Usn="1CR15CS102", Name="Heck")),
     ],

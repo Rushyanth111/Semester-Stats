@@ -53,7 +53,7 @@ def department_get(
     return get_dept_by_code(db, dept)
 
 
-@dept.post("/", status_code=status.HTTP_204_NO_CONTENT)
+@dept.post("/", status_code=status.HTTP_201_CREATED)
 def department_add(obj: DepartmentReport, db: Session = Depends(get_db)):
     try:
         put_department(db, obj)
@@ -61,7 +61,7 @@ def department_add(obj: DepartmentReport, db: Session = Depends(get_db)):
         raise DeptConflictException(obj.Code)
 
 
-@dept.put("/{dept}", status_code=status.HTTP_204_NO_CONTENT)
+@dept.put("/{dept}", status_code=status.HTTP_201_CREATED)
 def department_update(
     dept: str = Depends(common_department_verify),
     obj: DepartmentReport = None,
