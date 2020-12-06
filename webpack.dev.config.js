@@ -52,7 +52,14 @@ module.exports = {
   ],
   devServer: {
     contentBase: path.join(__dirname, "dist"),
+    publicPath: "/",
+    historyApiFallback: true,
     compress: true,
-    port: 9000,
+    port: 9001,
+    proxy: {
+      "/api": {
+        target: "http://localhost:9000",
+      },
+    },
   },
 };
