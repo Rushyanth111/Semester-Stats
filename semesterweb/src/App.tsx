@@ -1,22 +1,22 @@
-import clsx from "clsx";
 import * as React from "react";
-import { connect, ConnectedProps } from "react-redux";
 
-import { CssBaseline } from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
+import { ConnectedProps, connect } from "react-redux";
 import {
-  createStyles,
-  makeStyles,
   MuiThemeProvider,
   Theme,
+  createStyles,
+  makeStyles,
 } from "@material-ui/core/styles";
 
+import Container from "@material-ui/core/Container";
+import { CssBaseline } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import RootGlobalTheme from "./Global/Theme";
+import { RootState } from "./Store";
+import Routes from "./Routes";
 import SemesterAppBar from "./Components/AppBar";
 import SemesterDrawer from "./Components/Drawer";
-import RootGlobalTheme from "./Global/Theme";
-import Routes from "./Routes";
-import { RootState } from "./Store";
+import clsx from "clsx";
 
 function mapStateToProps(state: RootState) {
   return {
@@ -84,7 +84,7 @@ const App = ({ darkMode, sideBarOpen }: PropsFromRedux): JSX.Element => {
             <SemesterDrawer />
             <Container
               style={{
-                width: "100%",
+                display: "flex",
               }}
             >
               <Routes />
