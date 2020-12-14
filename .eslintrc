@@ -7,7 +7,7 @@
     "node": true,
     "browser": true
   },
-  "plugins": ["babel", "@typescript-eslint"],
+  "plugins": ["babel", "@typescript-eslint", "prettier", "react"],
   "extends": [
     "airbnb-typescript",
     "airbnb/hooks",
