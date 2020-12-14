@@ -1,9 +1,3 @@
-import * as React from "react";
+import StudentSpecificPage from "./StudentSpecificPage";
 
-interface RouteParams {
-  studentId: string;
-}
-
-export default function StudentPage({ studentId }: RouteParams): JSX.Element {
-  return <h1>Welcome to Specific Page of {studentId}</h1>;
-}
+export default StudentSpecificPage;

@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "strech",
-    width: "100%",
+    flex: 1,
   },
   cardComponent: {
     flex: 1,

@@ -3,7 +3,7 @@ interface StudentReciept {
 
   Name: string;
 
-  Batch: string;
+  Batch: number;
 
   Department: string;
 }
