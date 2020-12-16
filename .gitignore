@@ -14,3 +14,4 @@ FormattedData/*
 .venv
 config.override.ini
 node_modules
+coverage
