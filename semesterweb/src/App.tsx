@@ -11,12 +11,12 @@ import {
 import Container from "@material-ui/core/Container";
 import { CssBaseline } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
+import clsx from "clsx";
 import RootGlobalTheme from "./Global/Theme";
 import { RootState } from "./Store";
 import Routes from "./Routes";
 import SemesterAppBar from "./Components/AppBar";
 import SemesterDrawer from "./Components/Drawer";
-import clsx from "clsx";
 
 function mapStateToProps(state: RootState) {
   return {
