@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from jsonschema import validate
 
-from semesterstat.reciepts import ScoreReciept, StudentReciept
+from semesterstat.reciepts import ScoreReciept, StudentReciept, StudentSummaryReciept
 from semesterstat.reports import StudentReport
 
 
@@ -88,7 +88,7 @@ def test_student_subjectcode(client: TestClient, usn: str, subcode: str, rescode
 @pytest.mark.parametrize(
     ["rescode", "iptobj"],
     [
-        (204, StudentReport(Usn="1CR17CS999", Name="Rush")),
+        (201, StudentReport(Usn="1CR17CS999", Name="Rush")),
         (409, StudentReport(Usn="1CR15CS101", Name="Heck")),
     ],
 )
@@ -103,7 +103,7 @@ def test_student_post(client: TestClient, rescode: int, iptobj: StudentReport):
 @pytest.mark.parametrize(
     ["usn", "rescode", "iptobj"],
     [
-        ("1CR15CS101", 204, StudentReport(Usn="1CR17CS999", Name="Rush")),
+        ("1CR15CS101", 201, StudentReport(Usn="1CR17CS999", Name="Rush")),
         ("1CR15CS101", 409, StudentReport(Usn="1CR15CS102", Name="Heck")),
         ("1CR17CS101", 404, StudentReport(Usn="1CR15CS102", Name="Heck")),
     ],
@@ -116,3 +116,18 @@ def test_student_put(client: TestClient, usn: str, rescode: int, iptobj: Student
         assert data == {"detail": "{} Already Exists".format(iptobj.Usn)}
     if rescode == 404:
         assert data == {"detail": "Student Does Not Exist"}
+
+
+@pytest.mark.parametrize(
+    ["usn", "rescode"],
+    [("1CR15CS101", 200), ("1CR15CS001", 404)],
+)
+def test_student_summary(client: TestClient, usn: str, rescode: int):
+    res = client.get("/student/{}/summary".format(usn))
+    assert rescode == res.status_code
+    data = res.json()
+
+    if rescode == 200:
+        validate(data, StudentSummaryReciept.schema())
+    if rescode == 400:
+        assert data == {"detail": "Student Does not Exist"}

@@ -38,10 +38,11 @@ from ..crud.batch import (
     get_batch_backlog,
     get_batch_detained,
     get_batch_scores,
+    get_batch_scores_sum,
     is_batch_exists,
 )
 from ..database import get_db
-from ..reciepts import StudentScoreReciept
+from ..reciepts import BatchScoreSumReciept, StudentScoreReciept
 from .exceptions import BatchDoesNotExist
 
 batch = APIRouter()
@@ -119,3 +120,12 @@ async def batch_get_aggregate(
     db: Session = Depends(get_db),
 ):
     return get_batch_aggregate(db, batch, dept)
+
+
+@batch.get("/{batch}/summary", response_model=List[BatchScoreSumReciept])
+async def batch_get_scoresum(
+    batch: int = Depends(common_batch_verify),
+    dept: str = None,
+    db: Session = Depends(get_db),
+):
+    return get_batch_scores_sum(db, batch, dept)

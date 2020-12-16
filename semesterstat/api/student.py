@@ -12,6 +12,7 @@ from ..crud.student import (
     is_student_exists,
     put_student,
     update_student,
+    get_student_summary,
 )
 from ..crud.subject import is_subject_exist
 from ..database import get_db
@@ -74,7 +75,7 @@ def student_get_subject_score(
     return get_student_subject(db, usn, subcode)
 
 
-@student.post("/", status_code=status.HTTP_204_NO_CONTENT)
+@student.post("/", status_code=status.HTTP_201_CREATED)
 def student_insert(obj: StudentReport, db: Session = Depends(get_db)):
     try:
         put_student(db, obj)
@@ -82,7 +83,7 @@ def student_insert(obj: StudentReport, db: Session = Depends(get_db)):
         raise StudentConflictException(obj.Usn)
 
 
-@student.put("/{usn}", status_code=status.HTTP_204_NO_CONTENT)
+@student.put("/{usn}", status_code=status.HTTP_201_CREATED)
 def student_update(
     obj: StudentReport,
     usn: str = Depends(common_student_verify),
@@ -92,3 +93,12 @@ def student_update(
         update_student(db, usn, obj)
     except IntegrityError:
         raise StudentConflictException(obj.Usn)
+
+
+@student.get("/{usn}/summary", status_code=status.HTTP_200_OK)
+def student_summary(
+    usn: str = Depends(common_student_verify), db: Session = Depends(get_db)
+):
+    ret = get_student_summary(db, usn)
+
+    return ret
