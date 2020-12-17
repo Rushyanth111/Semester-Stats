@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from uvicorn.config import logger
@@ -71,5 +71,5 @@ app.include_router(summary, prefix="/summary", tags=["Summary API"])
 
 
 @app.get("/", include_in_schema=False)
-def redirect_docs():
-    return RedirectResponse("/docs")
+def redirect_docs(request: Request):
+    return RedirectResponse(request["root_path"] + "/docs")
