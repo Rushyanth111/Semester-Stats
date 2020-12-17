@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
   mode: "development",
@@ -48,6 +49,11 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./semesterweb/static/index.html",
+    }),
+    new webpack.DefinePlugin({
+      "process.env": {
+        APIROOTPATH: JSON.stringify("/api"),
+      },
     }),
   ],
   devServer: {

@@ -1,9 +1,9 @@
 import axios from "axios";
-import IStudentScoreReciept from "../Objects/StudentScoreReciept";
+import { IScoreMinimalReciept } from "../Objects/StudentScoreReciept";
 
 async function getBatch(): Promise<null | Array<number>> {
   try {
-    const response = await axios.get("/api/batch");
+    const response = await axios.get(`${process.env.APIROOTPATH}/batch`);
     const data: Array<number> = await response.data;
     return data;
   } catch (e) {
@@ -14,10 +14,12 @@ async function getBatch(): Promise<null | Array<number>> {
 
 async function getBatchScores(
   batch: number
-): Promise<null | IStudentScoreReciept> {
+): Promise<null | IScoreMinimalReciept> {
   try {
-    const response = await axios.get(`/api/batch/${batch}/scores`);
-    const data: IStudentScoreReciept = await response.data;
+    const response = await axios.get(
+      `${process.env.APIROOTPATH}/batch/${batch}/scores`
+    );
+    const data: IScoreMinimalReciept = await response.data;
     return data;
   } catch (e) {
     console.log(e);
@@ -27,10 +29,12 @@ async function getBatchScores(
 
 async function getBatchBacklogs(
   batch: number
-): Promise<null | IStudentScoreReciept> {
+): Promise<null | IScoreMinimalReciept> {
   try {
-    const resposne = await axios.get(`/api/batch/${batch}/backlogs`);
-    const data: IStudentScoreReciept = await resposne.data;
+    const resposne = await axios.get(
+      `${process.env.APIROOTPATH}/batch/${batch}/backlogs`
+    );
+    const data: IScoreMinimalReciept = await resposne.data;
     return data;
   } catch (e) {
     console.log(e);
@@ -40,10 +44,12 @@ async function getBatchBacklogs(
 
 async function getBatchDetained(
   batch: number
-): Promise<null | IStudentScoreReciept> {
+): Promise<null | IScoreMinimalReciept> {
   try {
-    const response = await axios.get(`/api/batch/${batch}/detained`);
-    const data: IStudentScoreReciept = await response.data;
+    const response = await axios.get(
+      `${process.env.APIROOTPATH}/batch/${batch}/detained`
+    );
+    const data: IScoreMinimalReciept = await response.data;
     return data;
   } catch (e) {
     console.log(e);
@@ -53,10 +59,12 @@ async function getBatchDetained(
 
 async function getBatchAggregate(
   batch: number
-): Promise<null | IStudentScoreReciept> {
+): Promise<null | IScoreMinimalReciept> {
   try {
-    const response = await axios.get(`/api/batch/${batch}/aggregate`);
-    const data: IStudentScoreReciept = await response.data;
+    const response = await axios.get(
+      `${process.env.APIROOTPATH}/batch/${batch}/aggregate`
+    );
+    const data: IScoreMinimalReciept = await response.data;
     return data;
   } catch (e) {
     console.log(e);

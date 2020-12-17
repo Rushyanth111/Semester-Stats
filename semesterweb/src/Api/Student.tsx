@@ -4,7 +4,9 @@ import { IStudentReciept, StudentReciept } from "../Objects/StudentReciept";
 
 async function getStudent(usn: string): Promise<null | IStudentReciept> {
   try {
-    const response = await axios.get(`/api/student/${usn}`);
+    const response = await axios.get(
+      `${process.env.APIROOTPATH}/student/${usn}`
+    );
     const data: IStudentReciept = new StudentReciept(await response.data);
     return data;
   } catch (e) {
@@ -18,7 +20,9 @@ async function getStudentScores(
   usn: string
 ): Promise<null | Array<IScoreReciept>> {
   try {
-    const response = await axios.get(`/api/student/${usn}/scores`);
+    const response = await axios.get(
+      `${process.env.APIROOTPATH}/student/${usn}/scores`
+    );
     const data: Array<IScoreReciept> = await response.data;
     return data;
   } catch (e) {
@@ -32,7 +36,9 @@ async function getStudentBacklogs(
   usn: string
 ): Promise<null | Array<IScoreReciept>> {
   try {
-    const response = await axios.get(`/api/student/${usn}/scores/backlogs`);
+    const response = await axios.get(
+      `${process.env.APIROOTPATH}/student/${usn}/scores/backlogs`
+    );
     const data: Array<IScoreReciept> = await response.data;
     return data;
   } catch (e) {
@@ -43,10 +49,12 @@ async function getStudentBacklogs(
 
 async function getStudentSubject(
   usn: string,
-  subject: string
+  subCode: string
 ): Promise<null | IScoreReciept> {
   try {
-    const response = await axios.get(`/api/student/${usn}/subject/${subject}`);
+    const response = await axios.get(
+      `${process.env.APIROOTPATH}/student/${usn}/subject/${subCode}`
+    );
     const data: IScoreReciept = await response.data;
     return data;
   } catch (e) {

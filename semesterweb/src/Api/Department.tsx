@@ -3,7 +3,7 @@ import { IDepartmentReciept } from "../Objects/DepartmentReciept";
 
 async function getDepartment(dept: string): Promise<null | IDepartmentReciept> {
   try {
-    const response = await axios.get(`/api/dept/${dept}`);
+    const response = await axios.get(`${process.env.APIROOTPATH}/dept/${dept}`);
     const data: IDepartmentReciept = await response.data;
     return data;
   } catch (e) {
@@ -13,7 +13,7 @@ async function getDepartment(dept: string): Promise<null | IDepartmentReciept> {
 
 async function getAllDepartment(): Promise<null | Array<string>> {
   try {
-    const response = await axios.get(`/api/dept`);
+    const response = await axios.get(`${process.env.APIROOTPATH}/dept`);
     const data: Array<string> = await response.data;
     return data;
   } catch (e) {
