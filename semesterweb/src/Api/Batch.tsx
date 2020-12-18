@@ -6,32 +6,44 @@ async function getBatch(): Promise<Array<number>> {
 }
 
 async function getBatchScores(
-  batch: number
+  batch: number,
+  dept?: string,
+  sem?: number
 ): Promise<Array<IStudentScoreReciept>> {
   return get<Array<IStudentScoreReciept>>(
-    `${process.env.APIROOTPATH}/batch/${batch}/scores`
+    `${process.env.APIROOTPATH}/batch/${batch}/scores`,
+    { dept, sem }
   );
 }
 
 async function getBatchBacklogs(
-  batch: number
+  batch: number,
+  dept?: string
 ): Promise<Array<IStudentScoreReciept>> {
   return get<Array<IStudentScoreReciept>>(
-    `${process.env.APIROOTPATH}/batch/${batch}/backlogs`
+    `${process.env.APIROOTPATH}/batch/${batch}/backlogs`,
+    { dept }
   );
 }
 
 async function getBatchDetained(
-  batch: number
+  batch: number,
+  dept?: string,
+  sem?: number
 ): Promise<Array<IStudentScoreReciept>> {
   return get<Array<IStudentScoreReciept>>(
-    `${process.env.APIROOTPATH}/batch/${batch}/detained`
+    `${process.env.APIROOTPATH}/batch/${batch}/detained`,
+    { dept, sem }
   );
 }
 
-async function getBatchAggregate(batch: number): Promise<Map<string, number>> {
+async function getBatchAggregate(
+  batch: number,
+  dept?: string
+): Promise<Map<string, number>> {
   return get<Map<string, number>>(
-    `${process.env.APIROOTPATH}/batch/${batch}/aggregate`
+    `${process.env.APIROOTPATH}/batch/${batch}/aggregate`,
+    { dept }
   );
 }
 
