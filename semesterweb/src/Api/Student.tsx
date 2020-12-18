@@ -1,66 +1,29 @@
-import axios from "axios";
+import { get } from "./Common";
+
 import { IScoreReciept } from "../Objects/ScoreReciept";
-import { IStudentReciept, StudentReciept } from "../Objects/StudentReciept";
+import { IStudentReciept } from "../Objects/StudentReciept";
 
-async function getStudent(usn: string): Promise<null | IStudentReciept> {
-  try {
-    const response = await axios.get(
-      `${process.env.APIROOTPATH}/student/${usn}`
-    );
-    const data: IStudentReciept = new StudentReciept(await response.data);
-    return data;
-  } catch (e) {
-    // Guessing this is a 404 or something else.
-    console.log(e);
-    return null;
-  }
+async function getStudent(usn: string): Promise<IStudentReciept> {
+  return get<IStudentReciept>(`${process.env.APIROOTPATH}/student/${usn}`);
 }
 
-async function getStudentScores(
-  usn: string
-): Promise<null | Array<IScoreReciept>> {
-  try {
-    const response = await axios.get(
-      `${process.env.APIROOTPATH}/student/${usn}/scores`
-    );
-    const data: Array<IScoreReciept> = await response.data;
-    return data;
-  } catch (e) {
-    console.log(e);
-    // Guessing this is a 404 or something else.
-    return null;
-  }
+async function getStudentScores(usn: string): Promise<IScoreReciept> {
+  return get<IScoreReciept>(`${process.env.APIROOTPATH}/student/${usn}/scores`);
 }
 
-async function getStudentBacklogs(
-  usn: string
-): Promise<null | Array<IScoreReciept>> {
-  try {
-    const response = await axios.get(
-      `${process.env.APIROOTPATH}/student/${usn}/scores/backlogs`
-    );
-    const data: Array<IScoreReciept> = await response.data;
-    return data;
-  } catch (e) {
-    // Guessing this is a 404 or something else.
-    return null;
-  }
+async function getStudentBacklogs(usn: string): Promise<Array<IScoreReciept>> {
+  return get<Array<IScoreReciept>>(
+    `${process.env.APIROOTPATH}/student/${usn}/backlogs`
+  );
 }
 
 async function getStudentSubject(
   usn: string,
   subCode: string
-): Promise<null | IScoreReciept> {
-  try {
-    const response = await axios.get(
-      `${process.env.APIROOTPATH}/student/${usn}/subject/${subCode}`
-    );
-    const data: IScoreReciept = await response.data;
-    return data;
-  } catch (e) {
-    // Guessing this is a 404 or something else.
-    return null;
-  }
+): Promise<IScoreReciept> {
+  return get<IScoreReciept>(
+    `${process.env.APIROOTPATH}/student/${usn}/subject/${subCode}`
+  );
 }
 
 export { getStudent, getStudentScores, getStudentBacklogs, getStudentSubject };

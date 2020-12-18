@@ -1,24 +1,12 @@
-import axios from "axios";
 import { IDepartmentReciept } from "../Objects/DepartmentReciept";
+import { get } from "./Common";
 
-async function getDepartment(dept: string): Promise<null | IDepartmentReciept> {
-  try {
-    const response = await axios.get(`${process.env.APIROOTPATH}/dept/${dept}`);
-    const data: IDepartmentReciept = await response.data;
-    return data;
-  } catch (e) {
-    return null;
-  }
+async function getDepartment(dept: string): Promise<IDepartmentReciept> {
+  return get<IDepartmentReciept>(`${process.env.APIROOTPATH}/dept/${dept}`);
 }
 
-async function getAllDepartment(): Promise<null | Array<string>> {
-  try {
-    const response = await axios.get(`${process.env.APIROOTPATH}/dept`);
-    const data: Array<string> = await response.data;
-    return data;
-  } catch (e) {
-    return null;
-  }
+async function getAllDepartment(): Promise<Array<string>> {
+  return get<Array<string>>(`${process.env.APIROOTPATH}/dept`);
 }
 
 export { getDepartment, getAllDepartment };
