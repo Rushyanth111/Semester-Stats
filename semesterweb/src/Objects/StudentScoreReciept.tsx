@@ -57,4 +57,4 @@ class StudentScoreReciept implements IStudentScoreReciept {
   }
 }
 
-export { StudentScoreReciept, IScoreMinimalReciept };
+export { StudentScoreReciept, IStudentScoreReciept };

@@ -1,3 +1,3 @@
-export default async function setUp(): Promise<void> {
+module.exports = async () => {
   process.env.APIROOTPATH = "";
-}
+};
