@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(0, 1),
       ...theme.mixins.toolbar,
     },
-    content: {
+    contentShrinking: {
       flex: 1,
       marginLeft: theme.spacing(7),
       transition: theme.transitions.create(["all"], {
@@ -49,13 +49,22 @@ const useStyles = makeStyles((theme: Theme) =>
         delay: 0,
       }),
     },
-    contentMoving: {
+    contentExpanding: {
       flex: 1,
       marginLeft: theme.spacing(20),
       transition: theme.transitions.create(["all"], {
         duration: 600,
         delay: 0,
       }),
+    },
+    ContentHolderRoot: {
+      display: "flex",
+      flex: 1,
+      flexDirection: "row",
+    },
+    ContentRouteContainer: {
+      display: "flex",
+      flex: 1,
     },
   })
 );
@@ -67,26 +76,16 @@ const App = ({ darkMode, sideBarOpen }: PropsFromRedux): JSX.Element => {
       <CssBaseline />
       <Grid className={styles.root}>
         <SemesterAppBar />
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            flexDirection: "row",
-          }}
-        >
+        <div className={styles.ContentHolderRoot}>
           <div
             className={clsx({
-              [styles.content]: !sideBarOpen,
-              [styles.contentMoving]: sideBarOpen,
+              [styles.contentShrinking]: !sideBarOpen,
+              [styles.contentExpanding]: sideBarOpen,
             })}
           >
             <div className={styles.toolbar} />
             <SemesterDrawer />
-            <Container
-              style={{
-                display: "flex",
-              }}
-            >
+            <Container className={styles.ContentRouteContainer}>
               <Routes />
             </Container>
           </div>
