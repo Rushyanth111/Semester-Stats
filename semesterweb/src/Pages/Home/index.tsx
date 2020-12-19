@@ -28,8 +28,10 @@ function Home(): JSX.Element {
     <div className={classes.rootComponent}>
       <Card variant="elevation" className={classes.cardComponent}>
         <CardContent>
-          <Typography>
-            Hello, Welcome to the Home Page. (What to Add Here.)
+          <Typography variant="h3">Welcome to Semester Statistics</Typography>
+          <Typography variant="body1">
+            This is a Project Created By Rushyanth S (1CR17CS117), As a
+            FullStack Web Application.
           </Typography>
         </CardContent>
       </Card>
