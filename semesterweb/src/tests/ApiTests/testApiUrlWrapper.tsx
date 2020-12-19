@@ -1,4 +1,4 @@
-import { urlWrapper } from "../Api/URLWrapper";
+import { urlWrapper } from "../../Api/URLWrapper";
 
 describe("URL Wrapper Test", () => {
   test("Wrapper Test All Params", () => {
