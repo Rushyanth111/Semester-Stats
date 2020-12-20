@@ -2,7 +2,6 @@ import * as React from "react";
 
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Grow from "@material-ui/core/Grow";
 import { Dispatch } from "redux";
 import { connect, ConnectedProps } from "react-redux";
@@ -10,6 +9,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
+import CardActions from "@material-ui/core/CardActions";
 import { makeStyles, Theme } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Fade from "@material-ui/core/Fade";
@@ -95,7 +95,7 @@ function ValidStudent({
   };
 
   // If Data is fetched.
-  if (isDataFetched && isDataFetched !== null) {
+  if (isDataFetched && data !== null) {
     return (
       <div className={classes.root}>
         <Paper className={classes.title} elevation={5}>
@@ -152,7 +152,47 @@ function ValidStudent({
     );
   }
 
-  return <CircularProgress />;
+  if (isDataFetched && data === null) {
+    return (
+      <div className={classes.root}>
+        <Fade in timeout={1500}>
+          <Card
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <CardContent>
+              <Typography variant="h3">
+                That Particular Student Does not Exist.
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                color="secondary"
+                variant="outlined"
+                onClick={handleOnClickBack}
+              >
+                Go Back to Search Page?
+              </Button>
+            </CardActions>
+          </Card>
+        </Fade>
+      </div>
+    );
+  }
+
+  if (!isDataFetched) {
+    return (
+      <div className={classes.root}>
+        <Paper>
+          <Typography>Loading...</Typography>
+        </Paper>
+      </div>
+    );
+  }
 }
 
 export default connector(ValidStudent);

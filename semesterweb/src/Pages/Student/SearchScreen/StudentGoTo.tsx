@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import * as React from "react";
+import Fade from "@material-ui/core/Fade";
 import { StudentSearch, StudentScoreSearch } from "./Feilds";
 
 const useStyles = makeStyles(() => ({
@@ -13,10 +14,12 @@ const useStyles = makeStyles(() => ({
 function StudentGoTo(): JSX.Element {
   const classes = useStyles();
   return (
-    <div className={classes.StudentSearchScreenRoot}>
-      <StudentSearch />
-      <StudentScoreSearch />
-    </div>
+    <Fade in timeout={1500}>
+      <div className={classes.StudentSearchScreenRoot}>
+        <StudentSearch />
+        <StudentScoreSearch />
+      </div>
+    </Fade>
   );
 }
 
