@@ -18,6 +18,7 @@ import { Redirect, useHistory } from "react-router";
 import { IStudentReciept } from "../../../Objects/StudentReciept";
 import { getStudent } from "../../../Api/Student";
 import { toggleLoading } from "../../../Store/System";
+import LoadingCard from "../../CommonComponents/LoadingCard";
 
 interface RouteParams {
   studentId: string;
@@ -155,13 +156,7 @@ function ValidStudent({
     return <Redirect to="/Student/NotFound" />;
   }
 
-  return (
-    <div className={classes.root}>
-      <Paper>
-        <Typography>Loading...</Typography>
-      </Paper>
-    </div>
-  );
+  return <LoadingCard />;
 }
 
 export default connector(ValidStudent);

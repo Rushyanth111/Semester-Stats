@@ -36,8 +36,8 @@ function StudentNotFound(): JSX.Element {
           }}
         >
           <CardContent>
-            <Typography variant="h3">
-              That Particular Student Does not Exist.
+            <Typography variant="h4">
+              The Data Requested Does not Exist. Or No Active Records Exist.
             </Typography>
           </CardContent>
           <CardActions>
