@@ -1,3 +1,3 @@
-import StudentScoreSingular from "./StudentScore";
+import StudentScoreSingular from "./StudentScoreSignular";
 
 export default StudentScoreSingular;

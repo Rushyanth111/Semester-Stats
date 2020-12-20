@@ -72,7 +72,6 @@ function StudentScoreSearch(): JSX.Element {
   };
 
   const handleOnClickStudent = () => {
-    console.log(subjectCode);
     if (!isUsnValid(usn) && !isSubjectValid(subjectCode)) {
       multipleSnackbarHandle(setBothSnackbarOpen);
     } else if (!isUsnValid(usn)) {
