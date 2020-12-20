@@ -55,7 +55,7 @@ function StudentSearch(): JSX.Element {
 
   const handleOnClickStudent = () => {
     if (!isUsnValid(usn)) multipleSnackbarHandle();
-    else history.push(`/Student/${usn}`);
+    else history.push(`/Student/Detail/${usn}`);
   };
 
   const handleOnClickStudentBacklogs = () => {

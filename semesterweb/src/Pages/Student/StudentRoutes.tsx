@@ -12,6 +12,7 @@ import StudentSearch from "./SearchScreen";
 import StudentScores from "./StudentScores";
 import StudentBacklog from "./StudentBacklogs";
 import StudentScoreSingular from "./StudentScoreSingular";
+import StudentNotFound from "./StudentNotFound";
 
 interface SpecificStudent {
   studentId: string;
@@ -56,11 +57,12 @@ function StudentRoutes(): JSX.Element {
         )}
       />
       <Route
-        path={`${studentUrl.path}/:studentId`}
+        path={`${studentUrl.path}/Detail/:studentId`}
         render={({ match }: RouteComponentProps<SpecificStudent>) => (
           <StudentPage studentId={match.params.studentId} />
         )}
       />
+      <Route path={`${studentUrl.path}/NotFound`} component={StudentNotFound} />
       <Route path={studentUrl.path} component={StudentSearch} />
     </Switch>
   );

@@ -156,7 +156,7 @@ function StudentScoreSearch(): JSX.Element {
           className={classes.searchButton}
           onClick={handleOnClickStudent}
         >
-          Go To Student Page
+          Go To Score.
         </Button>
       </div>
     </Paper>

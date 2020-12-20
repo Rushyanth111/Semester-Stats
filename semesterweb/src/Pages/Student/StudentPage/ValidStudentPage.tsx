@@ -9,13 +9,12 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import CardActions from "@material-ui/core/CardActions";
 import { makeStyles, Theme } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Fade from "@material-ui/core/Fade";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { useHistory } from "react-router";
+import { Redirect, useHistory } from "react-router";
 import { IStudentReciept } from "../../../Objects/StudentReciept";
 import { getStudent } from "../../../Api/Student";
 import { toggleLoading } from "../../../Store/System";
@@ -153,46 +152,16 @@ function ValidStudent({
   }
 
   if (isDataFetched && data === null) {
-    return (
-      <div className={classes.root}>
-        <Fade in timeout={1500}>
-          <Card
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <CardContent>
-              <Typography variant="h3">
-                That Particular Student Does not Exist.
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button
-                color="secondary"
-                variant="outlined"
-                onClick={handleOnClickBack}
-              >
-                Go Back to Search Page?
-              </Button>
-            </CardActions>
-          </Card>
-        </Fade>
-      </div>
-    );
+    return <Redirect to="/Student/NotFound" />;
   }
 
-  if (!isDataFetched) {
-    return (
-      <div className={classes.root}>
-        <Paper>
-          <Typography>Loading...</Typography>
-        </Paper>
-      </div>
-    );
-  }
+  return (
+    <div className={classes.root}>
+      <Paper>
+        <Typography>Loading...</Typography>
+      </Paper>
+    </div>
+  );
 }
 
 export default connector(ValidStudent);
