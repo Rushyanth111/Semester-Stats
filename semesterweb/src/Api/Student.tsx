@@ -19,14 +19,17 @@ async function getStudent(usn: string): Promise<StudentReciept | null> {
 async function getStudentScores(
   usn: string,
   sem?: number
-): Promise<IScoreReciept> {
+): Promise<Array<ScoreReciept>> {
   try {
-    const response = await get<IScoreReciept | null>(
+    const response = await get<Array<IScoreReciept> | null>(
       `${process.env.APIROOTPATH}/student/${usn}/scores`,
       { sem }
     );
 
-    const data = new ScoreReciept(response.data);
+    const data = Array.from(
+      response.data,
+      (val: IScoreReciept) => new ScoreReciept(val)
+    );
     return data;
   } catch (error) {
     console.log(error);

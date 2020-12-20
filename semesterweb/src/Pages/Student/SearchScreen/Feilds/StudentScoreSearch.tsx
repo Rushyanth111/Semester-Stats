@@ -131,7 +131,7 @@ function StudentScoreSearch(): JSX.Element {
         }}
       />
       <Typography variant="h4" className={classes.title}>
-        Student Search
+        Specific Score For Student Search
       </Typography>
       <div className={classes.textFeild}>
         <TextField
@@ -156,7 +156,7 @@ function StudentScoreSearch(): JSX.Element {
           className={classes.searchButton}
           onClick={handleOnClickStudent}
         >
-          Go To Score.
+          Go To Score
         </Button>
       </div>
     </Paper>
