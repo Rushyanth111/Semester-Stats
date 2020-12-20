@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   textFeild: {
     display: "flex",
     padding: theme.spacing(2),
+    justifyContent: "space-evenly",
   },
   searchButtonContainer: {
     flex: 1,
@@ -91,12 +92,10 @@ function StudentSearch(): JSX.Element {
       </Typography>
       <div className={classes.textFeild}>
         <TextField
-          id="something"
+          id="StudentSearch"
           variant="outlined"
           label="Student USN"
           placeholder="1CR17CS001"
-          autoFocus
-          fullWidth
           onChange={handleOnChangeTextField}
         />
       </div>
