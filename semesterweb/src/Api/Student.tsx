@@ -40,7 +40,7 @@ async function getStudentScores(
 async function getStudentBacklogs(
   usn: string,
   sem?: number
-): Promise<Array<IScoreReciept>> {
+): Promise<Array<ScoreReciept>> {
   try {
     const response = await get<Array<IScoreReciept>>(
       `${process.env.APIROOTPATH}/student/${usn}/backlogs`,
@@ -61,7 +61,7 @@ async function getStudentBacklogs(
 async function getStudentSubject(
   usn: string,
   subCode: string
-): Promise<IScoreReciept> {
+): Promise<ScoreReciept> {
   try {
     const response = await get<IScoreReciept>(
       `${process.env.APIROOTPATH}/student/${usn}/subject/${subCode}`
