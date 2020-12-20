@@ -1,17 +1,12 @@
 import * as React from "react";
 
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Grow from "@material-ui/core/Grow";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
 import { makeStyles, Theme } from "@material-ui/core";
 import { Redirect } from "react-router";
+import Fade from "@material-ui/core/Fade";
+import TableCard from "../../CommonComponents/TableCard";
 import { getStudentSubject } from "../../../Api/Student";
 import LoadingCard from "../../CommonComponents/LoadingCard";
-import { IScoreReciept } from "../../../Objects/ScoreReciept";
+import { ScoreReciept } from "../../../Objects/ScoreReciept";
 import HeaderCard from "../../CommonComponents/HeaderCard";
 import ReturnToHomeCard from "../../CommonComponents/ReturnToHomeCard";
 
@@ -27,21 +22,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(3),
     flexDirection: "column",
   },
-  title: {
-    padding: theme.spacing(1),
-    marginBottom: theme.spacing(2),
-    display: "flex",
-    justifyContent: "center",
-  },
-  detailCard: {
-    flex: 1,
-    marginBottom: theme.spacing(3),
-  },
-  buttonDivision: {
-    display: "flex",
-    flex: 1,
-    justifyContent: "space-evenly",
-  },
 }));
 
 function StudentScoreSingular({
@@ -50,7 +30,7 @@ function StudentScoreSingular({
 }: RouteParams): JSX.Element {
   const classes = useStyles();
   const [isDataFetched, setDataFetched] = React.useState(false);
-  const [data, setData] = React.useState<IScoreReciept>(null);
+  const [data, setData] = React.useState<ScoreReciept>(null);
 
   const fetchData = React.useCallback(async () => {
     setDataFetched(false);
@@ -69,24 +49,9 @@ function StudentScoreSingular({
     return (
       <div className={classes.root}>
         <HeaderCard content="Score Details" />
-        <Grow in timeout={1500}>
-          <Card className={classes.detailCard} elevation={10}>
-            <CardContent>
-              <Table>
-                <TableBody>
-                  {Object.keys(data).map((key) => {
-                    return (
-                      <TableRow key={key} hover>
-                        <TableCell align="left">{key}</TableCell>
-                        <TableCell align="right">{data[key]}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </Grow>
+        <Fade in timeout={1500}>
+          <TableCard data={data} alignment={["left", "right"]} />
+        </Fade>
         <ReturnToHomeCard content="Go Back to Search Page" />
       </div>
     );

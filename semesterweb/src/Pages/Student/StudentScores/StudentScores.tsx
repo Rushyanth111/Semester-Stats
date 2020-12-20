@@ -1,19 +1,13 @@
 import * as React from "react";
 import { Redirect } from "react-router";
-import Paper from "@material-ui/core/Paper";
-import Table from "@material-ui/core/Table";
-import TableRow from "@material-ui/core/TableRow";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableContainer from "@material-ui/core/TableContainer";
 import { makeStyles, Theme } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
-import { IScoreReciept } from "../../../Objects/ScoreReciept";
+import { ScoreReciept } from "../../../Objects/ScoreReciept";
 import { getStudentScores } from "../../../Api/Student";
 import LoadingCard from "../../CommonComponents/LoadingCard";
 import HeaderCard from "../../CommonComponents/HeaderCard";
 import ReturnToHomeCard from "../../CommonComponents/ReturnToHomeCard";
+import TableCardArray from "../../CommonComponents/TableCardArray";
 
 interface RouteParams {
   studentId: string;
@@ -26,29 +20,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
     margin: theme.spacing(2),
   },
-  titleCard: {
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-  },
-  backlogCardRoot: {
-    flex: 1,
-    display: "flex",
-    padding: theme.spacing(2),
-    marginBottom: theme.spacing(3),
-  },
-  buttonCard: {
-    flex: 1,
-    display: "flex",
-    justifyContent: "space-evenly",
-  },
 }));
 
 function StudentScores({ studentId }: RouteParams): JSX.Element {
   // Hooks
   const classes = useStyles();
-  const [data, setData] = React.useState<Array<IScoreReciept>>(null);
+  const [data, setData] = React.useState<Array<ScoreReciept>>(null);
   const [isDataFetched, setDataFetched] = React.useState(false);
 
   const fetchData = React.useCallback(async () => {
@@ -66,36 +43,12 @@ function StudentScores({ studentId }: RouteParams): JSX.Element {
   if (isDataFetched && data !== null && data.length > 0) {
     return (
       <div className={classes.root}>
-        <HeaderCard content={`Backlogs for Usn:${studentId}`} />
+        <HeaderCard content={`Scores for Usn:${studentId}`} />
         <Fade in timeout={2500}>
-          <Paper className={classes.backlogCardRoot} elevation={10}>
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Subject Code</TableCell>
-                    <TableCell align="right">Internals</TableCell>
-                    <TableCell align="right">Externals</TableCell>
-                    <TableCell align="right">Total</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {data.map((val: IScoreReciept) => {
-                    return (
-                      <TableRow key={`StudentScores${val.SubjectCode}`}>
-                        <TableCell>{val.SubjectCode}</TableCell>
-                        <TableCell align="right">{val.Internals}</TableCell>
-                        <TableCell align="right">{val.Externals}</TableCell>
-                        <TableCell align="right">
-                          {val.Internals + val.Externals}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
+          <TableCardArray
+            data={data}
+            alignment={["left", "right", "right", "right"]}
+          />
         </Fade>
         <ReturnToHomeCard content="Go Back to Search Screen" />
       </div>

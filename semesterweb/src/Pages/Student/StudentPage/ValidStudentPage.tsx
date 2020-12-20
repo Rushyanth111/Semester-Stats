@@ -2,22 +2,18 @@ import * as React from "react";
 
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Grow from "@material-ui/core/Grow";
 import { Dispatch } from "redux";
 import { connect, ConnectedProps } from "react-redux";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
 import { makeStyles, Theme } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Fade from "@material-ui/core/Fade";
 import { Redirect, useHistory } from "react-router";
-import { IStudentReciept } from "../../../Objects/StudentReciept";
 import { getStudent } from "../../../Api/Student";
 import { toggleLoading } from "../../../Store/System";
 import LoadingCard from "../../CommonComponents/LoadingCard";
 import HeaderCard from "../../CommonComponents/HeaderCard";
+import TableCard from "../../CommonComponents/TableCard";
+import { StudentReciept } from "../../../Objects/StudentReciept";
 
 interface RouteParams {
   studentId: string;
@@ -41,10 +37,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(3),
     flexDirection: "column",
   },
-  detailCard: {
-    flex: 1,
-    marginBottom: theme.spacing(3),
-  },
   buttonDivision: {
     display: "flex",
     flex: 1,
@@ -58,7 +50,7 @@ function ValidStudent({
 }: RouteParams & PropsFromRedux): JSX.Element {
   const classes = useStyles();
   const [isDataFetched, setDataFetched] = React.useState(false);
-  const [data, setData] = React.useState<IStudentReciept>(null);
+  const [data, setData] = React.useState<StudentReciept>(null);
   const history = useHistory();
 
   const fetchData = React.useCallback(async () => {
@@ -92,24 +84,9 @@ function ValidStudent({
     return (
       <div className={classes.root}>
         <HeaderCard content="Student Details" />
-        <Grow in timeout={1500}>
-          <Card className={classes.detailCard} elevation={10}>
-            <CardContent>
-              <Table>
-                <TableBody>
-                  {Object.keys(data).map((key) => {
-                    return (
-                      <TableRow key={key} hover>
-                        <TableCell align="left">{key}</TableCell>
-                        <TableCell align="right">{data[key]}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </Grow>
+        <Fade in timeout={2500}>
+          <TableCard data={data} alignment={["left", "right"]} />
+        </Fade>
         <Fade in timeout={2500}>
           <Card elevation={5}>
             <CardContent>
