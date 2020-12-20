@@ -22,7 +22,11 @@ interface SpecificSubject {
 }
 
 function StudentRoutes(): JSX.Element {
-  const studentUrl = useRouteMatch();
+  const studentUrl = useRouteMatch({
+    path: "/Student",
+    strict: true,
+    sensitive: true,
+  });
 
   return (
     <Switch>
@@ -57,9 +61,7 @@ function StudentRoutes(): JSX.Element {
           <StudentPage studentId={match.params.studentId} />
         )}
       />
-      <Route path={studentUrl.path} exact>
-        <StudentSearch />
-      </Route>
+      <Route path={studentUrl.path} component={StudentSearch} />
     </Switch>
   );
 }

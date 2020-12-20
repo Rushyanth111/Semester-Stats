@@ -9,21 +9,11 @@ import Summary from "./Pages/Summary";
 function Routes(): JSX.Element {
   return (
     <Switch>
-      <Route path="/" exact>
-        <Home />
-      </Route>
-      <Route path="/Batch">
-        <Batch />
-      </Route>
-      <Route path="/Subject">
-        <Subject />
-      </Route>
-      <Route path="/Student">
-        <Student />
-      </Route>
-      <Route path="/Summary">
-        <Summary />
-      </Route>
+      <Route path="/Batch" component={Batch} />
+      <Route path="/Subject" component={Subject} />
+      <Route path="/Student" component={Student} />
+      <Route path="/Summary" component={Summary} />
+      <Route path="/" exact component={Home} />
     </Switch>
   );
 }
