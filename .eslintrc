@@ -18,6 +18,8 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "react/prop-types": "off",
+    "react/require-default-props": "off"
   }
 }
