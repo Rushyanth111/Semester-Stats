@@ -12,13 +12,12 @@ import TableCell from "@material-ui/core/TableCell";
 import { makeStyles, Theme } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Fade from "@material-ui/core/Fade";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
 import { Redirect, useHistory } from "react-router";
 import { IStudentReciept } from "../../../Objects/StudentReciept";
 import { getStudent } from "../../../Api/Student";
 import { toggleLoading } from "../../../Store/System";
 import LoadingCard from "../../CommonComponents/LoadingCard";
+import HeaderCard from "../../CommonComponents/HeaderCard";
 
 interface RouteParams {
   studentId: string;
@@ -41,12 +40,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     padding: theme.spacing(3),
     flexDirection: "column",
-  },
-  title: {
-    padding: theme.spacing(1),
-    marginBottom: theme.spacing(2),
-    display: "flex",
-    justifyContent: "center",
   },
   detailCard: {
     flex: 1,
@@ -98,9 +91,7 @@ function ValidStudent({
   if (isDataFetched && data !== null) {
     return (
       <div className={classes.root}>
-        <Paper className={classes.title} elevation={5}>
-          <Typography variant="h3">Student Details</Typography>
-        </Paper>
+        <HeaderCard content="Student Details" />
         <Grow in timeout={1500}>
           <Card className={classes.detailCard} elevation={10}>
             <CardContent>

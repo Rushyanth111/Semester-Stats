@@ -8,14 +8,12 @@ import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import { makeStyles, Theme } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import Fade from "@material-ui/core/Fade";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import { Redirect, useHistory } from "react-router";
+import { Redirect } from "react-router";
 import { getStudentSubject } from "../../../Api/Student";
 import LoadingCard from "../../CommonComponents/LoadingCard";
 import { IScoreReciept } from "../../../Objects/ScoreReciept";
+import HeaderCard from "../../CommonComponents/HeaderCard";
+import ReturnToHomeCard from "../../CommonComponents/ReturnToHomeCard";
 
 interface RouteParams {
   studentId: string;
@@ -53,7 +51,6 @@ function StudentScoreSingular({
   const classes = useStyles();
   const [isDataFetched, setDataFetched] = React.useState(false);
   const [data, setData] = React.useState<IScoreReciept>(null);
-  const history = useHistory();
 
   const fetchData = React.useCallback(async () => {
     setDataFetched(false);
@@ -67,17 +64,11 @@ function StudentScoreSingular({
     fetchData();
   }, [studentId, fetchData]);
 
-  const handleOnClickBack = () => {
-    history.push(`/Student`);
-  };
-
   // If Data is fetched.
   if (isDataFetched && data !== null) {
     return (
       <div className={classes.root}>
-        <Paper className={classes.title} elevation={5}>
-          <Typography variant="h3">Score Details</Typography>
-        </Paper>
+        <HeaderCard content="Score Details" />
         <Grow in timeout={1500}>
           <Card className={classes.detailCard} elevation={10}>
             <CardContent>
@@ -96,21 +87,7 @@ function StudentScoreSingular({
             </CardContent>
           </Card>
         </Grow>
-        <Fade in timeout={2500}>
-          <Card elevation={5}>
-            <CardContent>
-              <div className={classes.buttonDivision}>
-                <Button
-                  color="secondary"
-                  variant="outlined"
-                  onClick={handleOnClickBack}
-                >
-                  Go Back
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </Fade>
+        <ReturnToHomeCard content="Go Back to Search Page" />
       </div>
     );
   }

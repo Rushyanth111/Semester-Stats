@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Redirect, useHistory } from "react-router";
+import { Redirect } from "react-router";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
@@ -7,14 +7,13 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableContainer from "@material-ui/core/TableContainer";
-import { makeStyles, Theme, Typography } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import { IScoreReciept } from "../../../Objects/ScoreReciept";
 import { getStudentBacklogs } from "../../../Api/Student";
 import LoadingCard from "../../CommonComponents/LoadingCard";
+import HeaderCard from "../../CommonComponents/HeaderCard";
+import ReturnToHomeCard from "../../CommonComponents/ReturnToHomeCard";
 
 interface RouteParams {
   studentId: string;
@@ -26,12 +25,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     flexDirection: "column",
     margin: theme.spacing(2),
-  },
-  titleCard: {
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
   },
   backlogCardRoot: {
     flex: 1,
@@ -49,7 +42,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 function StudentBacklogs({ studentId }: RouteParams): JSX.Element {
   // Hooks
   const classes = useStyles();
-  const history = useHistory();
 
   const [data, setdata] = React.useState<Array<IScoreReciept>>(null);
   const [isDataFetched, setDataFetched] = React.useState(false);
@@ -65,18 +57,10 @@ function StudentBacklogs({ studentId }: RouteParams): JSX.Element {
     fetchData();
   }, [fetchData, studentId]);
 
-  const handleOnClickBack = () => {
-    history.goBack();
-  };
-
   if (isDataFetched && data !== null && data.length > 0) {
     return (
       <div className={classes.root}>
-        <Fade in timeout={1000}>
-          <Paper className={classes.titleCard} elevation={5}>
-            <Typography variant="h3">Backlogs for Usn: {studentId}</Typography>
-          </Paper>
-        </Fade>
+        <HeaderCard content={`Backlogs for Student:${studentId}`} />
         <Fade in timeout={2000}>
           <Paper className={classes.backlogCardRoot} elevation={10}>
             <TableContainer>
@@ -107,26 +91,14 @@ function StudentBacklogs({ studentId }: RouteParams): JSX.Element {
             </TableContainer>
           </Paper>
         </Fade>
-        <Fade in timeout={1500}>
-          <Card className={classes.buttonCard} elevation={5}>
-            <CardContent>
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={handleOnClickBack}
-              >
-                Go Back to Search Screen.
-              </Button>
-            </CardContent>
-          </Card>
-        </Fade>
+        <ReturnToHomeCard content="Go Back" />
       </div>
     );
   }
-  if (isDataFetched && data !== null && data.length === 0) {
-    return <Redirect to="/Student/NotFound" />;
-  }
-  if (isDataFetched && data === null) {
+  if (
+    (isDataFetched && data !== null && data.length === 0) ||
+    (isDataFetched && data === null)
+  ) {
     return <Redirect to="/Student/NotFound" />;
   }
   return <LoadingCard />;
