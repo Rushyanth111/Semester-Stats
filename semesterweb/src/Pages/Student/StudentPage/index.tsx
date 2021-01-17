@@ -1,3 +1,3 @@
-import StudentSpecificPage from "./StudentSpecificPage";
+import StudentSpecificPage from "./ValidStudentPage";
 
 export default StudentSpecificPage;
