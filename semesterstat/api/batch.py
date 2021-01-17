@@ -27,7 +27,7 @@ POST {batch}/search
 """
 
 
-from typing import List, Tuple
+from typing import List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -42,7 +42,7 @@ from ..crud.batch import (
     is_batch_exists,
 )
 from ..database import get_db
-from ..reciepts import BatchScoreSumReciept, StudentScoreReciept
+from ..reciepts import BatchScoreSumReciept, StudentScoreReciept, BatchAggregate
 from .exceptions import BatchDoesNotExist
 
 batch = APIRouter()
@@ -113,7 +113,7 @@ async def batch_get_backlogs(
     return ret
 
 
-@batch.get("/{batch}/aggregate", response_model=List[Tuple[str, int]])
+@batch.get("/{batch}/aggregate", response_model=BatchAggregate)
 async def batch_get_aggregate(
     batch: int = Depends(common_batch_verify),
     dept: str = None,

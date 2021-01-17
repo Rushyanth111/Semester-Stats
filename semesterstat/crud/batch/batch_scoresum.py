@@ -51,7 +51,8 @@ def get_batch_scores_sum(
     reciept_list = []
 
     for (usn, scoresum) in usn_list.items():
-        temp_container = BatchScoreSumReciept(Usn=usn, ScoreSum=scoresum)
+        avg = sum(list(scoresum.values())) / len(scoresum)
+        temp_container = BatchScoreSumReciept(Usn=usn, ScoreSum=scoresum, Average=avg)
         reciept_list.append(temp_container)
 
     return reciept_list

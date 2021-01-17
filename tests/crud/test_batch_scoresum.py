@@ -8,13 +8,17 @@ from semesterstat.reciepts import BatchScoreSumReciept
 @pytest.mark.parametrize(
     ["batch", "dept", "op"],
     [
-        (2017, "CS", [BatchScoreSumReciept(Usn="1CR17CS102", ScoreSum={5: 48})]),
+        (
+            2017,
+            "CS",
+            [BatchScoreSumReciept(Usn="1CR17CS102", ScoreSum={5: 48}, Average=48)],
+        ),
         (
             2015,
             "CS",
             [
-                BatchScoreSumReciept(Usn="1CR15CS101", ScoreSum={6: 85}),
-                BatchScoreSumReciept(Usn="1CR15CS102", ScoreSum={5: 48}),
+                BatchScoreSumReciept(Usn="1CR15CS101", ScoreSum={6: 85}, Average=85),
+                BatchScoreSumReciept(Usn="1CR15CS102", ScoreSum={5: 48}, Average=48),
             ],
         ),
         (2014, None, []),

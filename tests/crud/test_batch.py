@@ -62,7 +62,24 @@ def test_batch_scores(
     ],
 )
 def test_batch_aggregate(db: Session, batch: int, dept: str, op: List[Tuple[str, int]]):
-    assert Counter(get_batch_aggregate(db, batch, dept)) == Counter(op)
+    res = get_batch_aggregate(db, batch, dept)
+    print(res)
+    result_counter = Counter()
+    if op:
+        for x in res.StudentTotals:
+            result_counter += Counter(
+                [
+                    (
+                        x.Usn,
+                        x.Sum,
+                    )
+                ]
+            )
+
+        assert result_counter == Counter(op)
+    else:
+        # Empty Condition
+        assert not op and not res.StudentTotals
 
 
 @pytest.mark.parametrize(

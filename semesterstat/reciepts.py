@@ -191,4 +191,15 @@ class SummaryReciept(RecieptBaseModel):
 
 class BatchScoreSumReciept(RecieptBaseModel):
     Usn: str
+    Average: int
     ScoreSum: Dict[int, int]
+
+
+class StudentTotalAggregate(RecieptBaseModel):
+    Usn: str
+    Sum: int
+
+
+class BatchAggregate(RecieptBaseModel):
+    Mean: int
+    StudentTotals: List[StudentTotalAggregate]

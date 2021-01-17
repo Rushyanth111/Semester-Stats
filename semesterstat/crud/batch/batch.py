@@ -4,6 +4,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from ...database import BatchSchemeInfo, Score, Student
+from ...reciepts import BatchAggregate, StudentTotalAggregate
 
 """
 Heirarchy of Batch Crud Operations:
@@ -75,4 +76,14 @@ def get_batch_aggregate(
 
     if dept is not None:
         res_score = res_score.filter(Student.Department == dept)
-    return [(x, y) for (x, y) in res_score]
+
+    ret_list = []
+    mean = 0
+    for (usn, sum) in res_score:
+        ret_list.append(StudentTotalAggregate(Usn=usn, Sum=sum))
+        mean += sum
+
+    mean = mean / len(ret_list)
+    res = BatchAggregate(Mean=mean, StudentTotals=ret_list)
+
+    return res

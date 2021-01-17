@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from jsonschema import validate
 
-from semesterstat.reciepts import StudentScoreReciept
+from semesterstat.reciepts import StudentScoreReciept, BatchAggregate
 
 
 def test_batch_get_all(client: TestClient):
@@ -112,9 +112,6 @@ def test_batch_aggregate(client: TestClient, batch: int, dept: str, rescode: int
 
     assert res.status_code == rescode
     if rescode == 200:
-        assert isinstance(data, list)
-        assert all(
-            isinstance(usn, str) and isinstance(score, int) for (usn, score) in data
-        )
+        validate(data, BatchAggregate.schema())
     elif rescode == 404:
         assert data == {"detail": "Batch Does Not Exist"}
