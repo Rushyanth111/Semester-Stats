@@ -1,15 +1,14 @@
 from sqlalchemy import func
-from typing import List
 from sqlalchemy.orm import Session
 
 from semesterstat.database.models import Score, Student, Subject
 
-from ...reciepts import BatchScoreSumReciept
+from ...reciepts import BatchScoreSumReciept, BatchScoreSumList
 
 
 def get_batch_scores_sum(
     db: Session, batch: int, dept: str = None
-) -> List[BatchScoreSumReciept]:
+) -> BatchScoreSumReciept:
     """Obtain the Batch CGPA of all USNs in that batch.
 
     Args:
@@ -49,10 +48,19 @@ def get_batch_scores_sum(
         usn_list[student][semester] = scoresum
 
     reciept_list = []
+    mean = 0
 
     for (usn, scoresum) in usn_list.items():
-        avg = sum(list(scoresum.values())) / len(scoresum)
-        temp_container = BatchScoreSumReciept(Usn=usn, ScoreSum=scoresum, Average=avg)
+        total = sum(list(scoresum.values()))
+        avg = total / len(scoresum)
+        mean += avg
+        temp_container = BatchScoreSumList(
+            Usn=usn, ScoreSum=scoresum, Average=avg, Total=total
+        )
         reciept_list.append(temp_container)
 
-    return reciept_list
+    mean = mean / len(usn_list) if len(usn_list) > 0 else 0
+
+    res = BatchScoreSumReciept(Mean=mean, ScoreDetail=reciept_list)
+
+    return res

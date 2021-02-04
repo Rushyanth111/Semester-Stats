@@ -1,10 +1,8 @@
-from typing import List, Tuple
+from typing import List
 
-from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from ...database import BatchSchemeInfo, Score, Student
-from ...reciepts import BatchAggregate, StudentTotalAggregate
+from ...database import BatchSchemeInfo
 
 """
 Heirarchy of Batch Crud Operations:
@@ -51,39 +49,4 @@ def is_batch_exists(db: Session, batch: int) -> bool:
     """
     equery = db.query(BatchSchemeInfo).filter(BatchSchemeInfo.Batch == batch)
     res = db.query(equery.exists()).scalar()
-    return res
-
-
-def get_batch_aggregate(
-    db: Session, batch: int, dept: str = None
-) -> List[Tuple[str, int]]:
-    """Get Batch Complete Aggregate
-
-    Args:
-        db (Session): SQLAlchemy Session
-        batch (int): Batch filter.
-        dept (str, optional): Department Filter. Defaults to None.
-
-    Returns:
-        List[Tuple[str, int]]: List of Tuples that contain USN and their Aggregate.
-    """
-    res_score = (
-        db.query(Score.Usn, func.sum(Score.Internals + Score.Externals))
-        .join(Student)
-        .filter(Student.Batch == batch)
-        .group_by(Score.Usn)
-    )
-
-    if dept is not None:
-        res_score = res_score.filter(Student.Department == dept)
-
-    ret_list = []
-    mean = 0
-    for (usn, sum) in res_score:
-        ret_list.append(StudentTotalAggregate(Usn=usn, Sum=sum))
-        mean += sum
-
-    mean = mean / len(ret_list)
-    res = BatchAggregate(Mean=mean, StudentTotals=ret_list)
-
     return res
