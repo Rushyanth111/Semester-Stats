@@ -64,11 +64,23 @@ class MainSummary:
             .group_by(Score.Usn)
         )
 
-        __subject_sum = (
-            db.query(func.sum(Subject.MaxTotal))
-            .filter(Subject.Code.in_(self.__subject_codes))
-            .scalar()
-        )
+        # __subject_sum = (
+        #     db.query(func.sum(Subject.MaxTotal))
+        #     .filter(Subject.Code.in_(self.__subject_codes))
+        #     .scalar()
+        # )
+
+        # BUG: There's actually no way of determining which of the electives that
+        # students have taken Which means that I can approximate the fact the each
+        # of the semesters have exactly 800.
+        # This is a temporary fix, Needs to be better approximated.
+        # Ideally, I'll Fix this in a later iteration.
+
+        if sem in [1, 2, 3, 4, 5, 6, 7]:
+            __subject_sum = 800
+        else:
+            __subject_sum = 600
+        # print("ABBBA", __subject_sum, self.__subject_codes)
 
         self.__fcd = __base_pass.having(
             fcd(scheme, func.sum(Score.Externals + Score.Internals), __subject_sum)
