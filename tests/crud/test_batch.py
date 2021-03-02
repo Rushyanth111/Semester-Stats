@@ -8,7 +8,6 @@ from sqlalchemy.orm.session import Session
 
 from semesterstat.crud.batch import (
     get_all_batch,
-    get_batch_aggregate,
     get_batch_backlog,
     get_batch_detained,
     get_batch_scores,
@@ -51,18 +50,6 @@ def test_batch_scores(
         assert Counter(opsubcode) == Counter(
             [y.SubjectCode for x in res for y in x.Scores]
         )
-
-
-@pytest.mark.parametrize(
-    ["batch", "dept", "op"],
-    [
-        (2015, "CS", [("1CR15CS101", 85), ("1CR15CS102", 48)]),
-        (2016, "CS", []),
-        (2017, "TE", [("1CR17TE102", 138)]),
-    ],
-)
-def test_batch_aggregate(db: Session, batch: int, dept: str, op: List[Tuple[str, int]]):
-    assert Counter(get_batch_aggregate(db, batch, dept)) == Counter(op)
 
 
 @pytest.mark.parametrize(

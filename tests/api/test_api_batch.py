@@ -96,25 +96,3 @@ def test_batch_backlogs(
             validate(item, StudentScoreReciept.schema())
     elif rescode == 404:
         assert data == {"detail": "Batch Does Not Exist"}
-
-
-@pytest.mark.parametrize(
-    ["batch", "dept", "rescode"],
-    [
-        (2015, "CS", 200),
-        (2015, "TE", 200),
-        (2014, "CS", 404),
-    ],
-)
-def test_batch_aggregate(client: TestClient, batch: int, dept: str, rescode: int):
-    res = client.get("/batch/{}/aggregate".format(batch), params={"dept": dept})
-    data = res.json()
-
-    assert res.status_code == rescode
-    if rescode == 200:
-        assert isinstance(data, list)
-        assert all(
-            isinstance(usn, str) and isinstance(score, int) for (usn, score) in data
-        )
-    elif rescode == 404:
-        assert data == {"detail": "Batch Does Not Exist"}

@@ -189,6 +189,13 @@ class SummaryReciept(RecieptBaseModel):
     Subjects: Optional[Dict[str, SubjectSummaryReciept]]
 
 
-class BatchScoreSumReciept(RecieptBaseModel):
+class BatchScoreSumList(RecieptBaseModel):
     Usn: str
+    Average: int
+    Total: int
     ScoreSum: Dict[int, int]
+
+
+class BatchScoreSumReciept(RecieptBaseModel):
+    Mean: int
+    ScoreDetail: List[BatchScoreSumList]

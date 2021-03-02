@@ -29,7 +29,8 @@ def get_summary(db: Session, batch: int, dept: str, sem: int) -> SummaryReciept:
     subjects = main_info.get_subjects()
     for sub in subjects:
         res = SubjectSummary(db, sub, batch, dept)
-        sub_dict[sub] = SubjectSummaryReciept.from_orm(res)
+        if res.Appeared > 0:
+            sub_dict[sub] = SubjectSummaryReciept.from_orm(res)
 
     rep = SummaryReciept.from_orm(main_info)
     rep.Subjects = sub_dict

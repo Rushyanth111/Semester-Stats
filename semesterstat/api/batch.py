@@ -27,14 +27,13 @@ POST {batch}/search
 """
 
 
-from typing import List, Tuple
+from typing import List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from ..crud.batch import (
     get_all_batch,
-    get_batch_aggregate,
     get_batch_backlog,
     get_batch_detained,
     get_batch_scores,
@@ -113,16 +112,7 @@ async def batch_get_backlogs(
     return ret
 
 
-@batch.get("/{batch}/aggregate", response_model=List[Tuple[str, int]])
-async def batch_get_aggregate(
-    batch: int = Depends(common_batch_verify),
-    dept: str = None,
-    db: Session = Depends(get_db),
-):
-    return get_batch_aggregate(db, batch, dept)
-
-
-@batch.get("/{batch}/summary", response_model=List[BatchScoreSumReciept])
+@batch.get("/{batch}/summary", response_model=BatchScoreSumReciept)
 async def batch_get_scoresum(
     batch: int = Depends(common_batch_verify),
     dept: str = None,
