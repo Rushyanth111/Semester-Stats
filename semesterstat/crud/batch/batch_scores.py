@@ -122,13 +122,40 @@ def get_batch_detained(
     """
     students, scores = _score_base(db, batch, dept)
 
+    # Determine which is the most recent semester
+    latest_semester = (
+        scores.join(Subject)
+        .group_by(Subject.Semester)
+        .order_by(Subject.Semester.desc())
+        .with_entities(Subject.Semester)
+        .first()
+    )[0]
+
+    # According to Latest Semester, find out which do not have a Score in Latest
+    # Semester.
+
+    usns_not_in_latest = (
+        scores.join(Student)
+        .join(Subject)
+        .group_by(Student.Usn)
+        .with_entities(Student.Usn, func.max(Subject.Semester))
+    ).all()
+
+    avoid_usns = []
+    for (stu, maxsem) in usns_not_in_latest:
+        if maxsem < latest_semester:
+            avoid_usns.append(stu)
+
+    print("DEBUG:", usns_not_in_latest)
+
     usn = (
         scores.join(Subject)
         .filter(
             or_(
                 Score.Internals + Score.Externals < Subject.MinTotal,
                 Score.Externals < Subject.MinExt,
-            )
+            ),
+            Score.Usn.notin_(avoid_usns),
         )
         .group_by(Score.Usn)
         .having(func.count(Score.Usn) > thresh)
