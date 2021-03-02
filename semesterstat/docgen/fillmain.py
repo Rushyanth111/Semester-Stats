@@ -36,7 +36,7 @@ def __fill_main(db: Session, batch: int, dept: str, sem: int):
     res["SC"] = str(data.get_sc())
     res["Pass"] = str(data.get_pass())
     res["Fail"] = str(data.get_fail())
-    res["PassP"] = str(data.get_pass_percent())
+    res["PassP"] = str(data.get_pass_percent() * 100) + "%"
     res["BYear"] = byear
     res["ODEV"] = odev
 

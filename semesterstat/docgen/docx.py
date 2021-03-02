@@ -64,6 +64,11 @@ def get_docx(
     subjects = get_subjects(db, batch, dept, sem)
     main_info = __fill_main(db, batch, dept, sem)
     sub_info = [__fill_subject(db, subcode, batch, dept) for subcode in subjects]
+
+    # Filter the 0 Appearences thing
+
+    sub_info = [x for x in sub_info if int(x["AppT"]) > 0]
+
     last_sub = {}
     for (k, v) in sub_info[-1].items():
         last_sub[k + "F"] = v
